@@ -1,0 +1,40 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.textReveal {
+  width: 100%;
+  background-color: transparent;
+}
+
+.title {
+  font-family: $font-monument-wide;
+  font-size: 44px;
+  line-height: 1.25;
+  max-width: 100%;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+
+  @include mq-max("2xl") {
+    font-size: 38px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 5vw;
+  }
+
+  @include mq-max("md") {
+    font-size: 28px;
+  }
+}
+
+.word {
+  display: inline-block;
+  opacity: 0.2; // Match AgenceHero
+  transition: opacity 0.3s ease-out;
+  margin-right: 0.15em; // Tighter spacing
+  white-space: pre;
+
+  &.active {
+    opacity: 1;
+  }
+}

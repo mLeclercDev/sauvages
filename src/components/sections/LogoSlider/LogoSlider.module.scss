@@ -1,0 +1,89 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  max-width: 800px;
+  margin: 0 auto 80px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  @include mq-max("md") {
+    margin-bottom: 40px;
+  }
+}
+
+.title {
+  text-align: center;
+}
+
+.marqueeContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+
+  // Fade effect on edges
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 200px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--background-light), transparent);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--background-light), transparent);
+  }
+}
+
+.marquee {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  padding: 40px 0;
+  will-change: transform;
+}
+
+.logoItem {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: grayscale(1);
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  overflow: hidden; // critical for the entry mask animation
+  padding: 5px; // prevent cutting off anti-aliasing edges during animation
+
+  &:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
+.logoInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+@include mq("sm") {
+  .marquee {
+    gap: 40px;
+  }
+}

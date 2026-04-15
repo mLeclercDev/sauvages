@@ -1,0 +1,7 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50; // BEHIND the Hero (100) but ABOVE the rest
+  pointer-events: none;
+  will-change: transform;
+}

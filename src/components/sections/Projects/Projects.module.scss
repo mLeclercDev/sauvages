@@ -1,0 +1,105 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.gridWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.customCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  color: #fff;
+  text-align: center;
+  background: transparent;
+  font-family: $font-monument-normal;
+  mix-blend-mode: difference;
+  font-size: 20px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+
+  .cursorText {
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    line-height: 1;
+  }
+
+  &.visible {
+    opacity: 1;
+    .cursorText {
+      transform: translateY(0%);
+    }
+  }
+
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 2.5rem;
+
+  @include mq("md") {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 2rem;
+    row-gap: 5rem;
+    // Custom layout for grid items
+    .projectCard {
+      &:nth-child(n + 3) {
+        grid-column: span 4;
+      }
+      &:nth-child(8n + 1) {
+        grid-column: span 7;
+        :global(.image-wrapper) {
+          aspect-ratio: 1055 / 900;
+        }
+        @include mq-max("lg") {
+          grid-column: span 8;
+        }
+      }
+      &:nth-child(8n + 2) {
+        grid-column: span 5;
+        :global(.image-wrapper) {
+          aspect-ratio: 747 / 536;
+        }
+        @include mq-max("lg") {
+          grid-column: span 4;
+        }
+      }
+    }
+  }
+
+  @include mq("sm") {
+    @media (max-width: 767px) {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+
+      .projectCard {
+        grid-column: span 12 !important;
+        margin-top: 0 !important;
+        max-width: 100% !important;
+      }
+    }
+  }
+}
+
+.seeMoreWrapper {
+  margin-top: 112px;
+  display: flex;
+  justify-content: center;
+
+  @include mq-max("md") {
+    margin-top: 64px;
+  }
+}

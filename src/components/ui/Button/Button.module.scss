@@ -1,0 +1,87 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.button {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: $rounded-full;
+  font-family: $font-monument-normal;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1.5px solid transparent;
+  @include transition-standard;
+
+  &.black {
+    --btn-color: #060606;
+    --btn-text: #ffffff;
+  }
+
+  &.white {
+    --btn-color: #ffffff;
+    --btn-text: #060606;
+  }
+
+  &.outline {
+    border-color: var(--btn-color);
+    background: transparent;
+    color: var(--btn-color);
+
+    .icon svg path {
+      stroke: var(--btn-color);
+    }
+  }
+
+  &.primary {
+    background-color: var(--btn-color);
+    color: var(--btn-text);
+    border-color: var(--btn-color);
+
+    .icon svg path {
+      stroke: var(--btn-text);
+    }
+  }
+}
+
+.labelWrapper {
+  position: relative;
+  overflow: hidden;
+  height: 1.2em;
+}
+
+.label {
+  display: block;
+  line-height: 1.2em;
+  @include transition-standard;
+
+  &:nth-child(2) {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+  }
+}
+
+.button:hover {
+  .label {
+    transform: translateY(100%);
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // Ensure the icon scales correctly
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}

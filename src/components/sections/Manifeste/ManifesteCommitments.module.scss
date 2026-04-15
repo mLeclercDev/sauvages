@@ -1,0 +1,139 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  margin-bottom: $space-24;
+
+  @include mq-max("lg") {
+    margin-bottom: $space-16;
+  }
+
+  .icon {
+    display: inline-block;
+    opacity: 0.2;
+    transition: opacity 0.3s ease-out;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+}
+
+.statement {
+  margin-top: $space-4;
+  width: 86%;
+
+  @include mq-max("2xl") {
+    width: 90%;
+  }
+
+  @include mq-max("lg") {
+    width: 100%;
+  }
+
+  h2,
+  h3,
+  h4 {
+    font-family: $font-monument-wide;
+    font-size: clamp(32px, 5vw, 44px);
+    line-height: 1.25;
+    font-weight: 400;
+    margin: 0;
+    div.icon {
+      transform: translateY(2px);
+      margin-right: 10px;
+      svg {
+        height: auto;
+      }
+    }
+
+    @include mq-max("2xl") {
+      font-size: clamp(28px, 5vw, 40px);
+      div.icon {
+        transform: translateY(3px);
+        svg {
+          width: 40px;
+        }
+      }
+    }
+    @include mq-max("md") {
+      div.icon {
+        transform: translateY(3px);
+        svg {
+          width: 28px;
+        }
+      }
+    }
+  }
+}
+
+.word {
+  display: inline-block;
+  opacity: 0.2;
+  transition: opacity 0.3s ease-out;
+  white-space: pre;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.commitGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: $space-8;
+  row-gap: $space-20;
+  margin-top: $space-24;
+
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+    gap: $space-16;
+    margin-top: $space-16;
+  }
+  @include mq-max("md") {
+    gap: $space-12;
+  }
+}
+
+.commitItem {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  padding-right: $space-32;
+
+  @include mq-max("2xl") {
+    padding-right: $space-14;
+  }
+
+  @include mq-max("lg") {
+    padding-right: 0;
+  }
+}
+
+.itemHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
+}
+
+.itemTitle {
+  font-family: $font-monument-wide;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.1666666666666667;
+  @include mq-max("2xl") {
+    font-size: 24px;
+  }
+  @include mq-max("lg") {
+    font-size: 20px;
+  }
+}
+
+.itemContent {
+  p {
+    font-size: 18px;
+    @include mq-max("2xl") {
+      font-size: 16px;
+    }
+  }
+}

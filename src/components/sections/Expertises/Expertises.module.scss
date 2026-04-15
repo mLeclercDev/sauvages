@@ -1,0 +1,168 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.expertises {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 80px;
+  @include mq-max("lg") {
+    margin-bottom: 50px;
+  }
+  @include mq-max("md") {
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    br {
+      display: none;
+      @include mq-max("lg") {
+        display: block;
+      }
+      @include mq-max("sm") {
+        display: none;
+      }
+    }
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  padding: 40px 0;
+  border-bottom: 1px solid $color-noir-svgs;
+  &.isStatic {
+    padding: 60px 0 96px;
+    &:first-child {
+      padding-top: 0;
+    }
+    @include mq-max("lg") {
+      padding: 40px 0 60px;
+    }
+    @include mq-max("md") {
+      padding: 28px 0 36px;
+    }
+  }
+}
+
+.itemHeader {
+  cursor: default;
+}
+
+.itemMeta {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.itemIndex {
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  @include mq-max("lg") {
+    align-items: center;
+    font-size: 19px;
+  }
+
+  @include mq-max("md") {
+    align-items: flex-start;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+}
+
+.itemTitle {
+  font-family: $font-monument-wide;
+  font-size: clamp(24px, 3vw, 48px);
+  line-height: 1;
+  margin: 0;
+  font-weight: 400;
+}
+
+// The accordion body — height is driven by GSAP
+.itemBody {
+  overflow: hidden;
+  height: 0;
+  opacity: 0;
+}
+
+.itemBodyInner {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 40px;
+  padding-right: 160px;
+  gap: 80px;
+  @include mq-max("2xl") {
+    padding-right: 60px;
+  }
+
+  @include mq-max("lg") {
+    padding-right: 0;
+    gap: 40px;
+  }
+  @include mq-max("md") {
+    padding-top: 20px;
+    flex-direction: column;
+  }
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 590px;
+  max-width: 100%;
+  .descriptionContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    p {
+      font-size: 18px;
+    }
+  }
+  @include mq-max("md") {
+    gap: 20px;
+  }
+}
+
+.subItems {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: 275px;
+
+  li {
+    font-family: $font-monument-normal;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+}
+
+.buttonDesktop {
+  @include mq-max("md") {
+    display: none;
+  }
+}
+
+.buttonMobile {
+  @include mq("md") {
+    display: none;
+  }
+  @include mq-max("md") {
+    margin-top: 3rem;
+  }
+}

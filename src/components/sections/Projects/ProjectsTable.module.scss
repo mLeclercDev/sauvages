@@ -1,0 +1,177 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.tableWrapper {
+  width: 100%;
+  padding-bottom: 120px;
+}
+
+.listContainer {
+  width: 100%;
+
+  // Focus effect when hovering the list
+  &:hover {
+    .listHeader:not(.headerActive) {
+      border-color: rgba(6, 6, 6, 0.1);
+    }
+
+    .projectRow:not(.rowActive):not(.prevActive) {
+      border-color: rgba(6, 6, 6, 0.1);
+    }
+
+    .projectRow:not(.rowActive) {
+      .projectName,
+      .clientName,
+      .expertise,
+      .sector {
+        opacity: 0.3;
+      }
+    }
+  }
+}
+
+.listHeader,
+.projectRow {
+  display: grid;
+  grid-template-columns: 2.5fr 3.5fr 1fr 1fr;
+  column-gap: 16px;
+  align-items: center;
+}
+
+.listHeader {
+  border-bottom: 1px solid #060606;
+  padding: 12px 0;
+  color: var(--Text-Paragraph-2, #0f0e0e);
+  font-family: $font-monument-normal;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 140%;
+  letter-spacing: -0.36px;
+  opacity: 0.6;
+  transition: border-color 0.4s ease;
+
+  &.headerActive {
+    border-color: #060606;
+  }
+
+  @include mq-max("md") {
+    display: none;
+  }
+}
+
+.listBody {
+  width: 100%;
+}
+
+.projectRow {
+  padding: 32px 0;
+  border-bottom: 1px solid #060606;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.4s ease;
+  text-decoration: none;
+  color: inherit;
+
+  .projectName,
+  .clientName,
+  .expertise,
+  .sector {
+    transition: opacity 0.4s ease;
+  }
+
+  &:hover,
+  &.rowActive {
+    background-color: #f9f9f9;
+    border-color: #060606;
+
+    .projectName,
+    .clientName,
+    .expertise,
+    .sector {
+      opacity: 1;
+    }
+  }
+
+  &.prevActive {
+    border-color: #060606;
+  }
+
+  @include mq-max("md") {
+    padding: 20px 0;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.projectName {
+  font-family: $font-monument-normal;
+  font-size: 18px;
+  color: #0f0e0e;
+
+  @include mq-max("md") {
+    font-size: 16px;
+  }
+}
+
+.clientName,
+.expertise,
+.sector {
+  font-size: 18px;
+  font-weight: 300;
+
+  @include mq-max("md") {
+    font-size: 14px;
+  }
+}
+
+.sector {
+  text-align: right;
+  justify-self: end;
+}
+
+@include mq-max("md") {
+  .expertise,
+  .sector {
+    display: none;
+  }
+}
+
+// ─── OVERLAY IMAGE REEL ───────────────────────────────────────────────────
+.imageReelWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 223px;
+  height: 181px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0;
+  z-index: 10;
+  will-change: transform, opacity;
+
+  // Optionally scale or fade out on smaller screens
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
+.imageReel {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.reelItem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.reelImage {
+  object-fit: cover;
+}

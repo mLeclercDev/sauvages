@@ -1,0 +1,43 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: $space-12;
+}
+
+.title {
+  font-family: $font-monument-black;
+  font-size: 32px;
+  color: $color-noir-svgs;
+
+  @include mq("lg") {
+    font-size: 44px;
+  }
+}
+
+.viewAll {
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: $color-noir-svgs;
+  text-transform: uppercase;
+
+  &:hover {
+    color: $color-gris-fonce;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+
+  @include mq("md") {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-10;
+  }
+}

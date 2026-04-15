@@ -1,66 +1,57 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Hero from "@/components/sections/Hero/Hero";
+import Intro from "@/components/sections/Intro/Intro";
+import Expertises from "@/components/sections/Expertises/Expertises";
+import Projects from "@/components/sections/Projects/Projects";
+import Blog from "@/components/sections/Blog/Blog";
+import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
+import { fetchAPI } from "@/utils/strapi";
 
-export default function Home() {
+export default async function Home() {
+  let introData = null;
+  let expertisesData = null;
+
+  try {
+    const homepageData = await fetchAPI(
+      "/homepage",
+      {
+        populate: {
+          Contenu: {
+            populate: "*",
+          },
+        },
+      },
+      {},
+      "local"
+    );
+
+    const contenu = homepageData?.data?.attributes?.Contenu || homepageData?.data?.Contenu || [];
+    
+    introData = contenu.find((m: any) => m.__component === "homepage.intro");
+    
+    // On cherche le module d'expertises
+    expertisesData = contenu.find(
+      (m: any) => m.__component === "global.expertises-listing"
+    );
+
+  } catch (error) {
+    console.error("Failed to fetch homepage data:", error);
+  }
+
+  // Sur la home, on affiche le header si on a un titre (Texte) ou un bouton
+  const hasExpertiseHeader = !!(expertisesData?.Titre?.Texte || expertisesData?.Bouton);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main>
+      <Hero />
+      <Intro data={introData} />
+      <Expertises 
+        data={expertisesData} 
+        showHeader={hasExpertiseHeader} 
+        isScrollAnimated={hasExpertiseHeader}
+      />
+      <Projects />
+      <LogoSlider />
+      <Blog />
+    </main>
   );
 }

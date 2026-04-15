@@ -1,0 +1,100 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.intro {
+  position: relative;
+  // Non-clipping to allow the absolute image to overlap next sections
+  overflow: hidden;
+  .headline {
+    font-family: $font-monument-wide;
+    font-size: 44px;
+    line-height: 1.25;
+    color: #000000;
+    margin: 0;
+
+    .word {
+      opacity: 0.2;
+      display: inline-block;
+      white-space: pre;
+      transition: opacity 0.3s ease-out;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+
+    svg {
+      vertical-align: middle;
+      transition: opacity .3s ease-out;
+      display: inline-block;
+      max-height: 51px;
+      width: auto;
+      margin-right: 10px;
+      transform: translateY(-4px);
+    }
+    @include mq-max("2xl") {
+      font-size: 36px;
+      svg {
+        max-height: 40px;
+        transform: translateY(-2px);
+      }
+    }
+    @include mq-max("lg") {
+      font-size: 30px;
+    }
+    @include mq-max("md") {
+      font-size: 24px;
+      svg {
+        margin: 0;
+        width: 28px;
+        height: auto;
+      }
+    }
+  }
+}
+
+.contentCluster {
+  @include column;
+  gap: 16px;
+  max-width: 100%;
+  margin-bottom: 4rem;
+  width: 100%;
+  max-width: 1670px;
+  @include mq-max("md") {
+    margin-bottom: 3rem;
+    gap: 1.5rem;
+  }
+}
+
+.fireIcon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.imageWrapper {
+  width: 600px;
+  max-width: 60%;
+  aspect-ratio: 782 / 436;
+  position: relative;
+  overflow: hidden;
+  margin: 3rem 0 0 auto;
+
+  @include mq-max("md") {
+    margin-top: 170px;
+    width: 75%;
+    aspect-ratio: 1;
+  }
+
+  @include mq("2xl") {
+    width: 782px;
+  }
+
+  .svgMask {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    // Ensure anti-aliasing doesn't create blurry edges
+    shape-rendering: crispEdges;
+  }
+}

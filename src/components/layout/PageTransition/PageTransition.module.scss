@@ -1,0 +1,22 @@
+.transitionWrapper {
+  position: fixed;
+  inset: 0; // covers top, left, right, bottom
+  z-index: 9999000;
+  pointer-events: none;
+
+  // Utilisation de CSS Grid selon la variable configurée
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  // grid-auto-rows va prendre la même hauteur que la largeur de cellule grâce à aspect-ratio sur l'enfant
+  overflow: hidden;
+  align-content: start;
+}
+
+.cell {
+  width: 100%;
+  aspect-ratio: 1;
+  opacity: 0; // Masqué par défaut
+  background-color: transparent; // Forcé en inline
+  transform: translateZ(0); // Forcer accélération GPU
+  will-change: opacity;
+}

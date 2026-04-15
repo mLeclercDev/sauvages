@@ -1,0 +1,138 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.expertiseDetailsSingle {
+  background-color: transparent;
+}
+
+.sectionTitle {
+  margin-bottom: $space-24;
+
+  @include mq-max("2xl") {
+    margin-bottom: $space-16;
+  }
+  @include mq-max("lg") {
+    margin-bottom: $space-10;
+  }
+  @include mq-max("md") {
+    margin-bottom: $space-8;
+  }
+}
+
+.statement {
+  font-size: 44px;
+  line-height: 1.25;
+  color: $color-noir-svgs;
+  margin: 0;
+  font-family: $font-monument-wide;
+  @include mq-max("2xl") {
+    font-size: 34px;
+  }
+  @include mq-max("lg") {
+    font-size: 30px;
+  }
+  @include mq-max("md") {
+    font-size: 28px;
+  }
+  @include mq-max("sm") {
+    font-size: 24px;
+  }
+}
+
+.word {
+  opacity: 0.2;
+  display: inline-block;
+  white-space: pre;
+  transition: opacity 0.3s ease-out;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 0.39fr 1fr;
+  align-items: start;
+  gap: $space-40;
+  margin-top: $space-24;
+  @include mq-max("2xl") {
+    gap: $space-20;
+    grid-template-columns: 0.45fr 1fr;
+  }
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+    gap: $space-16;
+  }
+  @include mq-max("md") {
+    gap: $space-8;
+  }
+}
+
+.imageCol {
+  width: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 46 / 67;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 116% !important;
+    top: -8% !important;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  @include mq-max("lg") {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+.contentCol {
+  width: 100%;
+}
+
+.title {
+  margin: 0;
+}
+
+.texts {
+  margin: $space-10 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+
+  p {
+    margin: 0;
+    font-size: clamp(18px, 1.15vw, 22px);
+    line-height: 1.28;
+  }
+}
+
+.label {
+  color: $color-noir-svgs;
+  font-size: 18px;
+  text-transform: uppercase;
+  margin-bottom: $space-5;
+}
+
+.list {
+  margin: $space-4 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  li {
+    text-transform: uppercase;
+    opacity: .6;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: normal;
+  }
+}

@@ -1,0 +1,232 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.hero {
+  position: relative;
+  z-index: 111;
+
+  :global(html.is-first-visit) & {
+    z-index: 100; // Above the preloader rectangle (50)
+  }
+
+  .heroInner {
+    position: relative;
+    height: 200dvh;
+
+    @include mq-max("lg") {
+      min-height: 100dvh;
+      height: auto;
+      padding: 120px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @include mq-max("md") {
+      padding: 70px 20px 20px;
+    }
+
+    .heroReel {
+      position: var(--reel-position);
+      top: var(--reel-top);
+      right: var(--reel-right);
+      bottom: var(--reel-bottom);
+      width: calc(var(--video-width) * 1px);
+      height: calc(var(--video-height) * 1px);
+
+      @include mq-max("lg") {
+        position: relative !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16 / 9;
+        margin-top: 1rem;
+        order: 2;
+      }
+
+      .videoLink {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        cursor: pointer;
+
+        @include mq("lg") {
+          cursor: default;
+
+          &.cursorReady {
+            cursor: none;
+          }
+        }
+      }
+
+      .videoPlayer {
+        --aspect-ratio: unset;
+        width: 100%;
+        height: 100%;
+        .videoPlayerVideo {
+          position: relative;
+          aspect-ratio: var(--aspect-ratio);
+          overflow: hidden;
+          background-color: var(--video-background-color);
+          display: block;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+
+          video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .videoPlayerControls {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.5em 0;
+          font-size: var(--fs-md);
+          line-height: var(--lh-md);
+          letter-spacing: var(--ls-md);
+          font-family: var(--font-primary);
+          font-variation-settings: "wght"
+            var(--heading-font-variation-settings, 400);
+          position: absolute;
+          width: 100%;
+          pointer-events: none;
+
+          @include mq-max("md") {
+            display: none;
+          }
+        }
+      }
+
+      .video-player {
+        --border-radius: 0;
+        --aspect-ratio: 16 / 9;
+        --video-background-color: var(--color-primary);
+        font-size: var(--fs-md);
+        line-height: var(--lh-md);
+        letter-spacing: var(--ls-md);
+        font-family: var(--font-primary);
+        font-variation-settings: "wght"
+          var(--heading-font-variation-settings, 400);
+      }
+    }
+    .content {
+      opacity: var(--brand-claim-opacity);
+      padding: var(--logo-pt) var(--safe-area) 0;
+      position: fixed;
+      width: 100%;
+      transform: translateY(var(--logo-translation));
+      z-index: 11111;
+
+      @include mq-max("lg") {
+        position: relative;
+        padding: 0;
+        transform: none !important;
+        order: 1;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      @include mq-max("md") {
+        justify-content: flex-start;
+      }
+      .title {
+        position: absolute;
+        bottom: calc(100% + 2em - var(--logo-pt));
+        color: var(--color-text);
+        font-family: $font-monument-normal;
+        width: 375px;
+        font-weight: 400;
+        max-width: 100%;
+        font-size: 22px;
+        line-height: 1.3;
+
+        @include mq-max("2xl") {
+          font-size: 20px;
+        }
+
+        @include mq-max("lg") {
+          position: relative;
+          font-size: 28px;
+          width: 500px;
+        }
+
+        @include mq-max("md") {
+          font-size: 16px;
+        }
+      }
+
+      .logoResponsive {
+        display: none;
+        width: 100%;
+        @include mq-max("lg") {
+          display: block;
+          margin-top: 20px;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .customCursor {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: auto;
+    height: auto;
+    background: transparent;
+    color: #fff;
+    text-align: center;
+    font-family: $font-monument-wide;
+    font-size: 66px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 66px; /* 100% */
+    text-transform: uppercase;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    overflow: hidden;
+    transition: opacity 0.4s ease;
+
+    @include mq-max("2xl") {
+      font-size: 44px;
+    }
+
+    .cursorText {
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: block; // needs to be block for translate to work perfectly
+      line-height: 1;
+    }
+
+    &.visible {
+      opacity: 1;
+      .cursorText {
+        transform: translateY(0%);
+      }
+    }
+
+    @include mq-max("lg") {
+      display: none;
+    }
+  }
+
+  .preloaderBg {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    will-change: transform;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,134 @@
+@use "reset" as *;
+@use "mixins" as *;
+@use "variables" as *;
+@use "utils" as *;
+
+:root {
+  --background: #ffffff;
+  --background-light: #f6f6f6;
+  --foreground: #171717;
+  --greyDark: #2b2b2b;
+  --white: #f6f6f6;
+}
+
+body {
+  font-weight: 400;
+  color: var(--foreground);
+  background: var(--background-light);
+  font-family: $font-monument-normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// =============================================================================
+// PRELOADER — zéro flash garanti
+// Le script <head> pose `is-first-visit` + `--preloader-color` avant le 1er paint.
+// Ce ::before couvre TOUT le contenu dès le premier pixel affiché par le navigateur.
+// =============================================================================
+html.is-first-visit::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50; // BEHIND the Hero (100) but ABOVE the rest of the content
+  background-color: var(--preloader-color, #efff9b);
+  pointer-events: none;
+}
+
+// Quand l'animation commence dans Preloader.tsx, on cache le ::before statique
+// pour laisser l'overlay React (qui lui scale) faire son travail.
+html.preloader-animating::before {
+  display: none !important;
+}
+
+// Hero content + nav cachés par défaut pendant le preloader.
+html.is-first-visit [data-preload="hero-video"],
+html.is-first-visit [data-preload="hero-title"],
+html.is-first-visit header nav,
+html.is-first-visit header button,
+html.is-first-visit header [data-preload="header-cta"],
+html.is-first-visit header svg path {
+  opacity: 0;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-monument-wide;
+}
+
+h2,
+.h2 {
+  color: #03091e;
+  font-size: 34px;
+  line-height: 0.85;
+  font-family: $font-monument-black;
+
+  @include mq("sm") {
+    font-size: 44px;
+  }
+
+  @include mq("md") {
+    font-size: 54px;
+  }
+
+  @include mq("lg") {
+    font-size: 64px;
+  }
+
+  @include mq("xl") {
+    font-size: 74px;
+  }
+
+  @include mq("2xl") {
+    font-size: 84px;
+  }
+}
+
+h3,
+.h3 {
+  font-family: $font-monument-wide;
+  color: #03091e;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 400;
+
+  @include mq("sm") {
+    font-size: 30px;
+  }
+
+  @include mq("md") {
+    font-size: 36px;
+  }
+
+  @include mq("lg") {
+    font-size: 38px;
+  }
+
+  @include mq("2xl") {
+    font-size: 44px;
+  }
+}
+
+.label {
+  color: var(--Gris-fonc, #5e5e5e);
+  font-family: $font-monument-normal;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-transform: uppercase;
+
+  @include mq-max("md") {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}

@@ -1,0 +1,70 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.agenceStaff {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+
+    @include mq-max("lg") {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mq-max("md") {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    text-align: center;
+    cursor: pointer;
+
+    .imageContainer {
+      position: relative;
+      aspect-ratio: 445 / 538;
+      overflow: hidden;
+      margin-bottom: 20px;
+
+      .hoverVideo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      &:hover {
+        img {
+          opacity: 0;
+        }
+        .hoverVideo {
+          opacity: 1;
+        }
+      }
+    }
+
+    .name {
+      font-family: $font-monument-normal;
+      font-size: 24px;
+      line-height: 1.2;
+      text-transform: uppercase;
+
+      @include mq-max("2xl") {
+        font-size: 20px;
+      }
+    }
+
+    .baseline {
+      font-size: 18px;
+      color: $color-gris-fonce;
+
+      @include mq-max("2xl") {
+        font-size: 16px;
+      }
+    }
+  }
+}

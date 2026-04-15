@@ -1,0 +1,111 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.seeMore {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  text-decoration: none;
+  color: $color-noir-svgs;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    .textInner {
+      transform: translateY(-100%);
+    }
+    .text::before {
+      transform: translateY(0%);
+    }
+  }
+
+  @include mq-max("lg") {
+    gap: 1rem;
+  }
+
+  @include mq-max("md") {
+    gap: 20px;
+  }
+
+  @include mq("sm") {
+    gap: 0.8rem;
+  }
+}
+
+.text {
+  font-family: $font-monument-wide;
+  line-height: 1;
+  position: relative;
+  padding-bottom: 0.2rem;
+  text-align: center;
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1.25;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .textInner {
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: currentColor;
+    transform-origin: center;
+    transition: transform 0.3s ease;
+
+    @include mq-max("lg") {
+      height: 4px;
+    }
+
+    @include mq("sm") {
+      height: 3px;
+    }
+  }
+
+  @include mq-max("lg") {
+    font-size: 32px;
+    padding-bottom: 0.1rem;
+  }
+
+  @include mq-max("md") {
+    font-size: 22px;
+    padding-bottom: 0;
+    &::after {
+      height: 2px;
+      bottom: 2px;
+    }
+  }
+}
+
+.icon {
+  svg {
+    @include mq-max("lg") {
+      width: 24px;
+      height: 21px;
+    }
+
+    @include mq-max("md") {
+      width: 17px;
+      height: 15px;
+    }
+  }
+}

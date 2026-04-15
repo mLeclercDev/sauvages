@@ -1,0 +1,288 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 28px 0;
+  background-color: #000;
+  mix-blend-mode: difference;
+  isolation: isolate;
+
+  .menuBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    transform: scale(0);
+    z-index: -1;
+    transform-origin: center;
+  }
+
+  :global(body.is-preloading) & {
+    background-color: transparent !important;
+    z-index: 10005 !important;
+  }
+
+  &.isPreloading {
+    background-color: transparent;
+    z-index: 10005; // Above the Hero's preloader background
+  }
+
+  transition:
+    background-color 0.4s ease,
+    mix-blend-mode 0.4s ease;
+
+  @include mq-max("2xl") {
+    padding: 20px 0;
+  }
+
+  @include mq-max("xl") {
+    padding: 16px 0;
+  }
+
+  &.isMenuOpen {
+    mix-blend-mode: normal;
+    background-color: transparent;
+
+    .logoDesktop path,
+    .logoResponsive path {
+      fill: #fff !important;
+    }
+
+    .wrapper .menuButton {
+      color: #fff;
+    }
+  }
+
+  .logo {
+    position: relative;
+    z-index: 1111;
+  }
+
+  .logoResponsive {
+    display: none;
+    @include mq-max("lg") {
+      display: block;
+    }
+  }
+  .logoDesktop {
+    display: block;
+    @include mq-max("lg") {
+      display: none;
+    }
+  }
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .desktopNav {
+      @include mq-max("lg") {
+        display: none;
+      }
+    }
+
+    .desktopButton {
+      @include mq-max("lg") {
+        display: none;
+      }
+    }
+
+    .menuButton {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-family: $font-monument-normal;
+      font-size: 16px;
+      text-transform: uppercase;
+      cursor: pointer;
+      z-index: 1200;
+      padding: 0;
+
+      .menuButtonWrapper {
+        position: relative;
+        height: 1.25em;
+        overflow: hidden;
+        display: grid; // Grid allows the container to take the width of the largest child
+        grid-template-areas: "stack";
+        padding: 0;
+
+        span {
+          grid-area: stack;
+          display: block;
+          line-height: 1.25em;
+          transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+          white-space: nowrap; // Prevent wrapping
+
+          &:nth-child(1) {
+            transform: translateY(0);
+            &.active {
+              transform: translateY(-100%);
+            }
+          }
+
+          &:nth-child(2) {
+            transform: translateY(100%);
+            &.active {
+              transform: translateY(0);
+            }
+          }
+        }
+      }
+
+      @include mq-max("lg") {
+        display: block;
+      }
+    }
+
+    nav {
+      ul {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        li {
+          display: flex;
+          align-items: center;
+          a {
+            text-transform: uppercase;
+            color: var(--white);
+            display: block;
+            text-decoration: none;
+
+            .labelWrapper {
+              position: relative;
+              overflow: hidden;
+              height: 1.2em;
+            }
+
+            .label {
+              display: block;
+              line-height: 1.2em;
+              font-size: 18px;
+              @include transition-standard;
+
+              &:nth-child(2) {
+                position: absolute;
+                top: -100%;
+                left: 0;
+                width: 100%;
+              }
+
+              @include mq-max("2xl") {
+                font-size: 16px;
+              }
+            }
+
+            &:hover {
+              @include mq("lg") {
+                .label {
+                  transform: translateY(100%);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .mobileMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: transparent; // Background is now a separate animated layer
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 40px;
+    visibility: hidden; // Controlled by GSAP
+    pointer-events: none;
+
+    &.visible {
+      pointer-events: all;
+    }
+
+    @include mq-max("lg") {
+      padding: 0 32px;
+    }
+
+    @include mq-max("md") {
+      padding: 0 20px;
+    }
+
+    .mobileNav {
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        li {
+          .itemMask {
+            overflow: hidden;
+            display: block;
+          }
+
+          a {
+            font-family: $font-monument-wide;
+            font-size: 64px;
+            color: #fff; // Back to white text
+            text-decoration: none;
+            text-transform: uppercase;
+            display: block;
+            line-height: 1.1;
+
+            @include mq-max("md") {
+              font-size: 32px;
+            }
+          }
+        }
+      }
+    }
+
+    .mobileMenuFooter {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0; // Controlled by GSAP
+
+      .time {
+        font-family: $font-monument-normal;
+        color: #fff;
+      }
+
+      @include mq-max("lg") {
+        bottom: 32px;
+        left: 32px;
+        right: 32px;
+      }
+
+      @include mq-max("md") {
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+      }
+
+      // Ensure button in footer is also white on black
+      :global(.btn-outline) {
+        border-color: #fff !important;
+        color: #fff !important;
+        svg path {
+          stroke: #fff !important;
+        }
+      }
+    }
+  }
+}

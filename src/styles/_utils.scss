@@ -1,0 +1,174 @@
+@use "sass:map";
+@use "mixins" as *;
+@use "variables" as *;
+
+.container {
+  width: 100%;
+  //max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 $size-5;
+
+  @include mq("md") {
+    padding: 0 $space-8;
+  }
+
+  @include mq("lg") {
+    padding: 0 $space-8;
+  }
+
+  @include mq("2xl") {
+    padding: 0 $space-11;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fit-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+// --- RESPONSIVE SPACING UTILITIES ---
+
+$spacings: (
+  "none": (
+    mobile: 0px,
+    tablet: 0px,
+    laptop: 0px,
+    desktop: 0px,
+    large: 0px,
+  ),
+  "xs": (
+    mobile: 12px,
+    tablet: 16px,
+    laptop: 20px,
+    desktop: 24px,
+    large: 32px,
+  ),
+  "sm": (
+    mobile: 16px,
+    tablet: 24px,
+    laptop: 32px,
+    desktop: 48px,
+    large: 72px,
+  ),
+  "md": (
+    mobile: 32px,
+    tablet: 48px,
+    laptop: 64px,
+    desktop: 80px,
+    large: 120px,
+  ),
+  "lg": (
+    mobile: 48px,
+    tablet: 80px,
+    laptop: 100px,
+    desktop: 120px,
+    large: 180px,
+  ),
+  "xl": (
+    mobile: 64px,
+    tablet: 100px,
+    laptop: 130px,
+    desktop: 160px,
+    large: 240px,
+  ),
+  "xxl": (
+    mobile: 80px,
+    tablet: 120px,
+    laptop: 160px,
+    desktop: 200px,
+    large: 320px,
+  ),
+);
+
+@each $name, $values in $spacings {
+  .pt-#{$name} {
+    padding-top: map.get($values, "mobile");
+    @include mq("md") {
+      padding-top: map.get($values, "tablet");
+    }
+    @include mq("lg") {
+      padding-top: map.get($values, "laptop");
+    }
+    @include mq("xl") {
+      padding-top: map.get($values, "desktop");
+    }
+    @include mq("2xl") {
+      padding-top: map.get($values, "large");
+    }
+  }
+  .pb-#{$name} {
+    padding-bottom: map.get($values, "mobile");
+    @include mq("md") {
+      padding-bottom: map.get($values, "tablet");
+    }
+    @include mq("lg") {
+      padding-bottom: map.get($values, "laptop");
+    }
+    @include mq("xl") {
+      padding-bottom: map.get($values, "desktop");
+    }
+    @include mq("2xl") {
+      padding-bottom: map.get($values, "large");
+    }
+  }
+  .py-#{$name} {
+    padding-top: map.get($values, "mobile");
+    padding-bottom: map.get($values, "mobile");
+    @include mq("md") {
+      padding-top: map.get($values, "tablet");
+      padding-bottom: map.get($values, "tablet");
+    }
+    @include mq("lg") {
+      padding-top: map.get($values, "laptop");
+      padding-bottom: map.get($values, "laptop");
+    }
+    @include mq("xl") {
+      padding-top: map.get($values, "desktop");
+      padding-bottom: map.get($values, "desktop");
+    }
+    @include mq("2xl") {
+      padding-top: map.get($values, "large");
+      padding-bottom: map.get($values, "large");
+    }
+  }
+}
+
+
+// Specific section paddings (to maintain consistency)
+.section-padding {
+  @extend .py-lg;
+}
+
+.section-padding-top {
+  @extend .pt-lg;
+}
+
+.section-padding-bottom {
+  @extend .pb-lg;
+}
+
+// User-requested aliases
+.pt-top {
+  @extend .pt-lg;
+}
+
+.pb-bottom {
+  @extend .pb-lg;
+}

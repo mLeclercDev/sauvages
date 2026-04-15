@@ -1,0 +1,225 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.footer {
+  min-height: 100vh;
+  background-color: #060606;
+  color: #ffffff;
+  padding: 0; // Padding is moved to inner for parallax
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+
+  .footerInner {
+    padding: 48px 0 48px;
+    height: 100%;
+    will-change: transform;
+
+    @include mq-max("2xl") {
+      padding: 48px 0 32px;
+    }
+    @include mq-max("lg") {
+      padding: 64px 0 20px;
+    }
+  }
+
+  .footerCta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 1rem 0 2rem;
+    @include mq-max("2xl") {
+      padding: 0 0 1rem;
+    }
+    @include mq-max("md") {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2.75rem;
+      padding: 0;
+    }
+    .ctaLeft {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ctaTitle {
+      color: var(--white);
+    }
+  }
+  .wrapperContainer {
+    display: flex;
+    margin-top: 48px;
+    padding: 40px var(--Space-Space-8, 32px);
+    flex-direction: column;
+    background-color: var(--greyDark);
+    width: 100%;
+    @include mq-max("2xl") {
+      margin-top: 32px;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      @include mq-max("lg") {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      @include mq-max("md") {
+        gap: 32px;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.meta {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  @include mq-max("lg") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+.schedules {
+  display: flex;
+  gap: 2px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  color: #f6f6f6;
+  font-size: 18px;
+  line-height: 1;
+  mix-blend-mode: difference;
+  svg {
+    margin-right: 2px;
+  }
+  @include mq-max("md") {
+    font-size: 14px;
+    line-height: 1;
+  }
+}
+
+.separator {
+  opacity: 0.5;
+}
+
+.statusDot {
+  width: 10px;
+  height: 10px;
+  background-color: #96e91e; // Vert Sauvages
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(150, 233, 30, 0.5);
+}
+
+.middle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navGroups {
+  display: flex;
+  gap: 120px;
+
+  @include mq("sm") {
+    flex-direction: column;
+    gap: 40px;
+  }
+}
+
+.navGroup {
+  .label {
+    display: block;
+    color: var(--white);
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+    opacity: 0.7;
+    @include mq-max("md") {
+      font-size: 14px;
+      line-height: 1;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+      font-family: $font-monument-normal;
+      font-size: 16px;
+      @include transition-standard;
+      will-change: opacity;
+
+      &:hover {
+        opacity: 0.6;
+      }
+      @include mq-max("md") {
+        font-size: 14px;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+.headline {
+  margin: 60px 0 44px;
+  @include mq-max("md") {
+    margin: 40px 0;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    &.headlineDesktop {
+      display: none;
+      @include mq("sm") {
+        display: flex;
+      }
+    }
+    &.headlineResponsive {
+      display: flex;
+      @include mq("sm") {
+        display: none;
+      }
+    }
+  }
+}
+
+.bottomLinks {
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    color: var(--white);
+    opacity: 0.7;
+    font-size: 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+    @include transition-standard;
+    will-change: opacity;
+    &:hover {
+      opacity: 1;
+    }
+  }
+  @include mq-max("md") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    a {
+      font-size: 14px;
+      line-height: 1;
+    }
+  }
+}

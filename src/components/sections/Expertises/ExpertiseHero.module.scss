@@ -1,0 +1,218 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.expertiseHero {
+  padding: 120px 0 80px;
+  background-color: transparent;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include mq-max("lg") {
+    padding: 100px 0 60px;
+    min-height: auto;
+  }
+
+  @include mq-max("md") {
+    padding: 80px 0 40px;
+    min-height: auto;
+  }
+}
+
+.title {
+  font-family: $font-monument-black;
+  font-size: clamp(60px, 7vw, 120px);
+  line-height: 0.85;
+  margin-bottom: 45px;
+  color: $color-noir-svgs;
+
+  @include mq-max("2xl") {
+    margin-bottom: 30px;
+  }
+  @include mq-max("lg") {
+    margin-bottom: 40px;
+  }
+  @include mq-max("md") {
+    font-size: 40px;
+  }
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 80px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @include mq-max("lg") {
+    gap: 40px;
+  }
+
+  @include mq-max("md") {
+    gap: 40px;
+  }
+}
+
+.imageColumn {
+  width: 590px;
+  max-width: 44%;
+  @include mq-max("md") {
+    max-width: 100%;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 590 / 760;
+  overflow: hidden;
+
+  @include mq-max("md") {
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.contentColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 760px;
+  max-width: 40%;
+
+  @include mq-max("lg") {
+    max-width: 44%;
+  }
+
+  @include mq-max("md") {
+    padding-top: 0;
+    max-width: 100%;
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 330px;
+
+  @include mq-max("2xl") {
+    gap: 240px;
+  }
+
+  @include mq-max("xl") {
+    gap: 200px;
+  }
+
+  @include mq-max("lg") {
+    gap: 80px;
+  }
+
+  @include mq-max("md") {
+    gap: 40px;
+  }
+}
+
+.description {
+  font-size: 24px;
+  line-height: 1.2;
+  max-width: 450px;
+  margin: 0;
+  color: $color-noir-svgs;
+  font-family: $font-monument-normal;
+
+  @include mq-max("2xl") {
+    font-size: 22px;
+    max-width: 420px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 20px;
+    max-width: 100%;
+  }
+
+  @include mq-max("md") {
+    font-size: 18px;
+    max-width: 100%;
+  }
+}
+
+.expertisesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.listItem {
+  font-family: $font-monument-wide;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1.2;
+  display: flex;
+  align-items: flex-end;
+  gap: 45px;
+  position: relative;
+  width: fit-content;
+  color: $color-noir-svgs;
+  word-spacing: 45px;
+
+  &:after {
+    content: "";
+    background-color: $color-noir-svgs;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+  }
+
+  .text {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
+    word-spacing: normal; // Reset word-spacing inside the title span
+
+    .textInner {
+      display: block;
+      @include transition-standard;
+      will-change: transform;
+    }
+
+    &::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+      pointer-events: none;
+    }
+  }
+
+  &:hover {
+    .textInner {
+      transform: translateY(-100%);
+    }
+
+    .text::before {
+      transform: translateY(0%);
+    }
+  }
+
+  @include mq-max("2xl") {
+    font-size: 28px;
+    word-spacing: 35px;
+  }
+
+  @include mq-max("md") {
+    font-size: 24px;
+    word-spacing: 20px;
+  }
+}

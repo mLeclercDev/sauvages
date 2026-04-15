@@ -1,0 +1,91 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.projectItem {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  @include transition-standard;
+
+  @include mq("lg") {
+    &:hover {
+      cursor: none;
+    }
+  }
+  .imageWrapper {
+    aspect-ratio: 590 / 557;
+  }
+}
+
+.imageWrapperInner {
+  position: absolute;
+  width: 100%;
+  height: 120%;
+  top: -10%;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  @include transition-standard;
+  margin-bottom: 20px;
+  @include mq-max("md") {
+    aspect-ratio: 1 !important;
+  }
+
+  img {
+    @include transition-standard;
+  }
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #eee;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+.imgWrapper {
+  position: relative;
+  overflow: hidden;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  @include mq-max("2xl") {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+  }
+}
+
+.infoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.client {
+  color: #000;
+  font-size: 20px;
+  font-weight: 400;
+  text-transform: inherit;
+  @include mq-max("2xl") {
+    font-size: 18px;
+  }
+}
+
+.title {
+  margin: 0;
+  color: #5e5e5e;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: inherit;
+  @include mq-max("2xl") {
+    font-size: 16px;
+  }
+}

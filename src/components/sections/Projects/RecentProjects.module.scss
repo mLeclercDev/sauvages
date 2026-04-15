@@ -1,0 +1,62 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: $space-10;
+}
+
+.title {
+  font-family: $font-monument-wide;
+  font-size: clamp(32px, 5vw, 44px);
+  line-height: 1.25;
+  font-weight: 400;
+  margin: 0;
+
+  @include mq-max("2xl") {
+    font-size: clamp(28px, 5vw, 40px);
+  }
+}
+
+.viewAllDesktop,
+.viewAllMobile {
+  display: flex;
+  font-family: $font-monument-normal;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-decoration: underline;
+  color: $color-noir-svgs;
+  &:hover {
+    color: $color-gris-fonce;
+  }
+}
+
+.viewAllDesktop {
+  @include mq-max("md") {
+    display: none;
+  }
+}
+
+.viewAllMobile {
+  margin-top: $space-10;
+  @include mq("md") {
+    display: none;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+
+  @include mq("md") {
+    grid-template-columns: repeat(3, 1fr);
+    gap: $space-10;
+  }
+}

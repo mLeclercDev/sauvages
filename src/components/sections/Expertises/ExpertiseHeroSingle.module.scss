@@ -1,0 +1,101 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.ExpertiseHeroSingle {
+  padding-top: 210px;
+  padding-bottom: $space-24;
+
+  @include mq-max("2xl") {
+    padding-top: $space-40;
+  }
+
+  @include mq-max("md") {
+    padding-top: $space-24;
+    padding-bottom: $space-8;
+  }
+}
+
+.title {
+  font-family: $font-monument-black;
+  font-size: clamp(60px, 7vw, 120px);
+  line-height: 0.85;
+  margin-bottom: 80px;
+  color: $color-noir-svgs;
+  text-transform: uppercase;
+
+  @include mq-max("2xl") {
+    margin-bottom: $space-14;
+  }
+  @include mq-max("lg") {
+    margin-bottom: $space-10;
+  }
+  @include mq-max("md") {
+    font-size: 40px;
+  }
+}
+
+.description {
+  max-width: calc(100% - 100px);
+  font-family: $font-monument-wide;
+  font-size: 44px;
+  line-height: 1.25;
+  color: $color-noir-svgs;
+  margin: 0;
+
+  @include mq-max("2xl") {
+    max-width: calc(100% - 60px);
+    font-size: 36px;
+  }
+  @include mq-max("xl") {
+    max-width: 100%;
+  }
+  @include mq-max("lg") {
+    font-size: 30px;
+  }
+  @include mq-max("md") {
+    font-size: 28px;
+  }
+  @include mq-max("sm") {
+    font-size: 24px;
+  }
+}
+
+.word {
+  display: inline-block;
+  white-space: pre;
+  opacity: 0.2;
+  transition: opacity 0.25s ease-out;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 1832 / 783;
+  position: relative;
+  overflow: hidden;
+  margin-top: 105px;
+
+  img {
+    height: 120% !important;
+    top: -10% !important;
+    width: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+  @include mq-max("2xl") {
+    margin-top: $space-20;
+  }
+  @include mq-max("lg") {
+    margin-top: $space-14;
+  }
+  @include mq-max("md") {
+    margin-top: $space-10;
+  }
+
+  @include mq-max("md") {
+    aspect-ratio: 16 / 10;
+  }
+}

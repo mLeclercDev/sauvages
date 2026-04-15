@@ -1,0 +1,58 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.blog {
+  a.link {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 20px; /* 111.111% */
+    text-decoration-line: underline;
+    @include mq-max("md") {
+      display: none;
+    }
+  }
+  a.linkResponsive {
+    display: none;
+    margin-top: 3rem;
+    @include mq-max("lg") {
+      display: block;
+    }
+  }
+  a.linkDesktop {
+    display: block;
+    @include mq-max("lg") {
+      display: none;
+    }
+  }
+}
+
+.header {
+  margin-bottom: 80px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  @include mq-max("md") {
+    margin-bottom: 3rem;
+    gap: 28px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerContent {
+    display: flex;
+    align-items: flex-end;
+    gap: 120px;
+    @include mq-max("md") {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .description {
+      width: 300px;
+      max-width: 100%;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 20px; /* 111.111% */
+    }
+  }
+}

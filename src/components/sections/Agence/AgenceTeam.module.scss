@@ -1,0 +1,132 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: 462px 1fr;
+  gap: 320px;
+  align-items: stretch;
+  justify-content: space-between;
+  padding-left: 0;
+
+  @include mq-max("2xl") {
+    grid-template-columns: 400px 1fr;
+    gap: 160px;
+  }
+
+  @include mq-max("xl") {
+    grid-template-columns: 360px 1fr;
+    gap: $space-16;
+  }
+
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+    gap: $space-12;
+  }
+}
+
+.imageWrapper {
+  position: sticky;
+  top: 120px;
+  width: 100%;
+  aspect-ratio: 490 / 760;
+  overflow: hidden;
+  max-width: 100%;
+
+  @include mq-max("lg") {
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  @include mq-max("md") {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: 925px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: $space-20;
+
+  @include mq-max("lg") {
+    order: -1;
+    gap: $space-12;
+    max-width: 100%;
+  }
+}
+
+.title {
+}
+
+.subtitle {
+  margin-top: $space-6;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #060606;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: $space-5 0;
+  border-bottom: 1px solid #060606;
+
+  @include mq-max("lg") {
+    flex-direction: column;
+    gap: $space-4;
+  }
+}
+
+.itemHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-4;
+}
+
+.itemIndex {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.349px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 18.737px;
+  height: 18.737px;
+  border: 1.615px solid #000;
+  margin-top: 3px;
+}
+
+.itemTitle {
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+
+  @include mq-max("2xl") {
+    font-size: 16px;
+  }
+}
+
+.itemDescription {
+  font-size: 18px;
+  width: 450px;
+  max-width: 100%;
+
+  @include mq-max("2xl") {
+    font-size: 16px;
+  }
+
+  @include mq-max("lg") {
+    width: 100%;
+  }
+}
