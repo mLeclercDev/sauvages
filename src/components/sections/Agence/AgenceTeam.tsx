@@ -12,7 +12,7 @@ interface AgenceTeamProps {
 }
 
 const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) => {
-  const TitleTag = (data?.Titre?.HN || "h2") as keyof JSX.IntrinsicElements;
+  const TitleTag = (data?.Titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
 
   return (
     <section className={`${styles.agenceTeam} pt-${pt} pb-${pb}`}>

@@ -20,7 +20,7 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
   data
 }) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const TitleTag = (data?.Titre?.HN || "h2") as keyof JSX.IntrinsicElements;
+  const TitleTag = (data?.Titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);

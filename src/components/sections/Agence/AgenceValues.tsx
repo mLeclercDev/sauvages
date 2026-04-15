@@ -16,7 +16,7 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
   pb = "lg",
   data,
 }) => {
-  const TitleTag = (data?.Titre?.HN || "h2") as keyof JSX.IntrinsicElements;
+  const TitleTag = (data?.Titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
 
   return (
     <section className={`${styles.agenceValues} pt-${pt} pb-${pb}`}>
