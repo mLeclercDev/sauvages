@@ -28,8 +28,7 @@ export default async function ExpertisePage({ params }: PageProps) {
         },
       },
     },
-    {},
-    "local"
+    {}
   );
 
   const entries = Array.isArray(response?.data) ? response.data : [];

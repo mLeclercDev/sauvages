@@ -81,7 +81,7 @@ const ExpertiseHeroSingle: React.FC<ExpertiseHeroSingleProps> = ({ data }) => {
         </span>
       ));
 
-  const imageUrl = getStrapiMedia(data?.Image, undefined, "local");
+  const imageUrl = getStrapiMedia(data?.Image, undefined);
 
   return (
     <section className={styles.ExpertiseHeroSingle}>

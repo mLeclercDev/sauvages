@@ -144,8 +144,7 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
           {articles.map((article, idx) => {
             const url = getStrapiMedia(
               article.attributes?.image ?? article.attributes ?? null,
-              "medium",
-              "local"
+              "medium"
             );
             return (
               <div
@@ -191,7 +190,7 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
             hasHover && !isHovered ? styles.dimmed : ""
           }`;
 
-          const thumbnailUrl = getStrapiMedia(attrs.image, "medium", "local");
+          const thumbnailUrl = getStrapiMedia(attrs.image, "medium");
 
           return (
             <TransitionLink

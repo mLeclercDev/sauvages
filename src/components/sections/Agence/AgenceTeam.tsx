@@ -20,7 +20,7 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
         <div className={styles.grid}>
           <div className={styles.imageWrapper}>
             <RandomGridMask
-              src={getStrapiMedia(data?.Image, undefined, "local") || "/images/agence-team.png"}
+              src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
               alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
               cols={12}
               triggerStart="top 100%"

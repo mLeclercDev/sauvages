@@ -47,8 +47,7 @@ export default async function AgencePage() {
           },
         },
       },
-      {},
-      "local"
+      {}
     );
 
     contenu = agenceData?.data?.attributes?.Contenu || agenceData?.data?.Contenu || [];
@@ -79,7 +78,7 @@ export default async function AgencePage() {
       <FullWidthImage
         pt="none"
         pb="sm"
-        src={getStrapiMedia(introImageData?.Image, undefined, "local") || "/images/agence-hero.png"}
+        src={getStrapiMedia(introImageData?.Image, undefined) || "/images/agence-hero.png"}
         alt={introImageData?.Image?.alternativeText || "L'agence Sauvages en action"}
       />
       <AgenceTeam data={equipePresentationData} />

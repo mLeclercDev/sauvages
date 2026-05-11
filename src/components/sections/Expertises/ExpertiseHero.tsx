@@ -20,7 +20,7 @@ const ExpertiseHero: React.FC<ExpertiseHeroProps> = ({ data }) => {
     { number: "3", title: "Activation", anchor: "activation" },
   ];
 
-  const imageUrl = getStrapiMedia(data?.Image, undefined, "local");
+  const imageUrl = getStrapiMedia(data?.Image, undefined);
 
   return (
     <section className={styles.expertiseHero}>

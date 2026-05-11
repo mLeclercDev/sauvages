@@ -62,7 +62,7 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
             {data?.Image?.map((img: any, index: number) => (
               <div key={img.id || index} className={styles.floatingImage}>
                 <Image
-                  src={getStrapiMedia(img, undefined, "local") || "/images/agence-history.png"}
+                  src={getStrapiMedia(img, undefined) || "/images/agence-history.png"}
                   alt={img.alternativeText || "Souvenir agence"}
                   width={250 - (index * 30)}
                   height={250 - (index * 30)}

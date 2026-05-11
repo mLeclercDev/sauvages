@@ -8,9 +8,10 @@ export type StrapiSource = "primary" | "local";
  * @param {StrapiSource} source Source of the Strapi instance
  * @returns {string} Full Strapi URL
  */
-export function getStrapiURL(path = "", source: StrapiSource = "primary") {
+export function getStrapiURL(path = "", source?: StrapiSource) {
+  const activeSource = source || (process.env.NEXT_PUBLIC_STRAPI_SOURCE as StrapiSource) || "primary";
   const baseUrl =
-    source === "local"
+    activeSource === "local"
       ? process.env.NEXT_PUBLIC_LOCAL_CMS_URL || "http://localhost:1337"
       : process.env.NEXT_PUBLIC_STRAPI_URL || "http://127.0.0.1:1337";
   
@@ -33,62 +34,51 @@ export async function fetchAPI(
   path: string,
   urlParamsObject = {},
   options = {},
-  source: StrapiSource = "primary"
+  source?: StrapiSource
 ) {
+  const activeSource = source || (process.env.NEXT_PUBLIC_STRAPI_SOURCE as StrapiSource) || "primary";
   try {
-    // Build request headers
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-
     const token =
-      source === "local"
+      activeSource === "local"
         ? process.env.LOCAL_CMS_TOKEN
         : process.env.STRAPI_API_TOKEN;
 
-    if (token && token !== "remplace_moi_par_ton_vrai_token_ici") {
-      headers["Authorization"] = `Bearer ${token}`;
-    }
-
-    // Merge default options with user-provided options
-    const mergedOptions = {
-      headers,
-      ...options,
-    };
-
-    // Build request URL
     const queryString = qs.stringify(urlParamsObject, {
-      encodeValuesOnly: true, // prettify URL
+      encodeValuesOnly: true,
     });
 
-    const requestUrl = `${getStrapiURL(
+    const requestUrl = getStrapiURL(
       `/api${path.startsWith("/") ? path : `/${path}`}${
         queryString ? `?${queryString}` : ""
       }`,
-      source
-    )}`;
+      activeSource
+    );
 
-    console.log(`[Strapi Fetch - ${source}] Calling: ${requestUrl}`);
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...((options as any).headers || {}),
+    };
 
-    // Trigger API call
-    const response = await fetch(requestUrl, mergedOptions);
-
-    // Handle response
-    if (!response.ok) {
-      console.error(
-        `[Strapi Error - ${source}] ${response.status}: ${response.statusText}`
-      );
-      const errorText = await response.text();
-      console.error(`[Strapi Error Detail] ${errorText}`);
-      throw new Error(
-        `Strapi (${source}) returned ${response.status}: ${response.statusText}`
-      );
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
-    const data = await response.json();
-    return data;
+
+    const response = await fetch(requestUrl, {
+      ...options,
+      headers,
+    });
+
+    if (!response.ok) {
+      console.warn(
+        `[Strapi Warning - ${activeSource}] ${response.status} on ${requestUrl}`
+      );
+      return null;
+    }
+    
+    return await response.json();
   } catch (error: any) {
-    console.error(`[Strapi Fetch Failure - ${source}]`, error);
-    throw new Error(`Failed to fetch API (${source}): ${error.message}`);
+    console.error(`[Strapi Fetch Failure - ${activeSource}]`, error);
+    throw new Error(`Failed to fetch API (${activeSource}): ${error.message}`);
   }
 }
 
@@ -102,8 +92,9 @@ export async function fetchAPI(
 export function getStrapiMedia(
   image: any,
   format?: "large" | "medium" | "small" | "thumbnail",
-  source: StrapiSource = "primary"
+  source?: StrapiSource
 ) {
+  const activeSource = source || (process.env.NEXT_PUBLIC_STRAPI_SOURCE as StrapiSource) || "primary";
   if (!image) return null;
 
   // Handle Strapi v4/v5 structure
@@ -122,5 +113,5 @@ export function getStrapiMedia(
     return url;
   }
 
-  return `${getStrapiURL("", source)}${url}`;
+  return `${getStrapiURL("", activeSource)}${url}`;
 }

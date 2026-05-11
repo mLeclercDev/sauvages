@@ -20,8 +20,7 @@ export default async function Home() {
           },
         },
       },
-      {},
-      "local"
+      {}
     );
 
     const contenu = homepageData?.data?.attributes?.Contenu || homepageData?.data?.Contenu || [];

@@ -33,7 +33,7 @@ const ExpertiseDetailsSingle: React.FC<ExpertiseDetailsSingleProps> = ({ data })
   const statementText = toPlainText(data?.Description || []).join(" ");
   const textParagraphs = toPlainText(data?.Texte || []);
   const listItems = toPlainText(data?.Listes || []);
-  const imageUrl = getStrapiMedia(data?.Image, undefined, "local");
+  const imageUrl = getStrapiMedia(data?.Image, undefined);
 
   const headerTitleData = data?.Titre;
   const headerTitleText = getTitleText(headerTitleData);

@@ -16,7 +16,7 @@ const LogoSlider: React.FC<LogoSliderProps> = async ({
   try {
     const response = await fetchAPI("/carousel-de-logo", {
       populate: "*",
-    }, {}, "local");
+    }, {});
     
     carouselData = response?.data?.attributes || response?.data || null;
   } catch (error) {

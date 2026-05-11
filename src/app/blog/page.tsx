@@ -26,7 +26,7 @@ export default async function BlogPage() {
       pagination: {
         limit: 100,
       },
-    }, {}, "local");
+    }, {});
     
     // Normalisation des articles pour le composant BlogListing
     articles = (articlesData?.data || []).map((article: any) => {
@@ -43,7 +43,7 @@ export default async function BlogPage() {
     });
 
     // 2. Récupération des infos générales du blog
-    const blogResponse = await fetchAPI("/blog", { populate: "*" }, {}, "local");
+    const blogResponse = await fetchAPI("/blog", { populate: "*" }, {});
     blogInfo = blogResponse?.data?.attributes || blogResponse?.data || null;
 
   } catch (error) {

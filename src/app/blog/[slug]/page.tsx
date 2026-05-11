@@ -16,7 +16,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       documentId: slug,
     },
     populate: "*",
-  }, {}, "local");
+  }, {});
 
   const articleWrap = response?.data?.[0];
   
@@ -57,7 +57,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         sections.push({
           id: ++currentId,
           description: "",
-          image: getStrapiMedia(block.image, undefined, "local"),
+          image: getStrapiMedia(block.image, undefined),
         });
       }
     });
@@ -80,7 +80,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         title={attrs.Titre || attrs.title}
         date={formatDate(attrs.publishedAt)}
         readTime={attrs.readTime || "Lectures 5 min"}
-        heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined, "local") || "/images/blog/hero.jpg"}
+        heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || "/images/blog/hero.jpg"}
         intro={attrs.soustitre || ""}
         sections={sections}
       />

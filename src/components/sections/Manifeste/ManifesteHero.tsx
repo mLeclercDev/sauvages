@@ -100,7 +100,7 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
           <div className={styles.imageWrapper}>
             <div className={styles.imageInner}>
               <Image
-                src={getStrapiMedia(data?.Image, undefined, "local") || "/images/agence-team.png"}
+                src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
                 alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
                 fill
                 priority

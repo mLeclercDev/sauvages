@@ -13,8 +13,7 @@ export async function getFooterData() {
     },
     {
       next: { revalidate: 60 }, // Cache dynamic footer for 60 seconds
-    },
-    "local"
+    }
   );
 
   return response?.data || null;

@@ -42,21 +42,44 @@ const Expertises: React.FC<ExpertisesProps> = ({
   const getButtonHref = (button: any) => button?.URL || button?.Url || button?.url;
   const getButtonTarget = (button: any) => (button?.Blank ? "_blank" : undefined);
 
+  const defaultExpertises = [
+    {
+      title: "Identité de marque",
+      description: "Nous créons des univers visuels forts et cohérents qui racontent votre histoire et captivent votre audience.",
+      subItems: ["Logotype & Charte graphique", "Positionnement de marque", "Naming & Signature"],
+      hasButton: true,
+    },
+    {
+      title: "Stratégie Digitale",
+      description: "Nous concevons des expériences numériques performantes centrées sur l'utilisateur et vos objectifs business.",
+      subItems: ["Site Web & E-commerce", "UI / UX Design", "SEO & Performance"],
+      hasButton: true,
+    },
+    {
+      title: "Content Marketing",
+      description: "Nous produisons des contenus créatifs et engageants pour faire rayonner votre expertise sur tous vos canaux.",
+      subItems: ["Social Media", "Production Vidéo & Photo", "Rédaction web"],
+      hasButton: true,
+    }
+  ];
+
   // Mapping des données Strapi avec fallbacks
   const expertiseItems =
-    data?.Item?.map((item: any) => ({
-      title: item.Name,
-      description:
-        item.Description?.map((block: any) =>
-          block.children?.map((c: any) => c.text).join("")
-        ).join("\n") || "",
-      subItems:
-        item.Listes?.map((block: any) =>
-          block.children?.map((c: any) => c.text).join("")
-        ) || [],
-      hasButton: item.PresenceBouton,
-      button: item.Bouton,
-    })) || [];
+    data?.Item?.length > 0
+      ? data.Item.map((item: any) => ({
+          title: item.Name,
+          description:
+            item.Description?.map((block: any) =>
+              block.children?.map((c: any) => c.text).join("")
+            ).join("\n") || "",
+          subItems:
+            item.Listes?.map((block: any) =>
+              block.children?.map((c: any) => c.text).join("")
+            ) || [],
+          hasButton: item.PresenceBouton,
+          button: item.Bouton,
+        }))
+      : defaultExpertises;
 
   useEffect(() => {
     if (!isScrollAnimated || expertiseItems.length < 2) return;

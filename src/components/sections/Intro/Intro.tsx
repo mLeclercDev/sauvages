@@ -115,7 +115,7 @@ const Intro: React.FC<IntroProps> = ({ data }) => {
 
         <div className={styles.imageWrapper}>
           <RandomGridMask
-            src={getStrapiMedia(data?.Image, undefined, "local") || "/images/intro-homepage.avif"}
+            src={getStrapiMedia(data?.Image, undefined) || "/images/intro-homepage.avif"}
             alt="Sauvages Creative Agency"
             cols={14}
             triggerStart="top 100%"

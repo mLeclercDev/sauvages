@@ -55,7 +55,7 @@ const LogoSliderClient: React.FC<LogoSliderClientProps> = ({
   const strapiLogos = data?.Logos?.map((logo: any, i: number) => ({
     id: logo.documentId || logo.id,
     name: logo.name,
-    url: getStrapiMedia(logo, undefined, "local"),
+    url: getStrapiMedia(logo, undefined),
   })) || [];
 
   const finalLogos = strapiLogos.length > 0 ? strapiLogos : placeholderLogos;

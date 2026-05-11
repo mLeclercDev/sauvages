@@ -7,6 +7,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "api-v2.agence-sauvages.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
         hostname: "api.agence-sauvages.com",
         pathname: "**",
       },

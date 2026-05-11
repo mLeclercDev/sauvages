@@ -1,0 +1,105 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.contactSection {
+  padding: $space-52 0 $space-10;
+  background-color: #f7f7f7; // Fallback subtle background color that matches visual
+  color: $color-noir-svgs;
+
+  @include mq-max("lg") {
+    padding: $space-20 0;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 45% 1fr;
+  gap: $space-52;
+  align-items: flex-start;
+
+  @include mq-max("2xl") {
+    gap: $space-20;
+  }
+
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+    gap: $space-16;
+  }
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: $font-monument-black;
+  font-size: clamp(60px, 7vw, 120px);
+  line-height: 0.85;
+  margin-bottom: $space-10;
+  text-transform: uppercase;
+  margin-top: 0;
+
+  @include mq-max("lg") {
+    margin-bottom: $space-8;
+  }
+  @include mq-max("md") {
+    font-size: 40px;
+    margin-bottom: $space-6;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 589 / 761;
+  overflow: hidden;
+  max-width: 589px;
+
+  img {
+    height: 120% !important;
+    top: -10% !important;
+    width: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  font-family: $font-monument-wide;
+  font-size: 28px;
+  line-height: 1.35;
+  margin-bottom: $space-12;
+  margin-top: 0;
+
+  @include mq-max("2xl") {
+    font-size: 24px;
+  }
+  @include mq-max("xl") {
+    font-size: 20px;
+  }
+  @include mq-max("md") {
+    font-size: 18px;
+    margin-bottom: $space-8;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: $space-6;
+  flex-wrap: wrap;
+
+  @include mq-max("md") {
+    gap: $space-4;
+    flex-direction: column;
+
+    & > * {
+      width: 100%;
+    }
+  }
+}

@@ -94,13 +94,13 @@ const AgenceStaff: React.FC<AgenceStaffProps> = ({ pt = "lg", pb = "lg", data })
 
   // Transformation des données Strapi en membres de l'équipe
   const members: StaffMember[] = data?.EquipeListingItem?.map((item: any) => {
-    const mediaUrl = getStrapiMedia(item.Media, undefined, "local");
+    const mediaUrl = getStrapiMedia(item.Media, undefined);
     const isVideo = item.Media?.mime?.includes("video") || item.Media?.ext === ".mp4";
 
     return {
       name: item.Nom,
       baseline: item.Description,
-      imageUrl: getStrapiMedia(item.Image, undefined, "local") || "/images/staff-1.avif",
+      imageUrl: getStrapiMedia(item.Image, undefined) || "/images/staff-1.avif",
       videoUrl: isVideo ? (mediaUrl || undefined) : undefined,
     };
   }) || [];

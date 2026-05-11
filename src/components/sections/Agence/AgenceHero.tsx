@@ -88,7 +88,7 @@ const AgenceHero: React.FC<AgenceHeroProps> = ({ data }) => {
         </h1>
         <div className={styles.imageWrapper} ref={imageRef}>
           <Image
-            src={getStrapiMedia(data?.Image, undefined, "local") || "/images/agence-hero.png"}
+            src={getStrapiMedia(data?.Image, undefined) || "/images/agence-hero.png"}
             alt={data?.Image?.alternativeText || "L'agence Sauvages"}
             fill
             priority

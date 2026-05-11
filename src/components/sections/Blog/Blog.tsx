@@ -26,7 +26,7 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
       pagination: {
         limit: 5,
       },
-    }, {}, "local");
+    }, {});
     
     // Normalisation identique à celle de la page Blog
     articles = (articlesData?.data || []).map((article: any) => {
@@ -44,7 +44,7 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
 
     // 2. Récupération des infos de la section si non fournies
     if (!headerData) {
-      const sectionResponse = await fetchAPI("/blog-section", { populate: "*" }, {}, "local");
+      const sectionResponse = await fetchAPI("/blog-section", { populate: "*" }, {});
       headerData = sectionResponse?.data?.attributes || sectionResponse?.data || null;
     }
 
@@ -52,11 +52,40 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
     console.error("Failed to fetch blog section data:", error);
   }
 
-  if (articles.length === 0) return null;
+  const defaultArticles = [
+    {
+      id: 1,
+      attributes: {
+        title: "Comment l'IA transforme le design",
+        publishedAt: new Date().toISOString(),
+        slug: "ia-transforme-design",
+      }
+    },
+    {
+      id: 2,
+      attributes: {
+        title: "L'authenticité au coeur des marques",
+        publishedAt: new Date().toISOString(),
+        slug: "authenticite-marques",
+      }
+    },
+    {
+      id: 3,
+      attributes: {
+        title: "Les tendances web design 2026",
+        publishedAt: new Date().toISOString(),
+        slug: "tendances-web-design-2026",
+      }
+    }
+  ];
+
+  if (articles.length === 0) {
+    articles = defaultArticles;
+  }
 
   // Accès aux données avec gestion des fallbacks et du format Titre.Texte
   const sectionTitle = headerData?.Titre?.Texte || headerData?.title || "Vie d’agence";
-  const sectionDesc = headerData?.Description || "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+  const sectionDesc = headerData?.Description || "Découvrez nos dernières actualités, nos conseils et nos réflexions sur le marketing digital et le design.";
   const linkText = headerData?.TexteDuLien || "Tout voir";
   const linkUrl = headerData?.URL || "/blog";
 

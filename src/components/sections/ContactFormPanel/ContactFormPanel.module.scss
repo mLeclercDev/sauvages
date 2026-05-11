@@ -1,0 +1,375 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.panel {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  transition:
+    background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(100%);
+  color: #000;
+  display: flex;
+  flex-direction: column;
+
+  &.isOpen {
+    transform: translateY(0%);
+    pointer-events: auto;
+  }
+
+  &:not(.isOpen) {
+    pointer-events: none;
+  }
+}
+
+.variantProjet {
+  background-color: #d6d3fc; // Pale purple
+}
+
+.variantCandidature {
+  background-color: #e6fa91; // Lime green
+}
+
+.containerPanel {
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+  padding: $space-24 0;
+
+  @include mq-max("2xl") {
+    padding: $space-16 0;
+  }
+
+  @include mq-max("md") {
+    padding: 20px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $space-8;
+
+  @include mq-max("md") {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+}
+
+.toggles {
+  display: flex;
+  gap: $space-10;
+  flex-wrap: wrap;
+}
+
+.toggleBtn {
+  border: 1px solid #000;
+  border-radius: 40px;
+  padding: 12px 24px;
+  background: transparent;
+  color: #000;
+  font-family: $font-monument-wide;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.active {
+    background: #000;
+    color: #fff;
+  }
+
+  @include mq-max("md") {
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+}
+
+.closeWrapper {
+  button {
+    color: #5e5e5e;
+    font-family: $font-monument-normal;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+}
+
+.mainTitle {
+  font-family: $font-monument-wide;
+  font-size: clamp(32px, 5vw, 44px);
+  margin-bottom: $space-24;
+
+  @include mq-max("2xl") {
+    margin-bottom: $space-16;
+  }
+
+  @include mq-max("md") {
+    margin-bottom: 50px;
+  }
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.formRow {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: $space-12 0;
+  align-items: flex-start;
+  gap: 300px;
+  &:first-child {
+    padding-top: 0;
+  }
+
+  @include mq-max("2xl") {
+    gap: 50px;
+    padding: $space-9 0;
+  }
+
+  @include mq-max("lg") {
+    flex-direction: column;
+    padding: 30px 0;
+    gap: 15px;
+  }
+
+  &.hasError {
+    .rowLabel, .rowLabelFull, .inputField, .rowNumber {
+      color: #ff4d4d;
+    }
+    .inputField {
+      &::placeholder {
+        color: rgba(255, 77, 77, 0.5);
+      }
+    }
+  }
+}
+
+.rowNumber {
+  font-family: $font-monument-normal;
+  font-size: 18px;
+  flex-shrink: 0;
+
+  @include mq-max("2xl") {
+    font-size: 16px;
+  }
+
+  @include mq-max("xl") {
+    font-size: 14px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 12px;
+  }
+}
+
+.rowLabel {
+  font-family: $font-monument-wide;
+  font-size: 30px;
+  line-height: 35px;
+  width: 40%;
+  flex-shrink: 0;
+
+  @include mq-max("2xl") {
+    width: 30%;
+    font-size: 26px;
+  }
+
+  @include mq-max("xl") {
+    width: 25%;
+    font-size: 24px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 24px;
+    width: 100%;
+  }
+}
+
+.rowContent {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.rowContentFull {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.rowLabelFull {
+  font-family: $font-monument-wide;
+  font-size: 30px;
+  line-height: 35px;
+  margin-bottom: $space-16;
+
+  @include mq-max("2xl") {
+    font-size: 26px;
+    margin-bottom: $space-10;
+  }
+
+  @include mq-max("xl") {
+    font-size: 24px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+}
+
+.inputField {
+  background: transparent;
+  border: none;
+  font-family: $font-monument-wide;
+  font-size: 30px;
+  color: #000;
+  width: 100%;
+  padding: 0;
+
+  &::placeholder {
+    color: #a2a2a2;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  @include mq-max("2xl") {
+    font-size: 26px;
+  }
+
+  @include mq-max("xl") {
+    font-size: 24px;
+  }
+
+  @include mq-max("lg") {
+    font-size: 24px;
+  }
+}
+
+textarea.inputField {
+  resize: vertical;
+  min-height: 40px;
+}
+
+.requiredMark {
+  color: #ff4d4d;
+  margin-left: 5px;
+}
+
+.errorMessage {
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  color: #ff4d4d;
+  margin-top: 10px;
+  display: block;
+}
+
+.errorMessageGlobal {
+  font-family: $font-monument-wide;
+  font-size: 16px;
+  color: #ff4d4d;
+  margin-top: 20px;
+}
+
+.successMessage {
+  font-family: $font-monument-wide;
+  font-size: 16px;
+  color: #28a745;
+  margin-top: 20px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-20;
+  @include mq-max("2xl") {
+    gap: $space-10;
+  }
+}
+
+.chip {
+  border-radius: 999px;
+  border: 1px solid $color-noir-svgs;
+  padding: 16px 20px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  color: $color-noir-svgs;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 14.979px; /* 93.62% */
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+
+  &.active {
+    background: #000;
+    color: #fff;
+  }
+}
+
+.footerActions {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  margin-top: $space-24;
+  max-width: 60%;
+
+  @include mq-max("2xl") {
+    margin-top: $space-16;
+  }
+
+  @include mq-max("lg") {
+    max-width: 100%;
+    margin-top: 40px;
+  }
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-5;
+  font-size: 18px;
+  line-height: 1.4;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+    background: transparent;
+    border: 1.5px solid $color-noir-svgs;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:checked::after {
+      content: "✔";
+      font-size: 14px;
+      color: $color-noir-svgs;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}

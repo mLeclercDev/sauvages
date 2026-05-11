@@ -17,8 +17,7 @@ export default async function ManifestePage() {
           },
         },
       },
-      {},
-      "local"
+      {}
     );
 
     contenu =

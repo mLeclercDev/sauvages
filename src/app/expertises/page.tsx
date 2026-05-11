@@ -30,8 +30,7 @@ export default async function ExpertisesPage() {
           },
         },
       },
-      {},
-      "local"
+      {}
     );
 
     let contenu = [];

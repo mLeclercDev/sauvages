@@ -45,7 +45,7 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
 
           <div className={styles.imageWrapper}>
             <RandomGridMask
-              src={getStrapiMedia(data?.Image, undefined, "local") || "/images/agence-values.png"}
+              src={getStrapiMedia(data?.Image, undefined) || "/images/agence-values.png"}
               alt={data?.Image?.alternativeText || "L'agence Sauvages"}
               cols={10}
               triggerStart="top 100%"

@@ -223,8 +223,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
                       src={
                         getStrapiMedia(
                           footerContent.Bouton.Icone,
-                          undefined,
-                          "local"
+                          undefined
                         ) || ""
                       }
                       alt={footerContent.Bouton.Texte || "icon"}
