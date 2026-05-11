@@ -54,7 +54,7 @@ const RandomGridMask: React.FC<RandomGridMaskProps> = ({
   const [cells, setCells] = useState<Cell[]>([]);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-  const hoverTimeline = useRef<gsap.Timeline | null>(null);
+  const hoverTimeline = useRef<gsap.core.Timeline | null>(null);
   const frozenIndicesRef = useRef<Set<number>>(new Set());
   const lastMousePos = useRef({ x: 0, y: 0 });
 
