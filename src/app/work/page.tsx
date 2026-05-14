@@ -1,5 +1,8 @@
 import React from "react";
 import { fetchAPI } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import ProjetsPageContent from "@/components/sections/Projects/ProjetsPageContent";
 
 export default async function ProjetsPage() {

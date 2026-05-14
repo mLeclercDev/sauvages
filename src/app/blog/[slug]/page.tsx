@@ -1,4 +1,7 @@
 import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import BlogArticle from "@/components/sections/Blog/BlogArticle";
 import { notFound } from "next/navigation";
 

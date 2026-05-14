@@ -1,4 +1,7 @@
 import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
 import AgenceStaff from "@/components/sections/Agence/AgenceStaff";

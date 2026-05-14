@@ -1,5 +1,8 @@
 import React from "react";
 import { fetchAPI } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import ProjectDetail from "@/components/sections/Projects/ProjectDetail";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import { notFound } from "next/navigation";

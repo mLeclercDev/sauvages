@@ -61,7 +61,7 @@ const Intro: React.FC<IntroProps> = ({ data }) => {
   // On sépare le texte là où se trouve le SVG
   const svgMatch = fullContent.match(/<svg[\s\S]*?<\/svg>/);
   const svgString = svgMatch ? svgMatch[0] : "";
-  const parts = fullContent.split(svgString);
+  const parts = svgString ? fullContent.split(svgString) : [fullContent, ""];
   const textBefore = parts[0] || "";
   const textAfter = parts[1] || "";
 

@@ -1,5 +1,8 @@
 import React from "react";
 import { fetchAPI } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import BlogHero from "@/components/sections/Blog/BlogHero";
 import BlogListing from "@/components/sections/Blog/BlogListing";
 import styles from "./page.module.scss";

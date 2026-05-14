@@ -1,4 +1,7 @@
 import { fetchAPI } from "@/utils/strapi";
+
+export const revalidate = 60;
+
 import { notFound } from "next/navigation";
 import ExpertiseHeroSingle from "@/components/sections/Expertises/ExpertiseHeroSingle";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";

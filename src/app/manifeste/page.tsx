@@ -1,4 +1,7 @@
 import React from "react";
+
+export const revalidate = 60;
+
 import ManifesteHero from "@/components/sections/Manifeste/ManifesteHero";
 import ManifesteCommitments from "@/components/sections/Manifeste/ManifesteCommitments";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
