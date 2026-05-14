@@ -6,6 +6,8 @@ import Blog from "@/components/sections/Blog/Blog";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import { fetchAPI } from "@/utils/strapi";
 
+export const revalidate = 60;
+
 export default async function Home() {
   let introData = null;
   let expertisesData = null;
