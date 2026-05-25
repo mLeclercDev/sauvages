@@ -21,7 +21,6 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
   useEffect(() => {
     if (!cursorRef.current) return;
 
-    // Center the cursor relative to the mouse
     gsap.set(cursorRef.current, { xPercent: -50, yPercent: -50 });
 
     const xTo = gsap.quickTo(cursorRef.current, "x", {
@@ -42,7 +41,25 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-
+  const renderCard = (project: any, sizeClass: string) => {
+    const attrs = project.attributes || project;
+    return (
+      <ProjectItem
+        key={project.id}
+        title={attrs.title}
+        client={
+          attrs.client?.data?.attributes?.name ||
+          attrs.client?.name ||
+          "Client"
+        }
+        slug={attrs.slug}
+        thumbnail={attrs.thumbnail}
+        className={`${styles.projectCard} ${sizeClass}`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      />
+    );
+  };
 
   return (
     <div className={styles.gridWrapper}>
@@ -54,25 +71,43 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
       </div>
 
       <div className={styles.grid}>
-        {projects.map((project: any) => {
-          const attrs = project.attributes || project;
-          return (
-            <ProjectItem
-              key={project.id}
-              title={attrs.title}
-              client={
-                attrs.client?.data?.attributes?.name ||
-                attrs.client?.name ||
-                "Client"
-              }
-              slug={attrs.slug}
-              thumbnail={attrs.thumbnail}
-              className={styles.projectCard}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            />
-          );
-        })}
+        {/* Row A : Grand (gauche) + Petit */}
+        {projects[0] && (
+          <div className={styles.rowA}>
+            {renderCard(projects[0], styles.cardLarge)}
+            {projects[1] && renderCard(projects[1], styles.cardSmall)}
+          </div>
+        )}
+
+        {/* Row B : Grand (droite, décalé) */}
+        {projects[2] && (
+          <div className={styles.rowB}>
+            {renderCard(projects[2], styles.cardLarge)}
+          </div>
+        )}
+
+        {/* Row C : Petit + Petit (gauche) */}
+        {projects[3] && (
+          <div className={styles.rowC}>
+            {renderCard(projects[3], styles.cardSmall)}
+            {projects[4] && renderCard(projects[4], styles.cardSmall)}
+          </div>
+        )}
+
+        {/* Row D : Petit (tout à droite) */}
+        {projects[5] && (
+          <div className={styles.rowD}>
+            {renderCard(projects[5], styles.cardSmall)}
+          </div>
+        )}
+
+        {/* Row A : Grand + Petit (cycle suivant) */}
+        {projects[6] && (
+          <div className={styles.rowA}>
+            {renderCard(projects[6], styles.cardLarge)}
+            {projects[7] && renderCard(projects[7], styles.cardSmall)}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import RandomGridMask from "@/components/ui/RandomGridMask/RandomGridMask";
 import { getStrapiMedia } from "@/utils/strapi";
 import styles from "./ProjectItem.module.scss";
 
@@ -31,7 +30,6 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   const imageUrl = getStrapiMedia(thumbnail, "large");
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const [localHovered, setLocalHovered] = React.useState(false);
 
   React.useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -54,22 +52,12 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
     }
   }, []);
 
-  const handleMouseEnterLocal = () => {
-    setLocalHovered(true);
-    if (onMouseEnter) onMouseEnter();
-  };
-
-  const handleMouseLeaveLocal = () => {
-    setLocalHovered(false);
-    if (onMouseLeave) onMouseLeave();
-  };
-
   return (
     <Link
       href={`/work/${slug}`}
       className={`${styles.projectItem} ${className} project-item`}
-      onMouseEnter={handleMouseEnterLocal}
-      onMouseLeave={handleMouseLeaveLocal}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         ref={containerRef}
@@ -77,12 +65,12 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       >
         <div ref={imageRef} className={styles.imageWrapperInner}>
           {imageUrl ? (
-            <RandomGridMask
+            <Image
               src={imageUrl}
               alt={title}
-              cols={8}
-              isHovered={localHovered}
-              disableScrollReveal={true}
+              fill
+              className="fit-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
             <div className={styles.placeholder} />

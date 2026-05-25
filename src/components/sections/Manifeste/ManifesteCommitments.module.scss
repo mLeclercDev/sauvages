@@ -48,7 +48,7 @@
     }
 
     @include mq-max("2xl") {
-      font-size: clamp(28px, 5vw, 40px);
+      font-size: clamp(28px, 5vw, 36px);
       div.icon {
         transform: translateY(3px);
         svg {
@@ -131,9 +131,6 @@
 
 .itemContent {
   p {
-    font-size: 18px;
-    @include mq-max("2xl") {
-      font-size: 16px;
-    }
+    font-size: var(--font-size-body);
   }
 }

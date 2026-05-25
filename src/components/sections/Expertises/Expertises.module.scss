@@ -82,7 +82,7 @@
 
 .itemTitle {
   font-family: $font-monument-wide;
-  font-size: clamp(24px, 3vw, 48px);
+  font-size: clamp(24px, 3vw, 40px);
   line-height: 1;
   margin: 0;
   font-weight: 400;
@@ -126,7 +126,7 @@
     flex-direction: column;
     gap: 20px;
     p {
-      font-size: 18px;
+      font-size: var(--font-size-body);
     }
   }
   @include mq-max("md") {

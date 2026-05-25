@@ -79,6 +79,12 @@
   overflow: hidden;
   margin: 3rem 0 0 auto;
 
+  img {
+    height: 120% !important;
+    top: -10% !important;
+    object-fit: cover;
+  }
+
   @include mq-max("md") {
     margin-top: 170px;
     width: 75%;

@@ -35,7 +35,9 @@ export default async function RootLayout({
           <PageTransition />
           <SmoothScroll>
             <Header />
-            {children}
+            <div data-page-content>
+              {children}
+            </div>
             <Footer data={footerData} />
           </SmoothScroll>
         </TransitionProvider>

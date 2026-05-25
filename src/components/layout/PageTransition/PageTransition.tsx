@@ -20,123 +20,90 @@ export default function PageTransition() {
   const pathname = usePathname();
   const { setIsAnimating } = useTransitionPage();
 
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const cellsRef = useRef<(HTMLDivElement | null)[]>([]);
-
+  const overlayRef = useRef<HTMLDivElement>(null);
   const [isTransitioning, setTransitioning] = useState(false);
-  const [pendingRoute, setPendingRoute] = useState<string | null>(null);
-
-  // Configuration de la grille
-  const cols = 12;
-  const [cellCount, setCellCount] = useState(0);
-
-  useEffect(() => {
-    // Calculer le nombre de div nécessaires pour couvrir l'écran
-    const calculateGrid = () => {
-      const cellWidth = window.innerWidth / cols;
-      const rows = Math.ceil(window.innerHeight / cellWidth) + 1; // +1 pour marge de sécu
-      setCellCount(cols * rows);
-    };
-
-    calculateGrid();
-    window.addEventListener("resize", calculateGrid);
-    return () => window.removeEventListener("resize", calculateGrid);
-  }, [cols]);
 
   useEffect(() => {
     const handleTransitionStart = (e: Event) => {
       const customEvent = e as CustomEvent<{ href: string }>;
       const { href } = customEvent.detail;
 
-      if (!wrapperRef.current || cellsRef.current.length === 0) return;
+      if (!overlayRef.current) return;
+
+      const overlay = overlayRef.current;
+      const content = document.querySelector(
+        "[data-page-content]"
+      ) as HTMLElement | null;
+
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      gsap.set(overlay, {
+        backgroundColor: color,
+        y: "100%",
+        pointerEvents: "all",
+      });
 
       setIsAnimating(true);
       setTransitioning(true);
 
-      // Wrapper cliquable pour bloquer la navigation multiple
-      gsap.set(wrapperRef.current, { pointerEvents: "all" });
+      const tl = gsap.timeline();
 
-      // Couleur aléatoire
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      // Overlay monte depuis le bas pour couvrir l'écran
+      tl.to(overlay, { y: "0%", duration: 0.65, ease: "power2.inOut" }, 0);
 
-      const validCells = cellsRef.current.filter(
-        (c) => c !== null
-      ) as HTMLDivElement[];
+      // Contenu sort vers le haut avec fade
+      if (content) {
+        tl.to(
+          content,
+          { y: -50, opacity: 0, duration: 0.45, ease: "power2.in" },
+          0
+        );
+      }
 
-      // On s'assure qu'elles sont de la bonne couleur et invisibles
-      gsap.set(validCells, { backgroundColor: randomColor, opacity: 0 });
-
-      // On mélange l'ordre pour le stagger
-      const shuffled = gsap.utils.shuffle([...validCells]);
-
-      gsap.to(shuffled, {
-        keyframes: [
-          { opacity: "random(0.2, 0.6)", duration: 0.05, ease: "none" },
-          { opacity: 1, duration: 0.05, ease: "power1.inOut" },
-        ],
-        stagger: {
-          each: 0.008,
-        },
-        onComplete: () => {
-          setPendingRoute(href);
-          router.push(href);
-        },
+      // Navigation une fois l'overlay en place, contenu prêt pour l'entrée
+      tl.call(() => {
+        if (content) gsap.set(content, { y: 60, opacity: 0 });
+        router.push(href);
       });
     };
 
     window.addEventListener("start-page-transition", handleTransitionStart);
-    return () => {
-      window.removeEventListener(
-        "start-page-transition",
-        handleTransitionStart
-      );
-    };
+    return () =>
+      window.removeEventListener("start-page-transition", handleTransitionStart);
   }, [router, setIsAnimating]);
 
   useEffect(() => {
-    // Reveal the route once pathname has changed
-    if (isTransitioning && wrapperRef.current && cellsRef.current.length > 0) {
-      const validCells = cellsRef.current.filter(
-        (c) => c !== null
-      ) as HTMLDivElement[];
-      const shuffled = gsap.utils.shuffle([...validCells]);
+    if (!isTransitioning || !overlayRef.current) return;
 
-      // Délai très léger pour laisser React peindre le nouveau composant
-      setTimeout(() => {
-        gsap.to(shuffled, {
-          keyframes: [
-            { opacity: "random(0.2, 0.6)", duration: 0.05, ease: "none" },
-            { opacity: 0, duration: 0.05, ease: "power1.inOut" },
-          ],
-          stagger: {
-            each: 0.008,
-          },
-          onComplete: () => {
-            gsap.set(wrapperRef.current, { pointerEvents: "none" });
-            setIsAnimating(false);
-            setTransitioning(false);
-            setPendingRoute(null);
-          },
-        });
-      }, 50);
-    }
+    const overlay = overlayRef.current;
+    const content = document.querySelector(
+      "[data-page-content]"
+    ) as HTMLElement | null;
+
+    // Petit délai pour laisser React peindre le nouveau contenu
+    const timer = setTimeout(() => {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.set(overlay, { y: "100%", pointerEvents: "none" });
+          setIsAnimating(false);
+          setTransitioning(false);
+        },
+      });
+
+      // Overlay sort vers le haut
+      tl.to(overlay, { y: "-100%", duration: 0.65, ease: "power2.inOut" }, 0);
+
+      // Nouveau contenu monte depuis le bas avec fade-in
+      if (content) {
+        tl.to(
+          content,
+          { y: 0, opacity: 1, duration: 0.55, ease: "power2.out" },
+          0.15
+        );
+      }
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, [pathname]);
 
-  return (
-    <div
-      className={styles.transitionWrapper}
-      ref={wrapperRef}
-      style={{ "--cols": cols } as React.CSSProperties}
-    >
-      {Array.from({ length: cellCount }).map((_, i) => (
-        <div
-          key={i}
-          className={styles.cell}
-          ref={(el) => {
-            cellsRef.current[i] = el;
-          }}
-        />
-      ))}
-    </div>
-  );
+  return <div className={styles.overlay} ref={overlayRef} />;
 }

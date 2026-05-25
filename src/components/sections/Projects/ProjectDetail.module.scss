@@ -3,9 +3,11 @@
 
 .projectDetail {
   position: relative;
-  padding-top: $space-40; // Initial padding from top nav
+  padding-top: $space-40;
   padding-bottom: $space-40;
 }
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
 
 .layout {
   display: grid;
@@ -14,7 +16,7 @@
   align-items: flex-start;
 
   @include mq("lg") {
-    grid-template-columns: 35% 1fr;
+    grid-template-columns: 30% 1fr;
     gap: $space-8;
   }
 }
@@ -27,7 +29,9 @@
   padding-bottom: $space-24;
 }
 
-.label {
+// ─── Left: header info ────────────────────────────────────────────────────────
+
+.clientLabel {
   margin-bottom: $space-3;
 }
 
@@ -36,52 +40,97 @@
   font-size: 30px;
   font-weight: 400;
   line-height: 1.15;
-  margin-bottom: $space-10;
+  margin-bottom: $space-3;
+
+  @include mq-max("lg") {
+    font-size: 24px;
+  }
 }
 
-.description {
+.sector {
+  margin-bottom: $space-6;
+}
+
+// ─── Left: section accordions ─────────────────────────────────────────────────
+
+.accordions {
+  margin-bottom: $space-8;
+}
+
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  width: 100%;
+  padding: $space-3 0;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
   font-family: $font-monument-normal;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $color-gris;
+  transition: color 0.2s ease;
+
+  .open & {
+    color: $color-noir-svgs;
+  }
+}
+
+.accordionIcon {
+  display: inline-block;
+  width: 14px;
+  flex-shrink: 0;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1;
+}
+
+.accordionBody {
+  height: 0;
+  overflow: hidden;
+}
+
+.accordionContent {
+  padding-bottom: $space-5;
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  line-height: 1.55;
   color: $color-noir-svgs;
-  margin-bottom: $space-10;
+
+  p {
+      font-size: 14px;
+  }
 
   p + p {
-    margin-top: $space-4;
+    margin-top: $space-3;
   }
 }
 
-.expertisesHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: $font-monument-normal;
-  font-size: 18px;
-  color: $color-noir-svgs;
-  margin-bottom: $space-5;
-  cursor: pointer;
-  line-height: 1;
-
-  span {
-    font-size: 26px;
-    font-weight: 200;
-    text-transform: uppercase;
-  }
-}
+// ─── Left: expertises list (inside accordion) ─────────────────────────────────
 
 .expertisesList {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 $space-5;
 
   li {
     font-family: $font-monument-normal;
-    font-size: 16px;
+    font-size: 12px;
     text-transform: uppercase;
-    line-height: 1.4;
-    opacity: 0.6;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    opacity: 0.55;
+
+    + li {
+      margin-top: $space-2;
+    }
   }
 }
+
+// ─── Right: gallery ───────────────────────────────────────────────────────────
 
 .rightCol {
   width: 100%;
@@ -90,50 +139,21 @@
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: $space-8;
-  padding-top: 110px;
+  gap: $space-3;
+
+  @include mq-max("lg") {
+    padding-top: $space-8;
+  }
 }
 
-.sectionBlock {
+.sectionImages {
   display: flex;
   flex-direction: column;
-  gap: $space-8;
+  gap: $space-3;
   margin-bottom: $space-16;
 
   &:last-child {
     margin-bottom: 0;
-  }
-}
-
-.sectionText {
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-  margin-bottom: $space-4;
-  padding: 0;
-}
-
-.sectionTitle {
-  font-family: $font-monument-wide;
-  font-size: 24px;
-  font-weight: 400;
-  color: $color-noir-svgs;
-  line-height: 1.2;
-}
-
-.sectionDescription {
-  font-family: $font-monument-normal;
-  font-size: 16px;
-  line-height: 1.5;
-  color: rgba($color-noir-svgs, 0.8);
-  max-width: 600px;
-  
-  p {
-    margin-bottom: $space-4;
-    
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
 }
 
@@ -146,28 +166,39 @@
 .image {
   width: 100%;
   height: auto;
+  display: block;
   object-fit: cover;
 }
+
+// ─── Expertises sentinel (scroll trigger at end of gallery) ──────────────────
+
+.expertisesSentinel {
+  height: 1px;
+  width: 100%;
+  pointer-events: none;
+}
+
+// ─── Placeholder ──────────────────────────────────────────────────────────────
 
 .placeholderGallery {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-8;
+  gap: $space-3;
 }
 
 .mockBox {
   width: 100%;
   aspect-ratio: 16 / 10;
-  background-color: #e0e0e0;
+  background-color: #c8c8c8;
 }
 
 .mockBoxSmall {
   width: 100%;
   aspect-ratio: 3 / 4;
-  background-color: #e0e0e0;
+  background-color: #c8c8c8;
 
   @include mq("lg") {
-    width: calc(50% - #{$space-4});
+    width: calc(50% - #{$space-1-5});
     display: inline-block;
   }
 }

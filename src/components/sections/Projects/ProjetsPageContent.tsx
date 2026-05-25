@@ -20,14 +20,14 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   const [activeSecteur, setActiveSecteur] = useState<string>("all");
 
   // Extract unique expertise titles from all projects
-  // expertise is a relation array: attrs.expertise.data[].attributes.titre
   const expertises = useMemo(() => {
     const set = new Set<string>();
     projects.forEach((project) => {
       const attrs = project.attributes || project;
-      const items: any[] = attrs.expertise?.data || [];
+      // Strapi v5: direct array; Strapi v4: wrapped under .data
+      const items: any[] = attrs.expertise?.data || attrs.expertise || [];
       items.forEach((item: any) => {
-        const titre = item.attributes?.titre || item.titre;
+        const titre = item.attributes?.titre || item.attributes?.name || item.titre || item.name;
         if (titre) set.add(titre);
       });
     });
@@ -51,9 +51,9 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
     return projects.filter((project) => {
       const attrs = project.attributes || project;
 
-      // expertise = relation array
-      const expertiseTitres: string[] = (attrs.expertise?.data || []).map(
-        (item: any) => (item.attributes?.titre || item.titre || "").toLowerCase()
+      // expertise = relation array (v5: direct array, v4: wrapped under .data)
+      const expertiseTitres: string[] = (attrs.expertise?.data || attrs.expertise || []).map(
+        (item: any) => (item.attributes?.titre || item.attributes?.name || item.titre || item.name || "").toLowerCase()
       );
 
       // sector = plain string

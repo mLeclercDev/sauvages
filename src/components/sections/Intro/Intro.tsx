@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import RandomGridMask from "@/components/ui/RandomGridMask/RandomGridMask";
+import Image from "next/image";
 import styles from "./Intro.module.scss";
 import Button from "@/components/ui/Button/Button";
 
@@ -15,6 +15,28 @@ interface IntroProps {
 
 const Intro: React.FC<IntroProps> = ({ data }) => {
   const headlineRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!imageRef.current) return;
+
+    const tween = gsap.to(imageRef.current.querySelector("img"), {
+      y: "20%",
+      ease: "none",
+      scrollTrigger: {
+        trigger: imageRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, []);
 
   useEffect(() => {
     if (!headlineRef.current) return;
@@ -113,14 +135,13 @@ const Intro: React.FC<IntroProps> = ({ data }) => {
           }
         />
 
-        <div className={styles.imageWrapper}>
-          <RandomGridMask
+        <div className={styles.imageWrapper} ref={imageRef}>
+          <Image
             src={getStrapiMedia(data?.Image, undefined) || "/images/intro-homepage.avif"}
             alt="Sauvages Creative Agency"
-            cols={14}
-            triggerStart="top 100%"
-            triggerEnd="bottom 60%"
-            scrub={1.5}
+            fill
+            className="fit-cover"
+            sizes="(max-width: 768px) 100vw, 90vw"
           />
         </div>
       </div>

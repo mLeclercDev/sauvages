@@ -14,7 +14,7 @@ const Projects: React.FC = async () => {
         thumbnail: { populate: "*" },
       },
       sort: ["publishedAt:desc"],
-      pagination: { limit: 5 },
+      pagination: { limit: 8 },
     });
     projects = projectsData?.data || [];
   } catch (error) {

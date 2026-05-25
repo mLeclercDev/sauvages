@@ -31,13 +31,13 @@
 
   p {
     font-family: $font-monument-wide;
-    font-size: clamp(32px, 5vw, 44px);
+    font-size: clamp(32px, 5vw, 36px);
     line-height: 1.25;
     font-weight: 400;
     margin: 0;
 
     @include mq-max("2xl") {
-      font-size: clamp(28px, 5vw, 40px);
+      font-size: clamp(28px, 5vw, 34px);
     }
 
     .word {
@@ -151,7 +151,7 @@
 
 .itemContent {
   p {
-    font-size: 18px;
+    font-size: var(--font-size-body);
     color: $color-gris-fonce;
     margin: 0;
 

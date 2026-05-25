@@ -13,7 +13,6 @@ export default async function ProjetsPage() {
         client: { populate: "*" },
         thumbnail: { populate: "*" },
         expertise: { populate: "*" },
-        secteur: { populate: "*" },
       },
       sort: ["publishedAt:desc"],
     });

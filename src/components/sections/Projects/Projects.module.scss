@@ -44,52 +44,73 @@
   }
 }
 
+// Conteneur principal : empilement vertical des rangées
 .grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  row-gap: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 
+// Base commune à toutes les rangées
+.rowA,
+.rowB,
+.rowC,
+.rowD {
+  // Mobile : empilement simple
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  // Desktop : grille 4 colonnes égales
   @include mq("md") {
-    grid-template-columns: repeat(12, 1fr);
-    column-gap: 2rem;
-    row-gap: 5rem;
-    // Custom layout for grid items
-    .projectCard {
-      &:nth-child(n + 3) {
-        grid-column: span 4;
-      }
-      &:nth-child(8n + 1) {
-        grid-column: span 7;
-        :global(.image-wrapper) {
-          aspect-ratio: 1055 / 900;
-        }
-        @include mq-max("lg") {
-          grid-column: span 8;
-        }
-      }
-      &:nth-child(8n + 2) {
-        grid-column: span 5;
-        :global(.image-wrapper) {
-          aspect-ratio: 747 / 536;
-        }
-        @include mq-max("lg") {
-          grid-column: span 4;
-        }
-      }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+}
+
+// Row A : [Grand (cols 1-2)] [Petit (col 3)] [vide (col 4)]
+.rowA {
+  .cardLarge {
+    @include mq("md") {
+      grid-column: 1 / 3;
     }
   }
+  .cardSmall {
+    @include mq("md") {
+      grid-column: 3 / 4;
+    }
+  }
+}
 
-  @include mq("sm") {
-    @media (max-width: 767px) {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
+// Row B : [vide (cols 1-2)] [Grand (cols 3-4)]
+.rowB {
+  .cardLarge {
+    @include mq("md") {
+      grid-column: 3 / 5;
+    }
+  }
+}
 
-      .projectCard {
-        grid-column: span 12 !important;
-        margin-top: 0 !important;
-        max-width: 100% !important;
-      }
+// Row C : [Petit (col 1)] [Petit (col 2)] [vide (cols 3-4)]
+.rowC {
+  .cardSmall:nth-child(1) {
+    @include mq("md") {
+      grid-column: 1 / 2;
+    }
+  }
+  .cardSmall:nth-child(2) {
+    @include mq("md") {
+      grid-column: 2 / 3;
+    }
+  }
+}
+
+// Row D : [vide (cols 1-3)] [Petit (col 4)]
+.rowD {
+  .cardSmall {
+    @include mq("md") {
+      grid-column: 4 / 5;
     }
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import RandomGridMask from "@/components/ui/RandomGridMask/RandomGridMask";
+import Image from "next/image";
 import styles from "./AgenceTeam.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
 
@@ -19,13 +19,12 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.imageWrapper}>
-            <RandomGridMask
+            <Image
               src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
               alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
-              cols={12}
-              triggerStart="top 100%"
-              triggerEnd="top 30%"
-              scrub={1}
+              fill
+              className="fit-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
               unoptimized={true}
             />
           </div>

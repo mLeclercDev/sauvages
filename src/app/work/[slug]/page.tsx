@@ -24,9 +24,6 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         client: { populate: "*" },
         thumbnail: { populate: "*" },
         expertise: { populate: "*" },
-        secteur: { populate: "*" },
-        gallery: { populate: "*" },
-        content: { populate: "*" },
         sections: { populate: "*" },
       },
     });
