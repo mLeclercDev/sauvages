@@ -154,13 +154,13 @@
 
 .buttonDesktop {
   @include mq-max("md") {
-    display: none;
+    display: none !important;
   }
 }
 
 .buttonMobile {
   @include mq("md") {
-    display: none;
+    display: none !important;
   }
   @include mq-max("md") {
     margin-top: 3rem;
