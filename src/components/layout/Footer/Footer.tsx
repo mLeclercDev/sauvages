@@ -221,10 +221,8 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
                   <div className={styles.buttonIcon}>
                     <Image
                       src={
-                        getStrapiMedia(
-                          footerContent.Bouton.Icone,
-                          undefined
-                        ) || ""
+                        getStrapiMedia(footerContent.Bouton.Icone, undefined) ||
+                        ""
                       }
                       alt={footerContent.Bouton.Texte || "icon"}
                       width={18}
@@ -321,21 +319,11 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
                   <div className={styles.navGroup}>
                     <span className={styles.label}>Navigation</span>
                     <ul>
-                      <li>
-                        {renderFooterLink("/agence", "Agence")}
-                      </li>
-                      <li>
-                        {renderFooterLink("/expertises", "Expertises")}
-                      </li>
-                      <li>
-                        {renderFooterLink("/work", "Work")}
-                      </li>
-                      <li>
-                        {renderFooterLink("/manifeste", "Manifeste")}
-                      </li>
-                      <li>
-                        {renderFooterLink("/blog", "Blog")}
-                      </li>
+                      <li>{renderFooterLink("/agence", "Agence")}</li>
+                      <li>{renderFooterLink("/expertises", "Expertises")}</li>
+                      <li>{renderFooterLink("/work", "Work")}</li>
+                      <li>{renderFooterLink("/manifeste", "Manifeste")}</li>
+                      <li>{renderFooterLink("/blog", "Blog")}</li>
                       <li>
                         {renderFooterLink("/les-vus-pas-pris", "Vu pas pris")}
                       </li>
@@ -444,15 +432,10 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
                   {renderFooterLink(link.URL, link.Texte)}
                 </React.Fragment>
               ))}
-              <div>
-                CRÉÉ PAR
-                {renderFooterLink("/chere-maman", "CHÈRE MAMAN")}
-              </div>
               {!footerContent.Lien && (
                 <>
                   {renderFooterLink("/mentions-legales", "MENTIONS LÉGALES")}
                   {renderFooterLink("/cookies", "COOKIES")}
-                  {renderFooterLink("/chere-maman", "CRÉÉ PAR")}
                 </>
               )}
             </div>
