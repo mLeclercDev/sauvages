@@ -7,12 +7,12 @@ export interface StrapiOption {
 
 export interface StrapiField {
   id: number;
-  Type: "select" | "texte" | "mail" | "fichier" | string;
+  Type: "select" | "texte" | "mail" | "fichier" | "textarea" | string;
   Intitule: string;
   TexteReponse?: string;
   Email?: string;
   Option?: StrapiOption[];
-  obligatoire?: boolean;
+  Obligatoire?: boolean;
 }
 
 export interface StrapiForm {
@@ -34,22 +34,19 @@ export async function getContactData(): Promise<ContactData | null> {
       "/contact",
       {
         populate: {
+          HeroContact: {
+            populate: { Image: { populate: "*" }, IconBouton1: { populate: "*" }, IconBouton2: { populate: "*" } },
+          },
           Formulaires: {
             on: {
               "contact.formulaire": {
-                populate: {
-                  Champs: {
-                    populate: "*"
-                  }
-                }
-              }
-            }
-          }
-        }
+                populate: { Champs: { populate: "*" } },
+              },
+            },
+          },
+        },
       },
-      {
-        next: { revalidate: 60 },
-      }
+      { next: { revalidate: 60 } }
     );
 
     return response?.data || null;

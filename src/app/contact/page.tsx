@@ -1,10 +1,12 @@
-export default function ContactPage() {
+import { getContactData } from "@/services/contact";
+import Contact from "@/components/sections/Contact/Contact";
+
+export default async function ContactPage() {
+  const contactData = await getContactData();
+
   return (
     <main>
-      <section className="container">
-        <h1>Contact</h1>
-        <p>Formulaire de contact à venir.</p>
-      </section>
+      <Contact data={contactData} />
     </main>
   );
 }

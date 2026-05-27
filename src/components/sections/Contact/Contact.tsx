@@ -45,15 +45,13 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
     }
   }, []);
 
-  const imageUrl = getStrapiMedia(data?.Image, undefined);
-  const title = data?.Titre || "CONTACT";
-  const desc =
-    data?.Description ||
-    "Cherches-tu une agence digitale expérimentée pour concrétiser ton idée ou ton projet ? Ou souhaites-tu rejoindre une équipe cool et dynamique ? Parlons-en.";
-  const btn1 = data?.TexteBouton1 || "RÉSERVER UN APPEL";
-  const btn2 = data?.TexteBouton2 || "COMMENT ON PEUT VOUS AIDER ?";
+  const hero = data?.HeroContact || data || {};
+  const imageUrl = getStrapiMedia(hero?.Image, undefined);
+  const title = hero?.Titre || "CONTACT";
+  const btn1 = hero?.TexteBouton1 || "RÉSERVER UN APPEL";
+  const btn2 = hero?.TexteBouton2 || "COMMENT ON PEUT VOUS AIDER ?";
 
-  const icon1Url = getStrapiMedia(data?.IconeBouton1 || data?.IconBouton1, undefined);
+  const icon1Url = getStrapiMedia(hero?.IconBouton1, undefined);
   const icon1Node = icon1Url ? (
     <img src={icon1Url} alt="" width={14} height={14} style={{ objectFit: "contain", filter: "invert(1)" }} />
   ) : (
@@ -65,7 +63,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
     </svg>
   );
 
-  const icon2Url = getStrapiMedia(data?.IconeBouton2 || data?.IconBouton2, undefined);
+  const icon2Url = getStrapiMedia(hero?.IconBouton2, undefined);
   const icon2Node = icon2Url ? (
     <img src={icon2Url} alt="" width={14} height={14} style={{ objectFit: "contain", filter: "invert(1)" }} />
   ) : (
@@ -85,7 +83,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
             <div className={styles.imageWrapper} ref={imageRef}>
               <Image
                 src={imageUrl || "/images/intro-homepage.avif"} // Placeholder par défaut
-                alt={data?.Image?.alternativeText || "Contact"}
+                alt={hero?.Image?.alternativeText || "Contact"}
                 fill
                 className="fit-cover"
                 unoptimized={true}
@@ -94,8 +92,6 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
           </div>
 
           <div className={styles.rightCol}>
-            <p className={styles.description}>{desc}</p>
-            
             <div className={styles.buttonGroup}>
               <Button
                 label={btn1}

@@ -96,7 +96,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
     currentStrapiForm?.Champs?.forEach((field) => {
       const fieldKey = `field_${field.id}`;
       const value = formValues[fieldKey];
-      const isRequired = field.obligatoire || (field as any).obligatoir;
+      const isRequired = field.Obligatoire;
 
       if (isRequired) {
         if (field.Type === "select") {
@@ -155,7 +155,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
     const rowNumber = index + 1;
     const fieldKey = `field_${field.id}`;
     const hasError = !!errors[fieldKey];
-    const isRequired = field.obligatoire || (field as any).obligatoir;
+    const isRequired = field.Obligatoire;
 
     switch (field.Type) {
       case "select":
