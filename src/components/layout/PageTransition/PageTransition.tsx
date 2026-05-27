@@ -50,18 +50,14 @@ export default function PageTransition() {
       // Overlay monte depuis le bas pour couvrir l'écran
       tl.to(overlay, { y: "0%", duration: 0.65, ease: "power2.inOut" }, 0);
 
-      // Contenu sort vers le haut avec fade
+      // Contenu sort en fade (pas de translateY pour ne pas casser position:fixed)
       if (content) {
-        tl.to(
-          content,
-          { y: -50, opacity: 0, duration: 0.45, ease: "power2.in" },
-          0
-        );
+        tl.to(content, { opacity: 0, duration: 0.35, ease: "power2.in" }, 0);
       }
 
       // Navigation une fois l'overlay en place, contenu prêt pour l'entrée
       tl.call(() => {
-        if (content) gsap.set(content, { y: 60, opacity: 0 });
+        if (content) gsap.set(content, { opacity: 0 });
         router.push(href);
       });
     };
@@ -92,13 +88,10 @@ export default function PageTransition() {
       // Overlay sort vers le haut
       tl.to(overlay, { y: "-100%", duration: 0.65, ease: "power2.inOut" }, 0);
 
-      // Nouveau contenu monte depuis le bas avec fade-in
+      // Nouveau contenu fade-in (pas de translateY pour ne pas casser position:fixed)
       if (content) {
-        tl.to(
-          content,
-          { y: 0, opacity: 1, duration: 0.55, ease: "power2.out" },
-          0.15
-        );
+        tl.to(content, { opacity: 1, duration: 0.55, ease: "power2.out" }, 0.15);
+        tl.set(content, { clearProps: "opacity" });
       }
     }, 50);
 
