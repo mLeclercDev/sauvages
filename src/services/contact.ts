@@ -22,9 +22,28 @@ export interface StrapiForm {
   Champs: StrapiField[];
 }
 
+export interface StrapiMedia {
+  id: number;
+  url: string;
+  width?: number;
+  height?: number;
+  alternativeText?: string | null;
+}
+
+export interface HeroContact {
+  id: number;
+  Titre?: string;
+  TexteBouton1?: string;
+  TexteBouton2?: string;
+  Image?: StrapiMedia;
+  IconBouton1?: StrapiMedia;
+  IconBouton2?: StrapiMedia;
+}
+
 export interface ContactData {
   id: number;
   documentId: string;
+  HeroContact?: HeroContact;
   Formulaires: StrapiForm[];
 }
 

@@ -8,9 +8,10 @@ import styles from "./Contact.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
 import Button from "@/components/ui/Button/Button";
 import { useContactPanel } from "@/context/ContactPanelContext";
+import { ContactData, HeroContact } from "@/services/contact";
 
 interface ContactProps {
-  data?: any;
+  data?: ContactData | null;
 }
 
 const Contact: React.FC<ContactProps> = ({ data }) => {
@@ -45,7 +46,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
     }
   }, []);
 
-  const hero = data?.HeroContact || data || {};
+  const hero: HeroContact | undefined = data?.HeroContact;
   const imageUrl = getStrapiMedia(hero?.Image, undefined);
   const title = hero?.Titre || "CONTACT";
   const btn1 = hero?.TexteBouton1 || "RÉSERVER UN APPEL";
