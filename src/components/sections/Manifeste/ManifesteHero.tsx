@@ -14,6 +14,7 @@ interface ManifesteHeroProps {
 const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -48,6 +49,23 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
           });
         },
       });
+    }
+
+    if (imageRef.current) {
+      gsap.fromTo(
+        imageRef.current,
+        { yPercent: -8 },
+        {
+          yPercent: 8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: imageRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
     }
 
     return () => {
@@ -99,15 +117,17 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
 
           <div className={styles.imageWrapper}>
             <div className={styles.imageInner}>
-              <Image
-                src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
-                alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
-                fill
-                priority
-                unoptimized={true}
-                className="fit-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
+              <div ref={imageRef} className={styles.imageParallax}>
+                <Image
+                  src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
+                  alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
+                  fill
+                  priority
+                  unoptimized={true}
+                  className="fit-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                />
+              </div>
             </div>
           </div>
         </div>
