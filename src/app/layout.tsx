@@ -14,6 +14,7 @@ import PageTransition from "@/components/layout/PageTransition/PageTransition";
 import Preloader from "@/components/layout/Preloader/Preloader";
 import { TransitionProvider } from "@/context/TransitionContext";
 import { getFooterData } from "@/services/footer";
+import { getHeaderData } from "@/services/header";
 
 
 export default async function RootLayout({
@@ -21,7 +22,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const footerData = await getFooterData();
+  const [footerData, headerData] = await Promise.all([
+    getFooterData(),
+    getHeaderData(),
+  ]);
 
   return (
     <html
@@ -34,7 +38,7 @@ export default async function RootLayout({
           <Preloader />
           <PageTransition />
           <SmoothScroll>
-            <Header />
+            <Header data={headerData} />
             <div data-page-content>
               {children}
             </div>

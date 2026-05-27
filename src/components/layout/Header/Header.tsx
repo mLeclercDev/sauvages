@@ -8,7 +8,30 @@ import { usePathname } from "next/navigation";
 import styles from "./Header.module.scss";
 import Button from "@/components/ui/Button/Button";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  data?: any;
+}
+
+const normalizeHref = (href: string) => {
+  if (!href) return "#";
+  if (href.startsWith("#") || href.startsWith("/") || /^https?:\/\//i.test(href)) return href;
+  return `/${href}`;
+};
+
+const Header: React.FC<HeaderProps> = ({ data }) => {
+  const headerContent = data?.attributes || data || {};
+  const navItems: { Texte: string; Url: string }[] = headerContent?.Navigation || [];
+  const bouton = headerContent?.Bouton;
+
+  const fallbackNav = [
+    { Texte: "Agence", Url: "/agence" },
+    { Texte: "Expertises", Url: "/expertises" },
+    { Texte: "Work", Url: "/work" },
+    { Texte: "Manifeste", Url: "/manifeste" },
+    { Texte: "Blog", Url: "/blog" },
+  ];
+
+  const resolvedNav = navItems.length > 0 ? navItems : fallbackNav;
   const [time, setTime] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuLabelRef = useRef<HTMLSpanElement>(null); // "MENU" span
@@ -261,18 +284,12 @@ const Header: React.FC = () => {
           </div>
           <nav className={styles.desktopNav}>
             <ul>
-              {[
-                { label: "Agence", href: "/agence" },
-                { label: "Expertises", href: "/expertises" },
-                { label: "Work", href: "/work" },
-                { label: "Manifeste", href: "/manifeste" },
-                { label: "Blog", href: "/blog" },
-              ].map((item) => (
-                <li key={item.label}>
-                  <TransitionLink href={item.href}>
+              {resolvedNav.map((item) => (
+                <li key={item.Texte}>
+                  <TransitionLink href={normalizeHref(item.Url)}>
                     <div className={styles.labelWrapper}>
-                      <span className={styles.label}>{item.label}</span>
-                      <span className={styles.label}>{item.label}</span>
+                      <span className={styles.label}>{item.Texte}</span>
+                      <span className={styles.label}>{item.Texte}</span>
                     </div>
                   </TransitionLink>
                 </li>
@@ -289,9 +306,11 @@ const Header: React.FC = () => {
 
           <div className={`${styles.desktopButton}`} data-preload="header-cta">
             <Button
-              label="contact"
+              label={bouton?.Texte || "contact"}
               variant="outline"
               color="white"
+              href={bouton?.Url ? normalizeHref(bouton.Url) : undefined}
+              target={bouton?.Blank ? "_blank" : undefined}
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -315,14 +334,8 @@ const Header: React.FC = () => {
         <div ref={menuRef} className={styles.mobileMenu}>
           <nav className={styles.mobileNav}>
             <ul>
-              {[
-                { label: "Agence", href: "/agence" },
-                { label: "Expertises", href: "/expertises" },
-                { label: "Work", href: "/work" },
-                { label: "Manifeste", href: "/manifeste" },
-                { label: "Blog", href: "/blog" },
-              ].map((item, index) => (
-                <li key={item.label} onClick={toggleMenu}>
+              {resolvedNav.map((item, index) => (
+                <li key={item.Texte} onClick={toggleMenu}>
                   <div className={styles.itemMask}>
                     <span
                       ref={(el) => {
@@ -330,8 +343,8 @@ const Header: React.FC = () => {
                       }}
                       style={{ display: "block" }}
                     >
-                      <TransitionLink href={item.href}>
-                        {item.label}
+                      <TransitionLink href={normalizeHref(item.Url)}>
+                        {item.Texte}
                       </TransitionLink>
                     </span>
                   </div>
@@ -346,9 +359,11 @@ const Header: React.FC = () => {
           >
             <div className={styles.time}>{time}</div>
             <Button
-              label="contact"
+              label={bouton?.Texte || "contact"}
               variant="outline"
               color="white"
+              href={bouton?.Url ? normalizeHref(bouton.Url) : undefined}
+              target={bouton?.Blank ? "_blank" : undefined}
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
