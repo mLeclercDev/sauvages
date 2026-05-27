@@ -105,43 +105,43 @@ const ManifesteCommitments: React.FC<ManifesteCommitmentsProps> = ({
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (titleRef.current) {
-      const animatables = titleRef.current.querySelectorAll(
-        `.${styles.word}, .${styles.icon}`
-      );
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        const animatables = titleRef.current.querySelectorAll(
+          `.${styles.word}, .${styles.icon}`
+        );
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
-          end: "bottom 60%",
-          scrub: true,
-        },
-      });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 80%",
+            end: "bottom 60%",
+            scrub: true,
+          },
+        });
 
-      const state = { count: 0 };
+        const state = { count: 0 };
 
-      tl.to(state, {
-        count: animatables.length,
-        ease: "none",
-        duration: 1,
-        onUpdate: () => {
-          const activeCount = Math.ceil(state.count);
-          animatables.forEach((el, i) => {
-            const hasActive = el.classList.contains(styles.active);
-            if (i < activeCount) {
-              if (!hasActive) el.classList.add(styles.active);
-            } else {
-              if (hasActive) el.classList.remove(styles.active);
-            }
-          });
-        },
-      });
-    }
+        tl.to(state, {
+          count: animatables.length,
+          ease: "none",
+          duration: 1,
+          onUpdate: () => {
+            const activeCount = Math.ceil(state.count);
+            animatables.forEach((el, i) => {
+              const hasActive = el.classList.contains(styles.active);
+              if (i < activeCount) {
+                if (!hasActive) el.classList.add(styles.active);
+              } else {
+                if (hasActive) el.classList.remove(styles.active);
+              }
+            });
+          },
+        });
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+    return () => ctx.revert();
   }, [data]);
 
   const renderWords = (text: string) => {

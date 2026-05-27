@@ -25,30 +25,30 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (!sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      if (!sectionRef.current) return;
 
-    const floatingImages = sectionRef.current.querySelectorAll(
-      `.${styles.floatingImage}`
-    );
+      const floatingImages = sectionRef.current.querySelectorAll(
+        `.${styles.floatingImage}`
+      );
 
-    const speeds = [-30, -20, -60, -80];
+      const speeds = [-30, -20, -60, -80];
 
-    floatingImages.forEach((img, index) => {
-      gsap.to(img, {
-        y: speeds[index % speeds.length],
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
+      floatingImages.forEach((img, index) => {
+        gsap.to(img, {
+          y: speeds[index % speeds.length],
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
       });
     });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+    return () => ctx.revert();
   }, [data]);
 
   return (

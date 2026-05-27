@@ -18,54 +18,54 @@ const AgenceHero: React.FC<AgenceHeroProps> = ({ data }) => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (titleRef.current) {
-      const words = titleRef.current.querySelectorAll(`.${styles.word}`);
+    const ctx = gsap.context(() => {
+      if (titleRef.current) {
+        const words = titleRef.current.querySelectorAll(`.${styles.word}`);
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 32%",
-          end: "bottom+=100 50%",
-          scrub: true,
-        },
-      });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: "top 32%",
+            end: "bottom+=100 50%",
+            scrub: true,
+          },
+        });
 
-      const state = { count: 0 };
+        const state = { count: 0 };
 
-      tl.to(state, {
-        count: words.length,
-        ease: "none",
-        duration: 1,
-        onUpdate: () => {
-          const activeCount = Math.ceil(state.count);
-          words.forEach((word, i) => {
-            const hasActive = word.classList.contains(styles.active);
-            if (i < activeCount) {
-              if (!hasActive) word.classList.add(styles.active);
-            } else {
-              if (hasActive) word.classList.remove(styles.active);
-            }
-          });
-        },
-      });
-    }
+        tl.to(state, {
+          count: words.length,
+          ease: "none",
+          duration: 1,
+          onUpdate: () => {
+            const activeCount = Math.ceil(state.count);
+            words.forEach((word, i) => {
+              const hasActive = word.classList.contains(styles.active);
+              if (i < activeCount) {
+                if (!hasActive) word.classList.add(styles.active);
+              } else {
+                if (hasActive) word.classList.remove(styles.active);
+              }
+            });
+          },
+        });
+      }
 
-    if (imageRef.current) {
-      gsap.to(imageRef.current.querySelector("img"), {
-        y: "20%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: imageRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-    }
+      if (imageRef.current) {
+        gsap.to(imageRef.current.querySelector("img"), {
+          y: "20%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: imageRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(st => st.kill());
-    };
+    return () => ctx.revert();
   }, [data]);
 
   // Extraction du texte depuis le format Blocks de Strapi

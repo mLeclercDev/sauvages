@@ -75,11 +75,11 @@ export default function SmoothScroll({
       // Reset scroll position to top on navigation
       lenisRef.current.scrollTo(0, { immediate: true });
 
-      // Delay resize slightly to allow Next.js to swap the DOM
+      // Delay resize to allow Next.js to swap and paint the new DOM
       const timer = setTimeout(() => {
         lenisRef.current?.resize();
         ScrollTrigger.refresh();
-      }, 100);
+      }, 350);
 
       return () => clearTimeout(timer);
     }

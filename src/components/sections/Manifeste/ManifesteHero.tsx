@@ -19,58 +19,58 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (textRef.current) {
-      const words = textRef.current.querySelectorAll(`.${styles.word}`);
+    const ctx = gsap.context(() => {
+      if (textRef.current) {
+        const words = textRef.current.querySelectorAll(`.${styles.word}`);
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: textRef.current,
-          start: "top 32%",
-          end: "bottom+=100 50%",
-          scrub: true,
-        },
-      });
-
-      const state = { count: 0 };
-
-      tl.to(state, {
-        count: words.length,
-        ease: "none",
-        duration: 1,
-        onUpdate: () => {
-          const activeCount = Math.ceil(state.count);
-          words.forEach((word, i) => {
-            const hasActive = word.classList.contains(styles.active);
-            if (i < activeCount) {
-              if (!hasActive) word.classList.add(styles.active);
-            } else {
-              if (hasActive) word.classList.remove(styles.active);
-            }
-          });
-        },
-      });
-    }
-
-    if (imageRef.current) {
-      gsap.fromTo(
-        imageRef.current,
-        { yPercent: -8 },
-        {
-          yPercent: 8,
-          ease: "none",
+        const tl = gsap.timeline({
           scrollTrigger: {
-            trigger: imageRef.current,
-            start: "top bottom",
-            end: "bottom top",
+            trigger: textRef.current,
+            start: "top 32%",
+            end: "bottom+=100 50%",
             scrub: true,
           },
-        }
-      );
-    }
+        });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+        const state = { count: 0 };
+
+        tl.to(state, {
+          count: words.length,
+          ease: "none",
+          duration: 1,
+          onUpdate: () => {
+            const activeCount = Math.ceil(state.count);
+            words.forEach((word, i) => {
+              const hasActive = word.classList.contains(styles.active);
+              if (i < activeCount) {
+                if (!hasActive) word.classList.add(styles.active);
+              } else {
+                if (hasActive) word.classList.remove(styles.active);
+              }
+            });
+          },
+        });
+      }
+
+      if (imageRef.current) {
+        gsap.fromTo(
+          imageRef.current,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: imageRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
+    });
+
+    return () => ctx.revert();
   }, [data]);
 
   const renderWords = (text: string) => {

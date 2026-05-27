@@ -27,27 +27,26 @@ const FullWidthImage: React.FC<FullWidthImageProps> = ({
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (containerRef.current && imageRef.current) {
-      // Parallax effect: image moves 20% of its height over the full scroll of the section
-      gsap.fromTo(
-        imageRef.current,
-        { yPercent: -10 },
-        {
-          yPercent: 10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      if (containerRef.current && imageRef.current) {
+        gsap.fromTo(
+          imageRef.current,
+          { yPercent: -10 },
+          {
+            yPercent: 10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach(st => st.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   return (

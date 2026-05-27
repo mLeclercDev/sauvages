@@ -61,35 +61,32 @@ const AgenceStaff: React.FC<AgenceStaffProps> = ({ pt = "lg", pb = "lg", data })
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (!sectionRef.current) return;
+    const ctx = gsap.context(() => {
+      if (!sectionRef.current) return;
 
-    const cards = sectionRef.current.querySelectorAll(`.${styles.card}`);
+      const cards = sectionRef.current.querySelectorAll(`.${styles.card}`);
 
-    if (cards.length > 0) {
-      gsap.fromTo(
-        cards,
-        {
-          opacity: 0,
-          y: 40,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
-    }
+      if (cards.length > 0) {
+        gsap.fromTo(
+          cards,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+    return () => ctx.revert();
   }, [data]);
 
   // Transformation des données Strapi en membres de l'équipe
