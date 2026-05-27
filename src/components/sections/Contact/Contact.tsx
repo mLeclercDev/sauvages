@@ -53,8 +53,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon1Url = getStrapiMedia(hero?.IconBouton1, undefined);
   const icon1Node = icon1Url ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={icon1Url} alt="" />
+    <Image src={icon1Url} alt="" width={hero?.IconBouton1?.width ?? 18} height={hero?.IconBouton1?.height ?? 18} unoptimized />
   ) : (
     <svg
       width="14"
@@ -75,8 +74,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon2Url = getStrapiMedia(hero?.IconBouton2, undefined);
   const icon2Node = icon2Url ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={icon2Url} alt="" />
+    <Image src={icon2Url} alt="" width={hero?.IconBouton2?.width ?? 18} height={hero?.IconBouton2?.height ?? 18} unoptimized />
   ) : (
     <svg
       width="14"
