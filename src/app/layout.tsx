@@ -13,8 +13,11 @@ import SmoothScroll from "@/components/layout/SmoothScroll/SmoothScroll";
 import PageTransition from "@/components/layout/PageTransition/PageTransition";
 import Preloader from "@/components/layout/Preloader/Preloader";
 import { TransitionProvider } from "@/context/TransitionContext";
+import { ContactPanelProvider } from "@/context/ContactPanelContext";
+import ContactFormPanel from "@/components/sections/ContactFormPanel/ContactFormPanel";
 import { getFooterData } from "@/services/footer";
 import { getHeaderData } from "@/services/header";
+import { getContactData } from "@/services/contact";
 
 
 export default async function RootLayout({
@@ -22,9 +25,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [footerData, headerData] = await Promise.all([
+  const [footerData, headerData, contactData] = await Promise.all([
     getFooterData(),
     getHeaderData(),
+    getContactData(),
   ]);
 
   return (
@@ -35,15 +39,18 @@ export default async function RootLayout({
       <head dangerouslySetInnerHTML={{ __html: `<script src="/scripts/preloader-init.js"></script>` }} />
       <body>
         <TransitionProvider>
-          <Preloader />
-          <PageTransition />
-          <SmoothScroll>
-            <Header data={headerData} />
-            <div data-page-content>
-              {children}
-            </div>
-            <Footer data={footerData} />
-          </SmoothScroll>
+          <ContactPanelProvider>
+            <Preloader />
+            <PageTransition />
+            <SmoothScroll>
+              <Header data={headerData} />
+              <div data-page-content>
+                {children}
+              </div>
+              <Footer data={footerData} />
+            </SmoothScroll>
+            <ContactFormPanel data={contactData} />
+          </ContactPanelProvider>
         </TransitionProvider>
       </body>
     </html>
