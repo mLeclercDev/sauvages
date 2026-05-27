@@ -53,9 +53,19 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon1Url = getStrapiMedia(hero?.IconBouton1, undefined);
   const icon1Node = icon1Url ? (
-    <img src={icon1Url} alt="" width={14} height={14} style={{ objectFit: "contain", filter: "invert(1)" }} />
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={icon1Url} alt="" />
   ) : (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+    >
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
       <line x1="16" y1="2" x2="16" y2="6" />
       <line x1="8" y1="2" x2="8" y2="6" />
@@ -65,9 +75,19 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon2Url = getStrapiMedia(hero?.IconBouton2, undefined);
   const icon2Node = icon2Url ? (
-    <img src={icon2Url} alt="" width={14} height={14} style={{ objectFit: "contain", filter: "invert(1)" }} />
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={icon2Url} alt="" />
   ) : (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="square"
+      strokeLinejoin="miter"
+    >
       <line x1="5" y1="19" x2="19" y2="5" />
       <polyline points="5 5 19 5 19 19" />
     </svg>
