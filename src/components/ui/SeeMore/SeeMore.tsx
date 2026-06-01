@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import Link from "next/link";
+import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import styles from "./SeeMore.module.scss";
 
 interface SeeMoreProps {
@@ -10,7 +12,7 @@ interface SeeMoreProps {
 
 const SeeMore: React.FC<SeeMoreProps> = ({ label, href, className = "" }) => {
   return (
-    <Link href={href} className={`${styles.seeMore} ${className}`}>
+    <TransitionLink href={href} className={`${styles.seeMore} ${className}`}>
       <span className={styles.text} data-text={label}>
         <span className={styles.textInner}>{label}</span>
       </span>
@@ -28,7 +30,7 @@ const SeeMore: React.FC<SeeMoreProps> = ({ label, href, className = "" }) => {
           />
         </svg>
       </span>
-    </Link>
+    </TransitionLink>
   );
 };
 

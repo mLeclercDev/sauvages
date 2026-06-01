@@ -1,0 +1,21 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 40px;
+  column-gap: 20px;
+
+  @include mq("sm") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mq("lg") {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card :global(.image-wrapper) {
+  aspect-ratio: 323 / 423 !important;
+}

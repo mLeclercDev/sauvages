@@ -2,106 +2,30 @@
 @use "@/styles/mixins" as *;
 
 .projectsHeader {
-  position: relative;
-  width: fit-content;
-  margin: 107px auto 0;
-  min-height: calc(100vh - 107px);
-  padding: 30px 0;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 160px 0 80px;
+
+  @include mq-max("md") {
+    padding: 120px 0 60px;
+  }
+}
+
+.title {
+  text-align: center;
+  font-family: $font-monument-wide;
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 0.85;
+  text-transform: uppercase;
+  margin: 0;
 
   @include mq-max("lg") {
-    padding: 100px 0;
-    min-height: 60vh;
+    font-size: 8rem;
   }
 
-  .title {
-    padding: 0 60px;
-    position: relative;
-    width: fit-content;
-    pointer-events: none;
-    z-index: 11111;
-    color: var(--background-light);
-    mix-blend-mode: difference;
-    isolation: isolate;
-    text-align: center;
-    font-family: $font-monument-wide;
-    font-size: 120px;
-    font-weight: 800;
-    line-height: 85%;
-    text-transform: uppercase;
-
-    @include mq-max("lg") {
-      font-size: 8rem;
-    }
-    @include mq-max("md") {
-      font-size: 4rem;
-    }
-  }
-
-  .floatingImages {
-    position: absolute;
-    width: 100%;
-    inset: 0;
-    pointer-events: none;
-    z-index: 5; // Behind text
-  }
-
-  .floatingImg {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    width: 120px;
-    aspect-ratio: 120 / 93;
-    z-index: 1111;
-    &.img1,
-    &.img5 {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    &.img4,
-    &.img6 {
-      top: calc(75%);
-      transform: translate(-50%, -50%);
-    }
-    &.img2,
-    &.img8 {
-      top: calc(25%);
-      transform: translate(-50%, -50%);
-    }
-    &.img7,
-    &.img3 {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    &.img1 {
-      top: 30px;
-    }
-    &.img5 {
-      bottom: 30px;
-    }
-    &.img2 {
-      left: 75%;
-    }
-    &.img8 {
-      left: 25%;
-    }
-    &.img3 {
-      right: 0%;
-    }
-    &.img7 {
-      left: 0%;
-    }
-    &.img4 {
-      left: 75%;
-    }
-    &.img6 {
-      left: 25%;
-    }
+  @include mq-max("md") {
+    font-size: 4rem;
   }
 }

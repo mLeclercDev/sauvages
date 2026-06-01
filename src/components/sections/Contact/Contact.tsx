@@ -97,8 +97,8 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.leftCol}>
-            <h2 className={styles.title}>{title}</h2>
-            
+            <h1 className={styles.title}>{title}</h1>
+
             <div className={styles.imageWrapper} ref={imageRef}>
               <Image
                 src={imageUrl || "/images/intro-homepage.avif"} // Placeholder par défaut

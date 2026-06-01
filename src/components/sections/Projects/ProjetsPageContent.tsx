@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import ProjectsHeader from "./ProjectsHeader";
 import ProjectFilters from "./ProjectFilters";
-import ProjectsList from "./ProjectsList";
+import WorkProjectsGrid from "./WorkProjectsGrid";
 import ProjectsTable from "./ProjectsTable";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -99,7 +99,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
       <div className="pb-bottom">
         {viewMode === "grid" ? (
           <div className="container">
-            <ProjectsList projects={filteredProjects} />
+            <WorkProjectsGrid projects={filteredProjects} />
           </div>
         ) : (
           <ProjectsTable projects={filteredProjects} />

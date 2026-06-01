@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import styles from "./Button.module.scss";
 
 interface ButtonProps {
@@ -38,10 +41,18 @@ const Button: React.FC<ButtonProps> = ({
   );
 
   if (href) {
+    const isExternal = href.startsWith("http") || href.startsWith("//") || !!target;
+    if (isExternal) {
+      return (
+        <Link href={href} className={buttonClasses} target={target}>
+          {content}
+        </Link>
+      );
+    }
     return (
-      <Link href={href} className={buttonClasses} target={target}>
+      <TransitionLink href={href} className={buttonClasses}>
         {content}
-      </Link>
+      </TransitionLink>
     );
   }
 
