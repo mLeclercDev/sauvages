@@ -3,9 +3,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Link from "next/link";
+import Image from "next/image";
 import styles from "./Hero.module.scss";
+import { getStrapiMedia } from "@/utils/strapi";
 
-export default function Hero() {
+const DEFAULT_TITLE =
+  "Agence créative, unie pour créer de l’émotion depuis 20ans. De la stratégie à la création.";
+const DEFAULT_VIDEO_SRC =
+  "https://api.agence-sauvages.com/uploads/SAUVAGES_REEL_SITE_c3eb582103.mp4";
+
+interface HeroProps {
+  data?: any;
+}
+
+export default function Hero({ data }: HeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
@@ -189,6 +200,11 @@ export default function Hero() {
 
   const isCursorVisible = isHoveringVideo && scrollData.progress > 0.85;
 
+  const title = data?.Titre || DEFAULT_TITLE;
+  const mediaAttrs = data?.Video?.data?.attributes || data?.Video?.attributes || data?.Video;
+  const mediaUrl = getStrapiMedia(data?.Video, undefined) || DEFAULT_VIDEO_SRC;
+  const isImageMedia = !!mediaAttrs?.mime?.startsWith("image");
+
   const inlineStyles = {
     "--progress": scrollData.progress,
     "--parallax-progress": scrollData.parallaxProgress,
@@ -236,15 +252,20 @@ export default function Hero() {
           >
             <div className={styles.videoPlayer}>
               <div className={styles.videoPlayerVideo}>
-                <video
-                  loop
-                  muted
-                  autoPlay
-                  playsInline
-                  src="https://api.agence-sauvages.com/uploads/SAUVAGES_REEL_SITE_c3eb582103.mp4"
-                >
-                  Tu navigateur no soporta la reproducción de vídeo.
-                </video>
+                {isImageMedia ? (
+                  <Image
+                    src={mediaUrl}
+                    alt={title}
+                    fill
+                    priority
+                    unoptimized
+                    className="fit-cover"
+                  />
+                ) : (
+                  <video loop muted autoPlay playsInline src={mediaUrl}>
+                    Tu navigateur no soporta la reproducción de vídeo.
+                  </video>
+                )}
               </div>
               <div ref={controlsRef} className={styles.videoPlayerControls}>
                 <div className={styles.videoPlayerControlsStart}>
@@ -260,8 +281,7 @@ export default function Hero() {
 
         <div className={styles.content}>
           <h1 className={styles.title} ref={titleRef} data-preload="hero-title">
-            Agence créative, unie pour créer de l’émotion depuis 20ans. De la
-            stratégie à la création.
+            {title}
           </h1>
           <svg
             className={styles.logoResponsive}

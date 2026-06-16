@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Expertises.module.scss";
 import Button from "@/components/ui/Button/Button";
+import { getStrapiMedia } from "@/utils/strapi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -68,6 +70,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
     data?.Item?.length > 0
       ? data.Item.map((item: any) => ({
           title: item.Name,
+          image: item.Image || null,
           description:
             item.Description?.map((block: any) =>
               block.children?.map((c: any) => c.text).join("")
@@ -212,6 +215,20 @@ const Expertises: React.FC<ExpertisesProps> = ({
                 style={!isScrollAnimated ? { height: "auto", opacity: 1 } : {}}
               >
                 <div className={styles.itemBodyInner}>
+                  {item.image && (() => {
+                    const imgUrl = getStrapiMedia(item.image, "large");
+                    return imgUrl ? (
+                      <div className={styles.itemImage}>
+                        <Image
+                          src={imgUrl}
+                          alt={item.title}
+                          fill
+                          style={{ objectFit: "contain" }}
+                          sizes="(max-width: 768px) 100vw, 240px"
+                        />
+                      </div>
+                    ) : null;
+                  })()}
                   <div className={styles.description}>
                     <div className={styles.descriptionContent}>
                       {item.description

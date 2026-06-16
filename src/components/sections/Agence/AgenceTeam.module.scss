@@ -1,6 +1,12 @@
 @use "@/styles/mixins" as *;
 @use "@/styles/variables" as *;
 
+.agenceTeam {
+}
+
+.header {
+}
+
 .grid {
   display: grid;
   grid-template-columns: 462px 1fr;
@@ -45,6 +51,23 @@
   }
 }
 
+.imageItem {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  will-change: transform;
+
+  @include mq-max("lg") {
+    position: relative;
+
+    &:not(:first-child) {
+      display: none;
+    }
+  }
+}
+
 .content {
   width: 100%;
   max-width: 925px;
@@ -75,20 +98,25 @@
 
 .item {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: $space-5 0;
   border-bottom: 1px solid #060606;
-
-  @include mq-max("lg") {
-    flex-direction: column;
-    gap: $space-4;
-  }
 }
 
 .itemHeader {
   display: flex;
   align-items: flex-start;
   gap: $space-4;
+  opacity: 0.4;
+  transition: opacity 0.4s ease;
+
+  @include mq-max("lg") {
+    opacity: 1;
+  }
+}
+
+.item.itemActive .itemHeader {
+  opacity: 1;
 }
 
 .itemIndex {
@@ -117,16 +145,24 @@
   }
 }
 
+.itemBody {
+  overflow: hidden;
+}
+
+.itemBodyInner {
+  padding-top: $space-3;
+}
+
 .itemDescription {
   font-size: 18px;
-  width: 450px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 620px;
 
   @include mq-max("2xl") {
     font-size: 16px;
   }
 
   @include mq-max("lg") {
-    width: 100%;
+    max-width: 100%;
   }
 }

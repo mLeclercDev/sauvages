@@ -5,10 +5,12 @@ import Projects from "@/components/sections/Projects/Projects";
 import Blog from "@/components/sections/Blog/Blog";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import { fetchAPI } from "@/utils/strapi";
+import ClientsScroll from "@/components/sections/Clients/ClientsScroll";
 
 export const revalidate = 60;
 
 export default async function Home() {
+  let heroData = null;
   let introData = null;
   let expertisesData = null;
 
@@ -26,9 +28,11 @@ export default async function Home() {
     );
 
     const contenu = homepageData?.data?.attributes?.Contenu || homepageData?.data?.Contenu || [];
-    
+
+    heroData = contenu.find((m: any) => m.__component === "homepage.hero-section");
+
     introData = contenu.find((m: any) => m.__component === "homepage.intro");
-    
+
     // On cherche le module d'expertises
     expertisesData = contenu.find(
       (m: any) => m.__component === "global.expertises-listing"
@@ -43,16 +47,17 @@ export default async function Home() {
 
   return (
     <main>
-      <Hero />
+      <Hero data={heroData} />
       <Intro data={introData} />
-      <Expertises 
-        data={expertisesData} 
-        showHeader={hasExpertiseHeader} 
+      <Expertises
+        data={expertisesData}
+        showHeader={hasExpertiseHeader}
         isScrollAnimated={hasExpertiseHeader}
       />
       <Projects />
       <LogoSlider />
       <Blog />
+      <ClientsScroll />
     </main>
   );
 }

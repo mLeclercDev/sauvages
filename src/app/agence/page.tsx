@@ -3,6 +3,7 @@ import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
 export const revalidate = 60;
 
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
+import AgenceIdentite from "@/components/sections/Agence/AgenceIdentite";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
 import AgenceStaff from "@/components/sections/Agence/AgenceStaff";
 import AgenceTeam from "@/components/sections/Agence/AgenceTeam";
@@ -29,10 +30,17 @@ export default async function AgencePage() {
                 },
               },
               "agence.equipe-presentation": {
-                populate: ["Image", "EquipePresentationItem"],
+                populate: {
+                  EquipePresentationItem: {
+                    populate: ["Image"],
+                  },
+                },
               },
               "agence.hero-section": {
                 populate: ["Image"],
+              },
+              "agence.identite": {
+                populate: ["Item"],
               },
               "agence.agence": {
                 populate: ["Titre", "Item", "Image"],
@@ -60,6 +68,7 @@ export default async function AgencePage() {
 
   // Extraction des modules pour distribution
   const heroData = contenu.find((m) => m.__component === "agence.hero-section");
+  const identiteData = contenu.find((m) => m.__component === "agence.identite");
   const agenceValuesData = contenu.find((m) => m.__component === "agence.agence");
   const introImageData = contenu.find((m) => m.__component === "global.intro-image");
   const equipePresentationData = contenu.find((m) => m.__component === "agence.equipe-presentation");
@@ -72,6 +81,7 @@ export default async function AgencePage() {
   return (
     <main>
       <AgenceHero data={heroData} />
+      <AgenceIdentite data={identiteData} />
       <AgenceValues data={agenceValuesData} />
       <TextRevealSection
         pt="sm"

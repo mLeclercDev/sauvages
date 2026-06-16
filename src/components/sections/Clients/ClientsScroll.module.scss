@@ -1,0 +1,156 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section {
+  background: rgba(162, 162, 162, 0.25);
+}
+
+// ── Main layout: left (sticky title) | right (content) ──────────────────────
+.layout {
+  display: grid;
+  grid-template-columns: 32% 150px auto;
+  justify-content: space-between;
+  gap: 80px;
+  align-items: start;
+
+  @include mq-max("2xl") {
+    grid-template-columns: 29% 100px auto;
+  }
+
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+}
+
+// ── Left column ──────────────────────────────────────────────────────────────
+.left {
+  position: sticky;
+  top: 40vh;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include mq-max("lg") {
+    position: relative;
+    top: auto;
+  }
+}
+
+.sectionTitle {
+  font-family: $font-monument-black;
+  font-size: clamp(24px, 3vw, 58px);
+  line-height: 1.1;
+  margin: 0;
+}
+
+// ── Right column ─────────────────────────────────────────────────────────────
+.right {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 20px;
+
+  @include mq-max("md") {
+    flex-direction: column;
+    gap: 32px;
+  }
+}
+
+// ── Image area ───────────────────────────────────────────────────────────────
+.imageArea {
+  position: sticky;
+  top: 40vh;
+  display: flex;
+  justify-content: center;
+  align-self: start;
+  flex-shrink: 0;
+  width: 150px;
+  aspect-ratio: 1;
+  @include mq-max("2xl") {
+    width: 100px;
+  }
+
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
+.imageStack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.imageItem {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.logoPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: $color-gris;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-family: $font-monument-wide;
+    font-size: 32px;
+    font-weight: 800;
+    color: $color-blanc-svgs;
+  }
+}
+
+// ── Client list ───────────────────────────────────────────────────────────────
+.clientList {
+  width: 454px;
+  max-width: 100%;
+
+  @include mq-max("2xl") {
+    width: 340px;
+  }
+
+  @include mq-max("lg") {
+    padding: 0;
+  }
+}
+
+.clientName {
+  font-family: $font-monument-wide;
+  font-size: clamp(20px, 1.8vw, 30px);
+  color: $color-gris;
+  transition:
+    color 0.4s ease,
+    font-weight 0.1s ease;
+  display: block;
+
+  .active & {
+    color: $color-noir-svgs;
+  }
+}
+
+// ── Competencies ──────────────────────────────────────────────────────────────
+.competenciesArea {
+  position: sticky;
+  top: 40vh;
+  align-self: start;
+  flex-shrink: 0;
+  width: 295px;
+
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
+.competenciesList {
+  margin: 0;
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: 1.6;
+}

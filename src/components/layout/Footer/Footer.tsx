@@ -29,6 +29,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
 
   const [time, setTime] = useState("");
   const [isOpen, setIsOpen] = useState(true);
+  const [temperature, setTemperature] = useState<number | null>(null);
   const pathname = usePathname();
   const footerRef = useRef<HTMLElement>(null);
   const footerInnerRef = useRef<HTMLDivElement>(null);
@@ -80,6 +81,25 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
 
     updateTime();
     const interval = setInterval(updateTime, 1000 * 60);
+
+    // Météo de Rennes (Open-Meteo, sans clé API), rafraîchie toutes les 3 heures
+    const updateTemperature = async () => {
+      try {
+        const res = await fetch(
+          "https://api.open-meteo.com/v1/forecast?latitude=48.1173&longitude=-1.6778&current=temperature_2m&timezone=Europe%2FParis"
+        );
+        const json = await res.json();
+        const temp = json?.current?.temperature_2m;
+        if (typeof temp === "number") {
+          setTemperature(Math.round(temp));
+        }
+      } catch (e) {
+        console.error("Error fetching Rennes weather:", e);
+      }
+    };
+
+    updateTemperature();
+    const weatherInterval = setInterval(updateTemperature, 1000 * 60 * 60 * 3);
 
     // Parallax Footer Reveal
     gsap.registerPlugin(ScrollTrigger);
@@ -170,6 +190,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
 
     return () => {
       clearInterval(interval);
+      clearInterval(weatherInterval);
       clearTimeout(timeout);
       mm.revert();
     };
@@ -334,7 +355,9 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
               <div className={styles.meta}>
                 <div className={styles.metaItem}>©Sauvages</div>
                 <div className={styles.metaItem}>{time}</div>
-                <div className={styles.metaItem}>Rennes 15°C</div>
+                <div className={styles.metaItem}>
+                  Rennes {temperature !== null ? `${temperature}°C` : "—"}
+                </div>
                 <div
                   className={`${styles.metaItem} ${styles.schedules} ${!isOpen ? styles.closed : ""}`}
                 >

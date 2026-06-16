@@ -1,0 +1,62 @@
+@use "@/styles/mixins" as *;
+@use "@/styles/variables" as *;
+
+.agenceIdentite {
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $space-8;
+
+  @include mq-max("2xl") {
+    gap: $space-20;
+  }
+
+  @include mq-max("lg") {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-12;
+  }
+
+  @include mq-max("md") {
+    grid-template-columns: 1fr;
+    gap: $space-8;
+  }
+}
+
+.definition {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+
+  p {
+    font-size: var(--font-size-body);
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+}
+
+.label {
+  font-size: 14px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  margin-top: $space-7;
+  gap: $space-3;
+
+  p {
+    font-family: $font-monument-normal;
+    font-size: var(--font-size-body);
+    line-height: 1.4;
+    @include mq-max("2xl") {
+      font-size: 14px;
+    }
+  }
+}
