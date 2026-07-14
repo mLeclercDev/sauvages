@@ -55,7 +55,7 @@ const AgenceCta: React.FC<AgenceCtaProps> = ({ pt = "lg", pb = "lg", data }) => 
         backgroundColor: "#f6f6f6",
         duration: 0.6,
         ease: "power2.out",
-        onComplete: () => gsap.set(document.body, { clearProps: "backgroundColor" }),
+        onComplete: () => { gsap.set(document.body, { clearProps: "backgroundColor" }); },
       });
 
     const ctx = gsap.context(() => {
