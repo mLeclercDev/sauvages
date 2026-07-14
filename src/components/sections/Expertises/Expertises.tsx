@@ -221,7 +221,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
                         src={getStrapiMedia(item.image, "large")!}
                         alt={item.title}
                         fill
-                        class="fit-cover"
+                        className="fit-cover"
                         sizes="(max-width: 768px) 100vw, 240px"
                       />
                     </div>
