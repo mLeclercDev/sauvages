@@ -93,7 +93,7 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
         backgroundColor: BG_DEFAULT,
         duration: 0.5,
         ease: "power2.inOut",
-        onComplete: () => gsap.set(document.body, { clearProps: "backgroundColor" }),
+        onComplete: () => { gsap.set(document.body, { clearProps: "backgroundColor" }); },
       });
 
     const bgTrigger = ScrollTrigger.create({
