@@ -5,6 +5,7 @@ export const revalidate = 60;
 import ManifesteHero from "@/components/sections/Manifeste/ManifesteHero";
 import ManifesteCommitments from "@/components/sections/Manifeste/ManifesteCommitments";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
+import AgenceCta from "@/components/sections/Agence/AgenceCta";
 import { fetchAPI } from "@/utils/strapi";
 
 export default async function ManifestePage() {
@@ -39,11 +40,14 @@ export default async function ManifestePage() {
     (m) => m.__component === "manifeste.missions"
   );
 
+  const ctaData = contenu.find((m) => m.__component === "agence.cta");
+
   return (
     <main>
       <ManifesteHero data={heroData} />
       <ManifesteCommitments data={missionData} />
       <RecentProjects />
+      <AgenceCta data={ctaData} />
     </main>
   );
 }

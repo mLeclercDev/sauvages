@@ -18,16 +18,16 @@
 
 .title {
   font-family: $font-monument-wide;
-  font-size: 44px;
+  font-size: 38px;
   line-height: 1.25;
   margin-top: $space-7;
   margin-bottom: $space-20;
-  letter-spacing: -0.02em;
   font-weight: 400;
   max-width: 95%;
+  margin-top: $space-3;
   @include mq-max("2xl") {
     margin-top: $space-4;
-    font-size: 38px;
+    font-size: 34px;
     margin-bottom: $space-12;
   }
 
@@ -47,7 +47,7 @@
   }
 
   @include mq-max("md") {
-    font-size: 28px;
+    font-size: 26px;
     margin-bottom: $space-8;
   }
 }

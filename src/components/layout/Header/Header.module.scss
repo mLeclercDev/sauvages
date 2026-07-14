@@ -11,9 +11,15 @@
   background-color: #000;
   mix-blend-mode: difference;
   isolation: isolate;
+  
+  .desktopMenu {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+  }
 
   .menuBackground {
-    position: absolute;
+    position: absolute; 
     top: 0;
     left: 0;
     width: 100%;
@@ -67,12 +73,14 @@
 
   .logoResponsive {
     display: none;
+    width: 140px;
     @include mq-max("lg") {
       display: block;
     }
   }
   .logoDesktop {
     display: block;
+    width: 140px;
     @include mq-max("lg") {
       display: none;
     }

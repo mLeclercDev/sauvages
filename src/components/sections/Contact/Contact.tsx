@@ -97,8 +97,6 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.leftCol}>
-            <h1 className={styles.title}>{title}</h1>
-
             <div className={styles.imageWrapper} ref={imageRef}>
               <Image
                 src={imageUrl || "/images/intro-homepage.avif"} // Placeholder par défaut
@@ -111,6 +109,12 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
           </div>
 
           <div className={styles.rightCol}>
+            <h1 className={`${styles.title} h2`}>{title}</h1>
+            <p className={`${styles.description} h4`}>
+              Cherches-tu une agence digitale expérimentée pour concrétiser ton
+              idée ou ton projet ? Ou souhaites-tu rejoindre une équipe cool et
+              dynamique ?Parlons-en.
+            </p>
             <div className={styles.buttonGroup}>
               <Button
                 label={btn1}

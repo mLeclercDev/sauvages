@@ -39,6 +39,8 @@
 .item {
   padding: 40px 0;
   border-bottom: 1px solid $color-noir-svgs;
+  display: flex;
+  gap: clamp(32px, 11vw, 210px);
   &.isStatic {
     padding: 60px 0 96px;
     &:first-child {
@@ -50,6 +52,10 @@
     @include mq-max("md") {
       padding: 28px 0 36px;
     }
+  }
+  @include mq-max("md") {
+    flex-direction: column;
+    gap: 0;
   }
 }
 
@@ -90,25 +96,24 @@
 
 // The accordion body — height is driven by GSAP
 .itemBody {
+  flex: 1;
   overflow: hidden;
   height: 0;
   opacity: 0;
 }
 
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 44px;
+}
+
 .itemBodyInner {
   display: flex;
-  justify-content: flex-end;
-  padding-top: 40px;
-  padding-right: 160px;
-  gap: 80px;
-  @include mq-max("2xl") {
-    padding-right: 60px;
-  }
+  gap: clamp(24px, 9vw, 180px);
+  align-items: flex-start;
 
-  @include mq-max("lg") {
-    padding-right: 0;
-    gap: 40px;
-  }
   @include mq-max("md") {
     padding-top: 20px;
     flex-direction: column;
@@ -117,13 +122,13 @@
 
 .itemImage {
   position: relative;
-  width: 240px;
-  height: 300px;
+  width: clamp(160px, 16vw, 296px);
   flex-shrink: 0;
+  aspect-ratio: 296 / 310;
 
   @include mq-max("md") {
     width: 100%;
-    height: 220px;
+    aspect-ratio: 4 / 3;
   }
 }
 
@@ -131,7 +136,7 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  width: 590px;
+  width: 100%;
   max-width: 100%;
   .descriptionContent {
     display: flex;
@@ -150,13 +155,15 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  width: 275px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  gap: 0;
+  width: 100%;
 
   li {
     font-family: $font-monument-normal;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 400;
     line-height: normal;
     text-transform: uppercase;

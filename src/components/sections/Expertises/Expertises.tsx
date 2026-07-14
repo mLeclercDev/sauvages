@@ -215,52 +215,52 @@ const Expertises: React.FC<ExpertisesProps> = ({
                 style={!isScrollAnimated ? { height: "auto", opacity: 1 } : {}}
               >
                 <div className={styles.itemBodyInner}>
-                  {item.image && (() => {
-                    const imgUrl = getStrapiMedia(item.image, "large");
-                    return imgUrl ? (
-                      <div className={styles.itemImage}>
-                        <Image
-                          src={imgUrl}
-                          alt={item.title}
-                          fill
-                          style={{ objectFit: "contain" }}
-                          sizes="(max-width: 768px) 100vw, 240px"
-                        />
-                      </div>
-                    ) : null;
-                  })()}
-                  <div className={styles.description}>
-                    <div className={styles.descriptionContent}>
-                      {item.description
-                        .split("\n")
-                        .map((p: string, i: number) => (
-                          <p key={i}>{p}</p>
-                        ))}
-                    </div>
-                    {(!showHeader || item.hasButton) && (
-                      <Button
-                        label={
-                          item.button?.Texte ||
-                          data?.Bouton?.Texte ||
-                          "en savoir plus"
-                        }
-                        variant="outline"
-                        icon={arrowIcon}
-                        href={
-                          getButtonHref(item.button) || getButtonHref(data?.Bouton)
-                        }
-                        target={
-                          getButtonTarget(item.button) ||
-                          getButtonTarget(data?.Bouton)
-                        }
+                  {getStrapiMedia(item.image, "large") && (
+                    <div className={styles.itemImage}>
+                      <Image
+                        src={getStrapiMedia(item.image, "large")!}
+                        alt={item.title}
+                        fill
+                        class="fit-cover"
+                        sizes="(max-width: 768px) 100vw, 240px"
                       />
-                    )}
+                    </div>
+                  )}
+                  <div className={styles.itemContent}>
+                    <div className={styles.description}>
+                      <div className={styles.descriptionContent}>
+                        {item.description
+                          .split("\n")
+                          .map((p: string, i: number) => (
+                            <p key={i}>{p}</p>
+                          ))}
+                      </div>
+                      {(!showHeader || item.hasButton) && (
+                        <Button
+                          label={
+                            item.button?.Texte ||
+                            data?.Bouton?.Texte ||
+                            "en savoir plus"
+                          }
+                          variant="outline"
+                          icon={arrowIcon}
+                          href={
+                            getButtonHref(item.button) ||
+                            getButtonHref(data?.Bouton)
+                          }
+                          target={
+                            getButtonTarget(item.button) ||
+                            getButtonTarget(data?.Bouton)
+                          }
+                        />
+                      )}
+                    </div>
+                    <ul className={styles.subItems}>
+                      {item.subItems.map((sub: string, i: number) => (
+                        <li key={i}>{sub}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className={styles.subItems}>
-                    {item.subItems.map((sub: string, i: number) => (
-                      <li key={i}>{sub}</li>
-                    ))}
-                  </ul>
                 </div>
               </div>
             </div>

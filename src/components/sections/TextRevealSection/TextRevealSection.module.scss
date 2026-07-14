@@ -8,14 +8,13 @@
 
 .title {
   font-family: $font-monument-wide;
-  font-size: 44px;
+  font-size: 38px;
   line-height: 1.25;
   max-width: 100%;
-  letter-spacing: -0.02em;
   font-weight: 400;
 
   @include mq-max("2xl") {
-    font-size: 38px;
+    font-size: 34px;
   }
 
   @include mq-max("lg") {

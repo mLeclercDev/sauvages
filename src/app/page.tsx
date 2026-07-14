@@ -20,7 +20,17 @@ export default async function Home() {
       {
         populate: {
           Contenu: {
-            populate: "*",
+            on: {
+              "homepage.hero-section": { populate: "*" },
+              "homepage.intro": { populate: "*" },
+              "global.expertises-listing": {
+                populate: {
+                  Titre: true,
+                  Bouton: true,
+                  Item: { populate: "*" },
+                },
+              },
+            },
           },
         },
       },

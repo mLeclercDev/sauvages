@@ -282,52 +282,57 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
               </svg>
             </TransitionLink>
           </div>
-          <nav className={styles.desktopNav}>
-            <ul>
-              {resolvedNav.map((item) => (
-                <li key={item.Texte}>
-                  <TransitionLink href={normalizeHref(item.Url)}>
-                    <div className={styles.labelWrapper}>
-                      <span className={styles.label}>{item.Texte}</span>
-                      <span className={styles.label}>{item.Texte}</span>
-                    </div>
-                  </TransitionLink>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className={styles.desktopMenu}>
+            <nav className={styles.desktopNav}>
+              <ul>
+                {resolvedNav.map((item) => (
+                  <li key={item.Texte}>
+                    <TransitionLink href={normalizeHref(item.Url)}>
+                      <div className={styles.labelWrapper}>
+                        <span className={styles.label}>{item.Texte}</span>
+                        <span className={styles.label}>{item.Texte}</span>
+                      </div>
+                    </TransitionLink>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
-          <button className={styles.menuButton} onClick={toggleMenu}>
-            <div className={styles.menuButtonWrapper}>
-              <span ref={menuLabelRef}>MENU</span>
-              <span ref={fermerLabelRef}>FERMER</span>
+            <button className={styles.menuButton} onClick={toggleMenu}>
+              <div className={styles.menuButtonWrapper}>
+                <span ref={menuLabelRef}>MENU</span>
+                <span ref={fermerLabelRef}>FERMER</span>
+              </div>
+            </button>
+
+            <div
+              className={`${styles.desktopButton}`}
+              data-preload="header-cta"
+            >
+              <Button
+                label={bouton?.Texte || "contact"}
+                variant="outline"
+                color="white"
+                href={bouton?.Url ? normalizeHref(bouton.Url) : undefined}
+                target={bouton?.Blank ? "_blank" : undefined}
+                icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="15"
+                    viewBox="0 0 18 15"
+                    fill="none"
+                  >
+                    <path
+                      d="M6.92191 4.06698V1.75C6.92191 1.19772 7.36962 0.75 7.92191 0.75H15.75C16.3023 0.75 16.75 1.19771 16.75 1.75V8.24395C16.75 8.5832 16.475 8.85823 16.1357 8.85823H16.0374C15.7524 8.85823 15.5214 9.08924 15.5214 9.3742C15.5214 9.84481 14.943 10.0698 14.6251 9.7228L14.2102 9.27009C14.0672 9.11409 13.8654 9.02526 13.6537 9.02526H11.0857M10.2711 5.80411V11.5437C10.2711 12.0959 9.82334 12.5437 9.27105 12.5437H4.03304C3.8003 12.5437 3.57824 12.6413 3.42097 12.8129L2.87503 13.4084C2.557 13.7554 1.97856 13.5304 1.97856 13.0597C1.97856 12.7747 1.74751 12.5437 1.4625 12.5437H1.36428C1.02502 12.5437 0.75 12.2686 0.75 11.9294V5.80411C0.75 5.25183 1.19771 4.80411 1.75 4.80411H9.27105C9.82334 4.80411 10.2711 5.25183 10.2711 5.80411Z"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeMiterlimit="10"
+                    />
+                  </svg>
+                }
+              />
             </div>
-          </button>
-
-          <div className={`${styles.desktopButton}`} data-preload="header-cta">
-            <Button
-              label={bouton?.Texte || "contact"}
-              variant="outline"
-              color="white"
-              href={bouton?.Url ? normalizeHref(bouton.Url) : undefined}
-              target={bouton?.Blank ? "_blank" : undefined}
-              icon={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="18"
-                  height="15"
-                  viewBox="0 0 18 15"
-                  fill="none"
-                >
-                  <path
-                    d="M6.92191 4.06698V1.75C6.92191 1.19772 7.36962 0.75 7.92191 0.75H15.75C16.3023 0.75 16.75 1.19771 16.75 1.75V8.24395C16.75 8.5832 16.475 8.85823 16.1357 8.85823H16.0374C15.7524 8.85823 15.5214 9.08924 15.5214 9.3742C15.5214 9.84481 14.943 10.0698 14.6251 9.7228L14.2102 9.27009C14.0672 9.11409 13.8654 9.02526 13.6537 9.02526H11.0857M10.2711 5.80411V11.5437C10.2711 12.0959 9.82334 12.5437 9.27105 12.5437H4.03304C3.8003 12.5437 3.57824 12.6413 3.42097 12.8129L2.87503 13.4084C2.557 13.7554 1.97856 13.5304 1.97856 13.0597C1.97856 12.7747 1.74751 12.5437 1.4625 12.5437H1.36428C1.02502 12.5437 0.75 12.2686 0.75 11.9294V5.80411C0.75 5.25183 1.19771 4.80411 1.75 4.80411H9.27105C9.82334 4.80411 10.2711 5.25183 10.2711 5.80411Z"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeMiterlimit="10"
-                  />
-                </svg>
-              }
-            />
           </div>
         </div>
 

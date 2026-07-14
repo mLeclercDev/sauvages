@@ -332,7 +332,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
                 aria-label="Fermer"
                 type="button"
               >
-                SCROLL DOWN
+                Fermer
               </button>
             </div>
           </div>
@@ -353,18 +353,27 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
             )}
 
             <div className={styles.footerActions}>
-              <label className={`${styles.checkboxRow} ${errors.acceptTerms ? styles.hasError : ""}`}>
-                <input 
-                  type="checkbox" 
+              <label
+                className={`${styles.checkboxRow} ${errors.acceptTerms ? styles.hasError : ""}`}
+              >
+                <input
+                  type="checkbox"
                   checked={!!formValues.acceptTerms}
-                  onChange={(e) => handleInputChange("acceptTerms", e.target.checked ? "true" : "")}
+                  onChange={(e) =>
+                    handleInputChange(
+                      "acceptTerms",
+                      e.target.checked ? "true" : ""
+                    )
+                  }
                 />
                 <span>
                   J'ai lu et j'accepte les <a href="#">conditions</a> ainsi que
                   la <a href="#">politique de confidentialité</a>.
                 </span>
                 {errors.acceptTerms && (
-                  <span className={styles.errorMessage}>{errors.acceptTerms}</span>
+                  <span className={styles.errorMessage}>
+                    {errors.acceptTerms}
+                  </span>
                 )}
               </label>
               <label className={styles.checkboxRow}>

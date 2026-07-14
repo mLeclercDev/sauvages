@@ -18,9 +18,9 @@ export default async function ExpertisesPage() {
             on: {
               "global.expertises-listing": {
                 populate: {
-                  Item: {
-                    populate: "*",
-                  },
+                  Titre: true,
+                  Bouton: true,
+                  Item: { populate: "*" },
                 },
               },
               "expertise.hero-section": {

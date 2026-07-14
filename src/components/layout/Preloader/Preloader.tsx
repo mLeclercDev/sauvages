@@ -8,8 +8,8 @@ export default function Preloader() {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Si déjà visité, on retire juste la classe CSS et on s'arrête
-    if (sessionStorage.getItem("visited_home")) {
+    // Le preloader ne s'active que sur la home page
+    if (sessionStorage.getItem("visited_home") || window.location.pathname !== "/") {
       document.documentElement.classList.remove("is-first-visit");
       return;
     }

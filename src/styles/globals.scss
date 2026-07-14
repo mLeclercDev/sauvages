@@ -12,7 +12,7 @@
   --font-size-body: 16px;
 
   @include mq("2xl") {
-    --font-size-body: 18px;
+    --font-size-body: 16px;
   }
 }
 
@@ -106,19 +106,19 @@ h3,
   font-weight: 400;
 
   @include mq("sm") {
-    font-size: 30px;
+    font-size: 28px;
   }
 
   @include mq("md") {
-    font-size: 36px;
+    font-size: 30px;
   }
 
   @include mq("lg") {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   @include mq("2xl") {
-    font-size: 44px;
+    font-size: 38px;
   }
 }
 
@@ -132,6 +132,10 @@ h3,
   text-transform: uppercase;
 
   @include mq-max("md") {
+    font-size: 14px;
+  }
+
+  &.sm {
     font-size: 14px;
   }
 }

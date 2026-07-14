@@ -54,6 +54,13 @@ export default async function AgencePage() {
               "global.blog-listing": {
                 populate: "*",
               },
+              "agence.cta": {
+                populate: {
+                  Bouton: {
+                    populate: ["Icone"],
+                  },
+                },
+              },
             },
           },
         },
@@ -83,16 +90,18 @@ export default async function AgencePage() {
       <AgenceHero data={heroData} />
       <AgenceIdentite data={identiteData} />
       <AgenceValues data={agenceValuesData} />
-      <TextRevealSection
-        pt="sm"
-        pb="sm"
-        text={introText || ""}
-      />
+      <TextRevealSection pt="sm" pb="sm" text={introText || ""} />
       <FullWidthImage
         pt="none"
         pb="sm"
-        src={getStrapiMedia(introImageData?.Image, undefined) || "/images/agence-hero.png"}
-        alt={introImageData?.Image?.alternativeText || "L'agence Sauvages en action"}
+        src={
+          getStrapiMedia(introImageData?.Image, undefined) ||
+          "/images/agence-hero.png"
+        }
+        alt={
+          introImageData?.Image?.alternativeText ||
+          "L'agence Sauvages en action"
+        }
       />
       <AgenceTeam data={equipePresentationData} />
       <AgenceStaff data={equipeListingData} />
