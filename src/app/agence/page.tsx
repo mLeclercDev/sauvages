@@ -32,6 +32,7 @@ export default async function AgencePage() {
               },
               "agence.equipe-presentation": {
                 populate: {
+                  Titre: true,
                   EquipePresentationItem: {
                     populate: ["Image"],
                   },
