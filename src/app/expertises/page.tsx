@@ -9,6 +9,8 @@ import { fetchAPI } from "@/utils/strapi";
 export default async function ExpertisesPage() {
   let heroData = null;
   let listingData = null;
+  let titreTexteData = null;
+  let contenu: any[] = [];
 
   try {
     const expertiseData = await fetchAPI(
@@ -35,29 +37,21 @@ export default async function ExpertisesPage() {
       {}
     );
 
-    let contenu = [];
     if (expertiseData?.data?.attributes?.Contenu) {
       contenu = expertiseData.data.attributes.Contenu;
     } else if (expertiseData?.data?.Contenu) {
       contenu = expertiseData.data.Contenu;
-    } else if (
-      Array.isArray(expertiseData?.data) &&
-      expertiseData.data.length > 0
-    ) {
+    } else if (Array.isArray(expertiseData?.data) && expertiseData.data.length > 0) {
       const firstEntry = expertiseData.data[0];
       contenu = firstEntry.attributes?.Contenu || firstEntry.Contenu || [];
     }
 
-    heroData = contenu.find(
-      (m: any) => m.__component === "expertise.hero-section"
-    );
-
+    heroData = contenu.find((m: any) => m.__component === "expertise.hero-section");
     listingData = contenu.find((m: any) => m.__component === "global.expertises-listing");
+    titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
   } catch (error) {
     console.error("Failed to fetch expertise data:", error);
   }
-
-  const titreTexteData = contenu?.find?.((m: any) => m.__component === "global.titre-texte");
 
   // Si Titre et Bouton sont vides, on masque le header et on désactive l'anim scroll
   const hasHeader = !!(listingData?.Titre || listingData?.Bouton);
