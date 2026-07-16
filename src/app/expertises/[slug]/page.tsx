@@ -3,7 +3,7 @@ import { fetchAPI } from "@/utils/strapi";
 export const revalidate = 60;
 
 import { notFound } from "next/navigation";
-import ExpertiseHeroSingle from "@/components/sections/Expertises/ExpertiseHeroSingle";
+import Intro from "@/components/sections/Intro/Intro";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
@@ -56,8 +56,8 @@ export default async function ExpertisePage({ params }: PageProps) {
 
   const attrs = matchedEntry.attributes || matchedEntry;
   const contenu = Array.isArray(attrs?.Contenu) ? attrs.Contenu : [];
-  const heroBlock = contenu.find(
-    (block: any) => block.__component === "expertise.hero-section-single"
+  const introBlock = contenu.find(
+    (block: any) => block.__component === "homepage.intro"
   );
   const detailBlock = contenu.find(
     (block: any) => block.__component === "expertise.expertise-description-single"
@@ -71,7 +71,7 @@ export default async function ExpertisePage({ params }: PageProps) {
 
   return (
     <main>
-      <ExpertiseHeroSingle data={heroBlock} />
+      <Intro data={introBlock} />
       <TitreTexte data={titreTexteBlock} />
       <TexteImage data={texteImageBlock} />
       <ExpertiseDetailsSingle data={detailBlock} />
