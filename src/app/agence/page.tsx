@@ -3,6 +3,7 @@ import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
 export const revalidate = 60;
 
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
+import TexteImage from "@/components/sections/TexteImage/TexteImage";
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
 import AgenceIdentite from "@/components/sections/Agence/AgenceIdentite";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
@@ -85,11 +86,13 @@ export default async function AgencePage() {
   );
   const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
   const agenceValuesData = contenu.find((m) => m.__component === "agence.agence");
+  const texteImageData = contenu.find((m) => m.__component === "global.texte-image");
 
   return (
     <main>
       <AgenceHero data={heroData} />
       <TitreTexte data={titreTexteData} />
+      <TexteImage data={texteImageData} />
       <AgenceValues data={agenceValuesData} />
       <AgenceTeam data={equipePresentationData} />
       <AgenceStaff data={equipeListingData} />

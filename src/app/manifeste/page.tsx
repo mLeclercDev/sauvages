@@ -3,6 +3,7 @@ import React from "react";
 export const revalidate = 60;
 
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
+import TexteImage from "@/components/sections/TexteImage/TexteImage";
 import ManifesteHero from "@/components/sections/Manifeste/ManifesteHero";
 import ManifesteCommitments from "@/components/sections/Manifeste/ManifesteCommitments";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
@@ -43,11 +44,13 @@ export default async function ManifestePage() {
 
   const ctaData = contenu.find((m) => m.__component === "agence.cta");
   const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
+  const texteImageData = contenu.find((m) => m.__component === "global.texte-image");
 
   return (
     <main>
       <ManifesteHero data={heroData} />
       <TitreTexte data={titreTexteData} />
+      <TexteImage data={texteImageData} />
       <ManifesteCommitments data={missionData} />
       <RecentProjects />
       <AgenceCta data={ctaData} />

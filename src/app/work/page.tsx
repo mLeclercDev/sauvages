@@ -5,10 +5,12 @@ export const revalidate = 60;
 
 import ProjetsPageContent from "@/components/sections/Projects/ProjetsPageContent";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
+import TexteImage from "@/components/sections/TexteImage/TexteImage";
 
 export default async function ProjetsPage() {
   let projects = [];
   let titreTexteData = null;
+  let texteImageData = null;
 
   try {
     const [projectsData, workData] = await Promise.all([
@@ -30,6 +32,7 @@ export default async function ProjetsPage() {
       workData?.data?.Contenu ||
       [];
     titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
+    texteImageData = contenu.find((m: any) => m.__component === "global.texte-image");
   } catch (error) {
     console.error("Failed to fetch projects:", error);
   }
@@ -37,6 +40,7 @@ export default async function ProjetsPage() {
   return (
     <main>
       <TitreTexte data={titreTexteData} />
+      <TexteImage data={texteImageData} />
       <ProjetsPageContent projects={projects} />
     </main>
   );

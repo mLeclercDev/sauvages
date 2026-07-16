@@ -7,6 +7,7 @@ import ExpertiseHeroSingle from "@/components/sections/Expertises/ExpertiseHeroS
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
+import TexteImage from "@/components/sections/TexteImage/TexteImage";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -64,11 +65,15 @@ export default async function ExpertisePage({ params }: PageProps) {
   const titreTexteBlock = contenu.find(
     (block: any) => block.__component === "global.titre-texte"
   );
+  const texteImageBlock = contenu.find(
+    (block: any) => block.__component === "global.texte-image"
+  );
 
   return (
     <main>
       <ExpertiseHeroSingle data={heroBlock} />
       <TitreTexte data={titreTexteBlock} />
+      <TexteImage data={texteImageBlock} />
       <ExpertiseDetailsSingle data={detailBlock} />
       <RecentProjects limit={4} />
     </main>

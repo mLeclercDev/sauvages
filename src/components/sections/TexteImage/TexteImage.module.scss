@@ -1,0 +1,74 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.texteImage {
+  .grid {
+    display: grid;
+    grid-template-columns: 45fr 55fr;
+    gap: $space-16;
+    align-items: center;
+
+    @include mq-max("md") {
+      grid-template-columns: 1fr;
+      gap: $space-10;
+    }
+  }
+
+  &.imageRight .grid {
+    grid-template-columns: 55fr 45fr;
+
+    .imageWrapper {
+      order: 2;
+    }
+
+    .content {
+      order: 1;
+    }
+
+    @include mq-max("md") {
+      grid-template-columns: 1fr;
+
+      .imageWrapper {
+        order: 1;
+      }
+
+      .content {
+        order: 2;
+      }
+    }
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: $rounded-lg;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.title {
+  font-family: $font-monument-wide;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+
+  p {
+    font-size: clamp(15px, 1.2vw, 17px);
+    line-height: 1.65;
+    margin: 0;
+    color: $color-noir-svgs;
+  }
+}
