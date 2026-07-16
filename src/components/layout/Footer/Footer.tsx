@@ -39,6 +39,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
       const now = new Date();
       setTime(
         now.toLocaleTimeString("fr-FR", {
+          second: "2-digit",
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
@@ -80,7 +81,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
     };
 
     updateTime();
-    const interval = setInterval(updateTime, 1000 * 60);
+    const interval = setInterval(updateTime, 1000);
 
     // Météo de Rennes (Open-Meteo, sans clé API), rafraîchie toutes les 3 heures
     const updateTemperature = async () => {
