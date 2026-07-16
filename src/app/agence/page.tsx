@@ -83,8 +83,7 @@ export default async function AgencePage() {
     (m) => m.__component === "agence.equipe-listing"
   );
   const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
-
-  const introText = introImageData?.Texte?.map((p: any) => p.children?.map((c: any) => c.text).join("")).join(" ");
+  const agenceValuesData = contenu.find((m) => m.__component === "agence.agence");
 
   return (
     <main>
