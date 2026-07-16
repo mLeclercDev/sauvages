@@ -81,10 +81,8 @@ export default async function ExpertisePage({ params }: PageProps) {
     <main>
       <TextRevealSection data={textRevealBlock} />
       <FullWidthImage data={fullWidthImageBlock} />
-      <Intro data={introBlock} />
       <TitreTexte data={titreTexteBlock} />
       <TexteImage data={texteImageBlock} />
-      <ExpertiseDetailsSingle data={detailBlock} />
       <RecentProjects limit={4} />
     </main>
   );
