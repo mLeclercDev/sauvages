@@ -8,6 +8,8 @@ import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDe
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import TexteImage from "@/components/sections/TexteImage/TexteImage";
+import FullWidthImage from "@/components/sections/FullWidthImage/FullWidthImage";
+import TextRevealSection from "@/components/sections/TextRevealSection/TextRevealSection";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -68,9 +70,17 @@ export default async function ExpertisePage({ params }: PageProps) {
   const texteImageBlock = contenu.find(
     (block: any) => block.__component === "global.texte-image"
   );
+  const fullWidthImageBlock = contenu.find(
+    (block: any) => block.__component === "global.full-width-image"
+  );
+  const textRevealBlock = contenu.find(
+    (block: any) => block.__component === "global.text-reveal"
+  );
 
   return (
     <main>
+      <TextRevealSection data={textRevealBlock} />
+      <FullWidthImage data={fullWidthImageBlock} />
       <Intro data={introBlock} />
       <TitreTexte data={titreTexteBlock} />
       <TexteImage data={texteImageBlock} />

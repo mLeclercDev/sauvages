@@ -5,22 +5,28 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./FullWidthImage.module.scss";
+import { getStrapiMedia } from "@/utils/strapi";
 
 interface FullWidthImageProps {
-  src: string;
-  alt: string;
+  src?: string;
+  alt?: string;
+  data?: any;
   priority?: boolean;
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
   pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 }
 
-const FullWidthImage: React.FC<FullWidthImageProps> = ({ 
-  src, 
-  alt, 
+const FullWidthImage: React.FC<FullWidthImageProps> = ({
+  src: srcProp,
+  alt: altProp,
+  data,
   priority = false,
   pt = "lg",
   pb = "lg"
 }) => {
+  const src = data ? getStrapiMedia(data.Image, undefined) : srcProp;
+  const alt = data ? (data.Alt || data.Image?.alternativeText || "") : (altProp || "");
+
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -48,6 +54,8 @@ const FullWidthImage: React.FC<FullWidthImageProps> = ({
 
     return () => ctx.revert();
   }, []);
+
+  if (!src) return null;
 
   return (
     <section className={`${styles.fullWidthImage} pt-${pt} pb-${pb}`}>

@@ -6,20 +6,25 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./TextRevealSection.module.scss";
 
 interface TextRevealSectionProps {
-  text: string;
+  text?: string;
   label?: string;
+  data?: any;
   showLabel?: boolean;
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
   pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
 }
 
-const TextRevealSection: React.FC<TextRevealSectionProps> = ({ 
-  text, 
-  label,
+const TextRevealSection: React.FC<TextRevealSectionProps> = ({
+  text: textProp,
+  label: labelProp,
+  data,
   showLabel = true,
   pt = "lg",
   pb = "lg"
 }) => {
+  const text = data ? data.Texte : textProp;
+  const label = data ? data.Label : labelProp;
+
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
@@ -63,6 +68,8 @@ const TextRevealSection: React.FC<TextRevealSectionProps> = ({
 
     return () => ctx.revert();
   }, []);
+
+  if (!text) return null;
 
   const renderWords = (text: string) => {
     return text.split(" ").map((word, index) => (
