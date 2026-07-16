@@ -12,7 +12,7 @@ export default async function ClientsScroll({ label, title }: ClientsScrollProps
 
   try {
     const res = await fetchAPI("/clients", {
-      filters: { Afficher: { $eq: true } },
+      // filters: { Afficher: { $eq: true } }, // temporairement désactivé pour debug
       populate: { Logo: "*", Competences: "*" },
       sort: ["name:asc"],
     });
