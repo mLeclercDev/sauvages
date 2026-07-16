@@ -1,5 +1,5 @@
 import React from "react";
-import Projects from "@/components/sections/Projects/Projects";
+import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import Expertises from "@/components/sections/Expertises/Expertises";
 import ExpertiseHero from "@/components/sections/Expertises/ExpertiseHero";
@@ -68,7 +68,7 @@ export default async function ExpertisesPage() {
         showHeader={hasHeader}
         isScrollAnimated={hasHeader}
       />
-      <Projects />
+      <RecentProjects limit={4} />
       <LogoSlider />
     </main>
   );

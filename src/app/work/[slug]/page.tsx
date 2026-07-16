@@ -53,7 +53,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
   return (
     <main>
       <ProjectDetail project={project} otherProjects={otherProjects} />
-      <RecentProjects />
+      <RecentProjects limit={4} />
     </main>
   );
 }

@@ -60,3 +60,14 @@
     gap: $space-10;
   }
 }
+
+.grid4 {
+  @include mq("sm") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mq("lg") {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $space-8;
+  }
+}

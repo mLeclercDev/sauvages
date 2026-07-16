@@ -5,6 +5,7 @@ export const revalidate = 60;
 import { notFound } from "next/navigation";
 import ExpertiseHeroSingle from "@/components/sections/Expertises/ExpertiseHeroSingle";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
+import RecentProjects from "@/components/sections/Projects/RecentProjects";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -64,6 +65,7 @@ export default async function ExpertisePage({ params }: PageProps) {
     <main>
       <ExpertiseHeroSingle data={heroBlock} />
       <ExpertiseDetailsSingle data={detailBlock} />
+      <RecentProjects limit={4} />
     </main>
   );
 }

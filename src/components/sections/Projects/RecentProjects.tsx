@@ -7,11 +7,13 @@ import styles from "./RecentProjects.module.scss";
 interface RecentProjectsProps {
   category?: string;
   title?: string;
+  limit?: number;
 }
 
 export default async function RecentProjects({
   category,
   title = "Nos réalisations",
+  limit = 3,
 }: RecentProjectsProps) {
   let projects = [];
 
@@ -36,7 +38,7 @@ export default async function RecentProjects({
       },
       sort: ["publishedAt:desc"],
       pagination: {
-        limit: 3,
+        limit,
       },
       filters,
     });
@@ -58,7 +60,7 @@ export default async function RecentProjects({
           </Link>
         </div>
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} ${limit === 4 ? styles.grid4 : ""}`}>
           {projects.map((project: any) => {
             const attrs = project.attributes || project;
             return (
