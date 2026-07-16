@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import ExpertiseHeroSingle from "@/components/sections/Expertises/ExpertiseHeroSingle";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
+import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -60,10 +61,14 @@ export default async function ExpertisePage({ params }: PageProps) {
   const detailBlock = contenu.find(
     (block: any) => block.__component === "expertise.expertise-description-single"
   );
+  const titreTexteBlock = contenu.find(
+    (block: any) => block.__component === "global.titre-texte"
+  );
 
   return (
     <main>
       <ExpertiseHeroSingle data={heroBlock} />
+      <TitreTexte data={titreTexteBlock} />
       <ExpertiseDetailsSingle data={detailBlock} />
       <RecentProjects limit={4} />
     </main>

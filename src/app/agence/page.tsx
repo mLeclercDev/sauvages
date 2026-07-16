@@ -2,6 +2,7 @@ import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
 
 export const revalidate = 60;
 
+import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
 import AgenceIdentite from "@/components/sections/Agence/AgenceIdentite";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
@@ -61,6 +62,7 @@ export default async function AgencePage() {
                   },
                 },
               },
+              "global.titre-texte": { populate: "*" },
             },
           },
         },
@@ -82,12 +84,14 @@ export default async function AgencePage() {
   const equipeListingData = contenu.find((m) => m.__component === "agence.equipe-listing");
   const histoireData = contenu.find((m) => m.__component === "agence.histoire");
   const blogListingData = contenu.find((m) => m.__component === "global.blog-listing");
+  const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
 
   const introText = introImageData?.Texte?.map((p: any) => p.children?.map((c: any) => c.text).join("")).join(" ");
 
   return (
     <main>
       <AgenceHero data={heroData} />
+      <TitreTexte data={titreTexteData} />
       <AgenceIdentite data={identiteData} />
       <AgenceValues data={agenceValuesData} />
       <TextRevealSection pt="sm" pb="sm" text={introText || ""} />

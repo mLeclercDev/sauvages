@@ -6,6 +6,7 @@ import Blog from "@/components/sections/Blog/Blog";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import { fetchAPI } from "@/utils/strapi";
 import ClientsScroll from "@/components/sections/Clients/ClientsScroll";
+import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 
 export const revalidate = 60;
 
@@ -13,6 +14,7 @@ export default async function Home() {
   let heroData = null;
   let introData = null;
   let expertisesData = null;
+  let titreTexteData = null;
 
   try {
     const homepageData = await fetchAPI(
@@ -30,6 +32,7 @@ export default async function Home() {
                   Item: { populate: "*" },
                 },
               },
+              "global.titre-texte": { populate: "*" },
             },
           },
         },
@@ -44,10 +47,8 @@ export default async function Home() {
     introData = contenu.find((m: any) => m.__component === "homepage.intro");
 
     // On cherche le module d'expertises
-    expertisesData = contenu.find(
-      (m: any) => m.__component === "global.expertises-listing"
-    );
-
+    expertisesData = contenu.find((m: any) => m.__component === "global.expertises-listing");
+    titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);
   }
@@ -59,6 +60,7 @@ export default async function Home() {
     <main>
       <Hero data={heroData} />
       <Intro data={introData} />
+      <TitreTexte data={titreTexteData} />
       <Expertises
         data={expertisesData}
         showHeader={hasExpertiseHeader}

@@ -1,5 +1,6 @@
 import React from "react";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
+import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import Expertises from "@/components/sections/Expertises/Expertises";
 import ExpertiseHero from "@/components/sections/Expertises/ExpertiseHero";
@@ -26,6 +27,7 @@ export default async function ExpertisesPage() {
               "expertise.hero-section": {
                 populate: "*",
               },
+              "global.titre-texte": { populate: "*" },
             },
           },
         },
@@ -50,12 +52,12 @@ export default async function ExpertisesPage() {
       (m: any) => m.__component === "expertise.hero-section"
     );
 
-    listingData = contenu.find(
-      (m: any) => m.__component === "global.expertises-listing"
-    );
+    listingData = contenu.find((m: any) => m.__component === "global.expertises-listing");
   } catch (error) {
     console.error("Failed to fetch expertise data:", error);
   }
+
+  const titreTexteData = contenu?.find?.((m: any) => m.__component === "global.titre-texte");
 
   // Si Titre et Bouton sont vides, on masque le header et on désactive l'anim scroll
   const hasHeader = !!(listingData?.Titre || listingData?.Bouton);
@@ -63,6 +65,7 @@ export default async function ExpertisesPage() {
   return (
     <main>
       <ExpertiseHero data={heroData} />
+      <TitreTexte data={titreTexteData} />
       <Expertises
         data={listingData}
         showHeader={hasHeader}
