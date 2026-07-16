@@ -184,7 +184,7 @@ const ManifesteCommitments: React.FC<ManifesteCommitmentsProps> = ({
     <section className={`${styles.manifesteCommitments} pt-top pb-bottom`}>
       <div className="container">
         <div className={styles.header}>
-          <span className="label">{data?.Label || "ENTREPRISE À MISSION"}</span>
+          {data?.Label && <span className="label">{data.Label}</span>}
           <div className={styles.statement}>
             <h2 ref={titleRef}>{renderTitleContent()}</h2>
           </div>

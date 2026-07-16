@@ -82,20 +82,22 @@ const AgenceHero: React.FC<AgenceHeroProps> = ({ data }) => {
   return (
     <section className={styles.agenceHero}>
       <div className="container">
-        <p className="label">{data?.Label || "L'AGENCE"}</p>
+        {data?.Label && <p className="label">{data.Label}</p>}
         <h1 className={styles.title} ref={titleRef}>
           {renderWords(fullText)}
         </h1>
-        <div className={styles.imageWrapper} ref={imageRef}>
-          <Image
-            src={getStrapiMedia(data?.Image, undefined) || "/images/agence-hero.png"}
-            alt={data?.Image?.alternativeText || "L'agence Sauvages"}
-            fill
-            priority
-            unoptimized={true}
-            className="fit-cover"
-          />
-        </div>
+        {getStrapiMedia(data?.Image, undefined) && (
+          <div className={styles.imageWrapper} ref={imageRef}>
+            <Image
+              src={getStrapiMedia(data?.Image, undefined)!}
+              alt={data?.Image?.alternativeText || ""}
+              fill
+              priority
+              unoptimized={true}
+              className="fit-cover"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

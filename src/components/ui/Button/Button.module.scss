@@ -6,13 +6,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 20px;
+  gap: 8px;
+  padding: 10px 14px;
   border-radius: $rounded-full;
   font-family: $font-monument-normal;
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.7px;
   cursor: pointer;
   text-decoration: none;
   border: 1.5px solid transparent;
@@ -52,12 +52,12 @@
 .labelWrapper {
   position: relative;
   overflow: hidden;
-  height: 1.2em;
+  //height: 1.2em;
 }
 
 .label {
   display: block;
-  line-height: 1.2em;
+  line-height: 1;
   @include transition-standard;
 
   &:nth-child(2) {
@@ -81,8 +81,8 @@
 
   // Ensure the icon scales correctly
   svg {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
   }
 }
 

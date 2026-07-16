@@ -44,45 +44,20 @@ const Expertises: React.FC<ExpertisesProps> = ({
   const getButtonHref = (button: any) => button?.URL || button?.Url || button?.url;
   const getButtonTarget = (button: any) => (button?.Blank ? "_blank" : undefined);
 
-  const defaultExpertises = [
-    {
-      title: "Identité de marque",
-      description: "Nous créons des univers visuels forts et cohérents qui racontent votre histoire et captivent votre audience.",
-      subItems: ["Logotype & Charte graphique", "Positionnement de marque", "Naming & Signature"],
-      hasButton: true,
-    },
-    {
-      title: "Stratégie Digitale",
-      description: "Nous concevons des expériences numériques performantes centrées sur l'utilisateur et vos objectifs business.",
-      subItems: ["Site Web & E-commerce", "UI / UX Design", "SEO & Performance"],
-      hasButton: true,
-    },
-    {
-      title: "Content Marketing",
-      description: "Nous produisons des contenus créatifs et engageants pour faire rayonner votre expertise sur tous vos canaux.",
-      subItems: ["Social Media", "Production Vidéo & Photo", "Rédaction web"],
-      hasButton: true,
-    }
-  ];
-
-  // Mapping des données Strapi avec fallbacks
-  const expertiseItems =
-    data?.Item?.length > 0
-      ? data.Item.map((item: any) => ({
-          title: item.Name,
-          image: item.Image || null,
-          description:
-            item.Description?.map((block: any) =>
-              block.children?.map((c: any) => c.text).join("")
-            ).join("\n") || "",
-          subItems:
-            item.Listes?.map((block: any) =>
-              block.children?.map((c: any) => c.text).join("")
-            ) || [],
-          hasButton: item.PresenceBouton,
-          button: item.Bouton,
-        }))
-      : defaultExpertises;
+  const expertiseItems = data?.Item?.map((item: any) => ({
+    title: item.Name,
+    image: item.Image || null,
+    description:
+      item.Description?.map((block: any) =>
+        block.children?.map((c: any) => c.text).join("")
+      ).join("\n") || "",
+    subItems:
+      item.Listes?.map((block: any) =>
+        block.children?.map((c: any) => c.text).join("")
+      ) || [],
+    hasButton: item.PresenceBouton,
+    button: item.Bouton,
+  })) || [];
 
   useEffect(() => {
     if (!isScrollAnimated || expertiseItems.length < 2) return;
@@ -168,23 +143,22 @@ const Expertises: React.FC<ExpertisesProps> = ({
       <div className="container">
         {showHeader && (
           <div className={styles.header}>
-            <h2 className={styles.sectionTitle}>
-              {data?.Titre?.Texte || data?.Titre || (
-                <>
-                  Nos
-                  <br /> expertises
-                </>
-              )}
-            </h2>
+            {(data?.Titre?.Texte || data?.Titre) && (
+              <h2 className={styles.sectionTitle}>
+                {data?.Titre?.Texte || data?.Titre}
+              </h2>
+            )}
 
-            <Button
-              className={styles.buttonDesktop}
-              label={data?.Bouton?.Texte || "en savoir plus"}
-              variant="outline"
-              icon={arrowIcon}
-              href={getButtonHref(data?.Bouton)}
-              target={getButtonTarget(data?.Bouton)}
-            />
+            {data?.Bouton?.Texte && (
+              <Button
+                className={styles.buttonDesktop}
+                label={data.Bouton.Texte}
+                variant="outline"
+                icon={arrowIcon}
+                href={getButtonHref(data?.Bouton)}
+                target={getButtonTarget(data?.Bouton)}
+              />
+            )}
           </div>
         )}
 
@@ -202,7 +176,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
             >
               <div className={styles.itemHeader}>
                 <div className={styles.itemMeta}>
-                  <span className={styles.itemIndex}>{index + 1}.</span>
+                  <span className={styles.itemIndex}>{index + 1}</span>
                   <h3 className={styles.itemTitle}>{item.title}</h3>
                 </div>
               </div>
@@ -235,40 +209,36 @@ const Expertises: React.FC<ExpertisesProps> = ({
                             <p key={i}>{p}</p>
                           ))}
                       </div>
-                      {(!showHeader || item.hasButton) && (
-                        <Button
-                          label={
-                            item.button?.Texte ||
-                            data?.Bouton?.Texte ||
-                            "en savoir plus"
-                          }
-                          variant="outline"
-                          icon={arrowIcon}
-                          href={
-                            getButtonHref(item.button) ||
-                            getButtonHref(data?.Bouton)
-                          }
-                          target={
-                            getButtonTarget(item.button) ||
-                            getButtonTarget(data?.Bouton)
-                          }
-                        />
-                      )}
                     </div>
                     <ul className={styles.subItems}>
                       {item.subItems.map((sub: string, i: number) => (
                         <li key={i}>{sub}</li>
                       ))}
                     </ul>
+                    {(!showHeader || item.hasButton) && (
+                      <Button
+                        label={item.button?.Texte || data?.Bouton?.Texte || ""}
+                        variant="outline"
+                        icon={arrowIcon}
+                        href={
+                          getButtonHref(item.button) ||
+                          getButtonHref(data?.Bouton)
+                        }
+                        target={
+                          getButtonTarget(item.button) ||
+                          getButtonTarget(data?.Bouton)
+                        }
+                      />
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           ))}
-          {isScrollAnimated && (
+          {isScrollAnimated && data?.Bouton?.Texte && (
             <Button
               className={styles.buttonMobile}
-              label={data?.Bouton?.Texte || "en savoir plus"}
+              label={data.Bouton.Texte}
               variant="outline"
               icon={arrowIcon}
               href={getButtonHref(data?.Bouton)}

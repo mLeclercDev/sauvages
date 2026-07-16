@@ -25,8 +25,8 @@ const BG_DEFAULT = "#f6f6f6";
 
 const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
   clients,
-  label = "NOS CLIENTS",
-  title = "Ils nous ont fait confiance",
+  label,
+  title,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const nameRefs = useRef<(HTMLSpanElement | null)[]>([]);
@@ -133,8 +133,8 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
       <div className="container">
         <div className={styles.layout}>
           <div className={styles.left}>
-            <span className="label">{label}</span>
-            <h2 className={styles.sectionTitle}>{title}</h2>
+            {label && <span className="label">{label}</span>}
+            {title && <h2 className={styles.sectionTitle}>{title}</h2>}
           </div>
 
           <div ref={imageAreaRef} className={styles.imageArea}>

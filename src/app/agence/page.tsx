@@ -78,12 +78,10 @@ export default async function AgencePage() {
   // Extraction des modules pour distribution
   const heroData = contenu.find((m) => m.__component === "agence.hero-section");
   const identiteData = contenu.find((m) => m.__component === "agence.identite");
-  const agenceValuesData = contenu.find((m) => m.__component === "agence.agence");
-  const introImageData = contenu.find((m) => m.__component === "global.intro-image");
   const equipePresentationData = contenu.find((m) => m.__component === "agence.equipe-presentation");
-  const equipeListingData = contenu.find((m) => m.__component === "agence.equipe-listing");
-  const histoireData = contenu.find((m) => m.__component === "agence.histoire");
-  const blogListingData = contenu.find((m) => m.__component === "global.blog-listing");
+  const equipeListingData = contenu.find(
+    (m) => m.__component === "agence.equipe-listing"
+  );
   const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
 
   const introText = introImageData?.Texte?.map((p: any) => p.children?.map((c: any) => c.text).join("")).join(" ");
@@ -92,25 +90,9 @@ export default async function AgencePage() {
     <main>
       <AgenceHero data={heroData} />
       <TitreTexte data={titreTexteData} />
-      <AgenceIdentite data={identiteData} />
       <AgenceValues data={agenceValuesData} />
-      <TextRevealSection pt="sm" pb="sm" text={introText || ""} />
-      <FullWidthImage
-        pt="none"
-        pb="sm"
-        src={
-          getStrapiMedia(introImageData?.Image, undefined) ||
-          "/images/agence-hero.png"
-        }
-        alt={
-          introImageData?.Image?.alternativeText ||
-          "L'agence Sauvages en action"
-        }
-      />
       <AgenceTeam data={equipePresentationData} />
       <AgenceStaff data={equipeListingData} />
-      <AgenceHistory data={histoireData} />
-      <Blog headerData={blogListingData} />
     </main>
   );
 }

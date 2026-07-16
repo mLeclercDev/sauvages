@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 28px 0;
+  padding: 14px 0 0;
   background-color: #000;
   mix-blend-mode: difference;
   isolation: isolate;
@@ -173,7 +173,7 @@
             .label {
               display: block;
               line-height: 1.2em;
-              font-size: 18px;
+              font-size: 14px;
               @include transition-standard;
 
               &:nth-child(2) {

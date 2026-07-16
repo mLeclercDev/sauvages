@@ -24,7 +24,7 @@ const renderDescription = (blocks?: any[]) => {
 const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) => {
   const TitleTag = (data?.Titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
   const items: any[] = data?.EquipePresentationItem || [];
-  const imageItems = items.length > 0 ? items : [{ Image: null, Nom: undefined }];
+  const imageItems = items;
 
   const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -98,7 +98,10 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
   }, [items.length]);
 
   return (
-    <section ref={sectionRef} className={`${styles.agenceTeam} pt-${pt} pb-${pb}`}>
+    <section
+      ref={sectionRef}
+      className={`${styles.agenceTeam} pt-${pt} pb-${pb}`}
+    >
       <div className="container">
         <div className={styles.grid}>
           <div className={styles.imageWrapper}>
@@ -110,24 +113,26 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
                 }}
                 className={styles.imageItem}
               >
-                <Image
-                  src={getStrapiMedia(item?.Image, undefined) || "/images/agence-team.png"}
-                  alt={item?.Image?.alternativeText || item?.Nom || "L'équipe Sauvages"}
-                  fill
-                  className="fit-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized={true}
-                />
+                {getStrapiMedia(item?.Image, undefined) && (
+                  <Image
+                    src={getStrapiMedia(item?.Image, undefined)!}
+                    alt={item?.Image?.alternativeText || item?.Nom || ""}
+                    fill
+                    className="fit-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    unoptimized={true}
+                  />
+                )}
               </div>
             ))}
           </div>
 
           <div className={styles.content}>
             <div className={styles.header}>
-              <TitleTag className={styles.title}>{data?.Titre?.Texte || "L'équipe"}</TitleTag>
-              <h3 className={styles.subtitle}>
-                {data?.Catchline}
-              </h3>
+              {data?.Titre?.Texte && (
+                <TitleTag className={styles.title}>{data.Titre.Texte}</TitleTag>
+              )}
+              <h3 className={`${styles.subtitle} h4`}>{data?.Catchline}</h3>
             </div>
 
             <div className={styles.list} ref={listRef}>

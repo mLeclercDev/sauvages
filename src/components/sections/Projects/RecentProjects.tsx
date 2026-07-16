@@ -12,7 +12,7 @@ interface RecentProjectsProps {
 
 export default async function RecentProjects({
   category,
-  title = "Nos réalisations",
+  title,
   limit = 3,
 }: RecentProjectsProps) {
   let projects = [];
@@ -51,7 +51,7 @@ export default async function RecentProjects({
     <section className={`${styles.recentProjects} pt-top pb-bottom`}>
       <div className="container">
         <div className={styles.header}>
-          <h2 className={styles.title}>{title}</h2>
+          {title && <h2 className={styles.title}>{title}</h2>}
           <Link href="/work" className={styles.viewAllDesktop}>
             Voir tous les projets
           </Link>
@@ -67,7 +67,7 @@ export default async function RecentProjects({
                 client={
                   attrs.client?.data?.attributes?.name ||
                   attrs.client?.name ||
-                  "Client"
+                  ""
                 }
                 slug={attrs.slug}
                 thumbnail={attrs.thumbnail}

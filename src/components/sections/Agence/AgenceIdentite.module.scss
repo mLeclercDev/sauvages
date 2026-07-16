@@ -5,6 +5,8 @@
 }
 
 .grid {
+  border-top: 1px solid $color-noir-svgs;
+  padding-top: $space-4;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 315px));
   justify-content: space-between;

@@ -21,7 +21,9 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
   return (
     <section className={`${styles.agenceValues} pt-${pt} pb-${pb}`}>
       <div className="container">
-        <TitleTag className={styles.title}>{data?.Titre?.Texte || "L'agence"}</TitleTag>
+        {data?.Titre?.Texte && (
+          <TitleTag className={styles.title}>{data.Titre.Texte}</TitleTag>
+        )}
         <div className={styles.grid}>
           <div className={styles.content}>
             <div className={styles.list}>
@@ -43,16 +45,18 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
             </div>
           </div>
 
-          <div className={styles.imageWrapper}>
-            <Image
-              src={getStrapiMedia(data?.Image, undefined) || "/images/agence-values.png"}
-              alt={data?.Image?.alternativeText || "L'agence Sauvages"}
-              fill
-              className="fit-cover"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              unoptimized={true}
-            />
-          </div>
+          {getStrapiMedia(data?.Image, undefined) && (
+            <div className={styles.imageWrapper}>
+              <Image
+                src={getStrapiMedia(data?.Image, undefined)!}
+                alt={data?.Image?.alternativeText || ""}
+                fill
+                className="fit-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                unoptimized={true}
+              />
+            </div>
+          )}
         </div>
       </div>
     </section>

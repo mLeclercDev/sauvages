@@ -199,10 +199,9 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                 .filter(Boolean);
 
               // Only take the first one to keep the layout clean
-              const expertise =
-                expertiseArr.length > 0 ? expertiseArr[0] : "Branding";
+              const expertise = expertiseArr[0] || "";
 
-              const sectorRaw = attrs.sector || attrs.secteur || "Santé";
+              const sectorRaw = attrs.sector || attrs.secteur || "";
               // Also ensure sector is just one word/phrase
               const sector = Array.isArray(sectorRaw)
                 ? sectorRaw[0]

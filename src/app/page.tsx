@@ -15,6 +15,7 @@ export default async function Home() {
   let introData = null;
   let expertisesData = null;
   let titreTexteData = null;
+  let clientsScrollData = null;
 
   try {
     const homepageData = await fetchAPI(
@@ -33,6 +34,7 @@ export default async function Home() {
                 },
               },
               "global.titre-texte": { populate: "*" },
+              "global.clients-scroll": { populate: "*" },
             },
           },
         },
@@ -43,12 +45,10 @@ export default async function Home() {
     const contenu = homepageData?.data?.attributes?.Contenu || homepageData?.data?.Contenu || [];
 
     heroData = contenu.find((m: any) => m.__component === "homepage.hero-section");
-
     introData = contenu.find((m: any) => m.__component === "homepage.intro");
-
-    // On cherche le module d'expertises
     expertisesData = contenu.find((m: any) => m.__component === "global.expertises-listing");
     titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
+    clientsScrollData = contenu.find((m: any) => m.__component === "global.clients-scroll");
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);
   }
@@ -67,9 +67,8 @@ export default async function Home() {
         isScrollAnimated={hasExpertiseHeader}
       />
       <Projects />
-      <LogoSlider />
       <Blog />
-      <ClientsScroll />
+      <ClientsScroll label={clientsScrollData?.Label} title={clientsScrollData?.Titre?.Texte} />
     </main>
   );
 }

@@ -206,10 +206,10 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
                 {formatDate(attrs.publishedAt)}
               </div>
               <div className={styles.colType}>
-                {attrs.type || "Actualités"}
+                {attrs.type || ""}
               </div>
               <div className={styles.colSummary}>
-                {attrs.excerpt || "Découvrez notre dernier article."}
+                {attrs.excerpt || ""}
               </div>
               <div className={styles.colImage}>
                 {thumbnailUrl && (

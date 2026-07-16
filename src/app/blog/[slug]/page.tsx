@@ -82,8 +82,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       <BlogArticle
         title={attrs.Titre || attrs.title}
         date={formatDate(attrs.publishedAt)}
-        readTime={attrs.readTime || "Lectures 5 min"}
-        heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || "/images/blog/hero.jpg"}
+        readTime={attrs.readTime || ""}
+        heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || ""}
         intro={attrs.soustitre || ""}
         sections={sections}
       />

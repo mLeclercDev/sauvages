@@ -23,13 +23,15 @@ const StaffCard = ({
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <Image
-          src={member.imageUrl}
-          alt={member.name}
-          fill
-          className="fit-cover"
-          unoptimized={true}
-        />
+        {member.imageUrl && (
+          <Image
+            src={member.imageUrl}
+            alt={member.name}
+            fill
+            className="fit-cover"
+            unoptimized={true}
+          />
+        )}
         {member.videoUrl && (
           <video
             className={styles.hoverVideo}
@@ -97,7 +99,7 @@ const AgenceStaff: React.FC<AgenceStaffProps> = ({ pt = "lg", pb = "lg", data })
     return {
       name: item.Nom,
       baseline: item.Description,
-      imageUrl: getStrapiMedia(item.Image, undefined) || "/images/staff-1.avif",
+      imageUrl: getStrapiMedia(item.Image, undefined) || "",
       videoUrl: isVideo ? (mediaUrl || undefined) : undefined,
     };
   }) || [];

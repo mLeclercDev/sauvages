@@ -116,10 +116,12 @@ const LogoSliderClient: React.FC<LogoSliderClientProps> = ({
       className={`${styles.logoSlider} pt-${pt} pb-${pb}`}
     >
       <div className="container">
-        <div className={styles.header}>
-          <span className="label">{data?.Label || "NOS CLIENTS"}</span>
-          <h2 className={styles.title}>{data?.Titre?.Texte || "Ils nous ont fait confiance"}</h2>
-        </div>
+        {(data?.Label || data?.Titre?.Texte) && (
+          <div className={styles.header}>
+            {data?.Label && <span className="label">{data.Label}</span>}
+            {data?.Titre?.Texte && <h2 className={styles.title}>{data.Titre.Texte}</h2>}
+          </div>
+        )}
       </div>
 
       <div className={styles.marqueeContainer}>

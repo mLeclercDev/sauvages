@@ -27,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 1rem 0 2rem;
+    padding: 1rem 0 5rem;
     @include mq-max("2xl") {
       padding: 0 0 1rem;
     }
@@ -93,7 +93,7 @@
   display: flex;
   align-items: center;
   color: #f6f6f6;
-  font-size: 18px;
+  font-size: 16x;
   line-height: 1;
   mix-blend-mode: difference;
   svg {

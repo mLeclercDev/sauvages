@@ -62,8 +62,8 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
             {data?.Image?.map((img: any, index: number) => (
               <div key={img.id || index} className={styles.floatingImage}>
                 <Image
-                  src={getStrapiMedia(img, undefined) || "/images/agence-history.png"}
-                  alt={img.alternativeText || "Souvenir agence"}
+                  src={getStrapiMedia(img, undefined) || ""}
+                  alt={img.alternativeText || ""}
                   width={250 - (index * 30)}
                   height={250 - (index * 30)}
                   unoptimized={true}
@@ -73,10 +73,10 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
             ))}
           </div>
           <div className={styles.content}>
-            <p className={`${styles.label} label`}>{data?.Label || "Notre Histoire"}</p>
-            <TitleTag className={`${styles.title} h3`}>
-              {data?.Titre?.Texte || "On est là depuis 20 ans pour faire du bon travail."}
-            </TitleTag>
+            {data?.Label && <p className={`${styles.label} label`}>{data.Label}</p>}
+            {data?.Titre?.Texte && (
+              <TitleTag className={`${styles.title} h3`}>{data.Titre.Texte}</TitleTag>
+            )}
 
             <div className={styles.historyContent}>
               {data?.Description?.map((p: any, idx: number) => (

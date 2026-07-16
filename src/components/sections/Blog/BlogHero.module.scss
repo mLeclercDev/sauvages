@@ -2,7 +2,7 @@
 @use "@/styles/mixins" as *;
 
 .blogHero {
-  padding-top: clamp(80px, 15vw, 180px);
+  padding-top: clamp(80px, 15vw, 200px);
   padding-bottom: clamp(60px, 8vw, 100px);
 
   .title {

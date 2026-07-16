@@ -53,7 +53,7 @@ export default async function BlogPage() {
     console.error("Failed to fetch blog data:", error);
   }
 
-  const title = blogInfo?.Titre || "BLOG";
+  const title = blogInfo?.Titre || "";
   const description = blogInfo?.Description?.map((p: any) => 
     p.children?.map((c: any) => c.text).join("")
   ).join(" ") || "";

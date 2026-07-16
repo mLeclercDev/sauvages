@@ -2,7 +2,7 @@
 @use "@/styles/mixins" as *;
 
 .manifesteHero {
-  padding-top: $space-32;
+  padding-top: $space-50;
 
   @include mq-max("lg") {
     padding-top: $space-20;

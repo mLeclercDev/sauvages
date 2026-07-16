@@ -48,9 +48,9 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const hero: HeroContact | undefined = data?.HeroContact;
   const imageUrl = getStrapiMedia(hero?.Image, undefined);
-  const title = hero?.Titre || "CONTACT";
-  const btn1 = hero?.TexteBouton1 || "RÉSERVER UN APPEL";
-  const btn2 = hero?.TexteBouton2 || "COMMENT ON PEUT VOUS AIDER ?";
+  const title = hero?.Titre;
+  const btn1 = hero?.TexteBouton1;
+  const btn2 = hero?.TexteBouton2;
 
   const icon1Url = getStrapiMedia(hero?.IconBouton1, undefined);
   const icon1Node = icon1Url ? (
@@ -98,40 +98,41 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
         <div className={styles.grid}>
           <div className={styles.leftCol}>
             <div className={styles.imageWrapper} ref={imageRef}>
-              <Image
-                src={imageUrl || "/images/intro-homepage.avif"} // Placeholder par défaut
-                alt={hero?.Image?.alternativeText || "Contact"}
-                fill
-                className="fit-cover"
-                unoptimized={true}
-              />
+              {imageUrl && (
+                <Image
+                  src={imageUrl}
+                  alt={hero?.Image?.alternativeText || ""}
+                  fill
+                  className="fit-cover"
+                  unoptimized={true}
+                />
+              )}
             </div>
           </div>
 
           <div className={styles.rightCol}>
-            <h1 className={`${styles.title} h2`}>{title}</h1>
-            <p className={`${styles.description} h4`}>
-              Cherches-tu une agence digitale expérimentée pour concrétiser ton
-              idée ou ton projet ? Ou souhaites-tu rejoindre une équipe cool et
-              dynamique ?Parlons-en.
-            </p>
+            {title && <h1 className={`${styles.title} h2`}>{title}</h1>}
             <div className={styles.buttonGroup}>
-              <Button
-                label={btn1}
-                variant="outline"
-                onClick={() => {
-                  console.log("Open Calendly"); // À définir
-                }}
-                icon={icon1Node}
-              />
-              <Button
-                label={btn2}
-                variant="outline"
-                onClick={() => {
-                  openPanel("projet");
-                }}
-                icon={icon2Node}
-              />
+              {btn1 && (
+                <Button
+                  label={btn1}
+                  variant="outline"
+                  onClick={() => {
+                    console.log("Open Calendly");
+                  }}
+                  icon={icon1Node}
+                />
+              )}
+              {btn2 && (
+                <Button
+                  label={btn2}
+                  variant="outline"
+                  onClick={() => {
+                    openPanel("projet");
+                  }}
+                  icon={icon2Node}
+                />
+              )}
             </div>
           </div>
         </div>

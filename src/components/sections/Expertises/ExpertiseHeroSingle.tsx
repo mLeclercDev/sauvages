@@ -86,25 +86,26 @@ const ExpertiseHeroSingle: React.FC<ExpertiseHeroSingleProps> = ({ data }) => {
   return (
     <section className={styles.ExpertiseHeroSingle}>
       <div className="container">
-        <h1 className={styles.title}>{data?.Titre || "CONSEIL"}</h1>
+        {data?.Titre && <h1 className={styles.title}>{data.Titre}</h1>}
 
-        <p className={styles.description} ref={descriptionRef}>
-          {renderWords(
-            data?.Description ||
-              "Une vision strategique pour une prise de parole jamais en retard sur son temps."
-          )}
-        </p>
+        {data?.Description && (
+          <p className={styles.description} ref={descriptionRef}>
+            {renderWords(data.Description)}
+          </p>
+        )}
 
-        <div className={styles.imageWrapper} ref={imageRef}>
-          <Image
-            src={imageUrl || "/images/agence-hero.png"}
-            alt={data?.Image?.alternativeText || "Expertise hero"}
-            fill
-            className="fit-cover"
-            priority
-            unoptimized={true}
-          />
-        </div>
+        {imageUrl && (
+          <div className={styles.imageWrapper} ref={imageRef}>
+            <Image
+              src={imageUrl}
+              alt={data?.Image?.alternativeText || ""}
+              fill
+              className="fit-cover"
+              priority
+              unoptimized={true}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -99,7 +99,7 @@ const Intro: React.FC<IntroProps> = ({ data }) => {
     <section className={`${styles.intro} pt-top pb-bottom`}>
       <div className="container">
         <div className={styles.contentCluster}>
-          <span className="label">{data?.Label || "L'AGENCE"}</span>
+          {data?.Label && <span className="label">{data.Label}</span>}
           <div className={styles.headline} ref={headlineRef}>
             {renderWords(textBefore)}
             {svgString && (
@@ -112,38 +112,42 @@ const Intro: React.FC<IntroProps> = ({ data }) => {
           </div>
         </div>
 
-        <Button
-          label={data?.Bouton?.Texte || "découvrir l'agence"}
-          href={data?.Bouton?.Url || "/agence"}
-          target={data?.Bouton?.Blank ? "_blank" : undefined}
-          variant="outline"
-          icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="16"
-              viewBox="0 0 18 16"
-              fill="none"
-            >
-              <path
-                d="M17.0397 0.75V7.356C17.0397 8.10914 16.4466 8.71964 15.7102 8.71964C12.8697 8.71964 6.05885 8.71964 1.03967 8.71964M1.03967 8.71964C3.16413 6.50673 4.35522 5.26596 6.47967 3.05303M1.03967 8.71964C3.16413 10.9327 6.47967 14.3864 6.47967 14.3864"
-                stroke="#060606"
-                strokeWidth="1.5"
-                strokeLinecap="square"
-              />
-            </svg>
-          }
-        />
-
-        <div className={styles.imageWrapper} ref={imageRef}>
-          <Image
-            src={getStrapiMedia(data?.Image, undefined) || "/images/intro-homepage.avif"}
-            alt="Sauvages Creative Agency"
-            fill
-            className="fit-cover"
-            sizes="(max-width: 768px) 100vw, 90vw"
+        {data?.Bouton?.Texte && (
+          <Button
+            label={data.Bouton.Texte}
+            href={data.Bouton.Url}
+            target={data.Bouton.Blank ? "_blank" : undefined}
+            variant="outline"
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="16"
+                viewBox="0 0 18 16"
+                fill="none"
+              >
+                <path
+                  d="M17.0397 0.75V7.356C17.0397 8.10914 16.4466 8.71964 15.7102 8.71964C12.8697 8.71964 6.05885 8.71964 1.03967 8.71964M1.03967 8.71964C3.16413 6.50673 4.35522 5.26596 6.47967 3.05303M1.03967 8.71964C3.16413 10.9327 6.47967 14.3864 6.47967 14.3864"
+                  stroke="#060606"
+                  strokeWidth="1.5"
+                  strokeLinecap="square"
+                />
+              </svg>
+            }
           />
-        </div>
+        )}
+
+        {getStrapiMedia(data?.Image, undefined) && (
+          <div className={styles.imageWrapper} ref={imageRef}>
+            <Image
+              src={getStrapiMedia(data?.Image, undefined)!}
+              alt={data?.Image?.alternativeText || ""}
+              fill
+              className="fit-cover"
+              sizes="(max-width: 768px) 100vw, 90vw"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -87,7 +87,7 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
     <section className={`${styles.manifesteHero} pb-bottom`} ref={containerRef}>
       <div className="container">
         <div className={styles.header}>
-          <span className="label">{data?.Label || "MANIFESTE"}</span>
+          {data?.Label && <span className="label">{data.Label}</span>}
           <div className={styles.statement}>
             <p ref={textRef}>{renderWords(manifesteText)}</p>
           </div>
@@ -115,21 +115,23 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
             ))}
           </div>
 
-          <div className={styles.imageWrapper}>
-            <div className={styles.imageInner}>
-              <div ref={imageRef} className={styles.imageParallax}>
-                <Image
-                  src={getStrapiMedia(data?.Image, undefined) || "/images/agence-team.png"}
-                  alt={data?.Image?.alternativeText || "L'équipe Sauvages"}
-                  fill
-                  priority
-                  unoptimized={true}
-                  className="fit-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                />
+          {getStrapiMedia(data?.Image, undefined) && (
+            <div className={styles.imageWrapper}>
+              <div className={styles.imageInner}>
+                <div ref={imageRef} className={styles.imageParallax}>
+                  <Image
+                    src={getStrapiMedia(data?.Image, undefined)!}
+                    alt={data?.Image?.alternativeText || ""}
+                    fill
+                    priority
+                    unoptimized={true}
+                    className="fit-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

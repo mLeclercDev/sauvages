@@ -52,67 +52,37 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
     console.error("Failed to fetch blog section data:", error);
   }
 
-  const defaultArticles = [
-    {
-      id: 1,
-      attributes: {
-        title: "Comment l'IA transforme le design",
-        publishedAt: new Date().toISOString(),
-        slug: "ia-transforme-design",
-      }
-    },
-    {
-      id: 2,
-      attributes: {
-        title: "L'authenticité au coeur des marques",
-        publishedAt: new Date().toISOString(),
-        slug: "authenticite-marques",
-      }
-    },
-    {
-      id: 3,
-      attributes: {
-        title: "Les tendances web design 2026",
-        publishedAt: new Date().toISOString(),
-        slug: "tendances-web-design-2026",
-      }
-    }
-  ];
+  if (articles.length === 0) return null;
 
-  if (articles.length === 0) {
-    articles = defaultArticles;
-  }
-
-  // Accès aux données avec gestion des fallbacks et du format Titre.Texte
-  const sectionTitle = headerData?.Titre?.Texte || headerData?.title || "Vie d’agence";
-  const sectionDesc = headerData?.Description || "Découvrez nos dernières actualités, nos conseils et nos réflexions sur le marketing digital et le design.";
-  const linkText = headerData?.TexteDuLien || "Tout voir";
+  const sectionTitle = headerData?.Titre?.Texte || headerData?.title;
+  const sectionDesc = headerData?.Description;
+  const linkText = headerData?.TexteDuLien;
   const linkUrl = headerData?.URL || "/blog";
 
   return (
     <section className={`${styles.blog} pt-${pt} pb-${pb}`}>
       <div className="container">
-        <div className={styles.header}>
-          <h2 className={styles.title}>{sectionTitle}</h2>
-          <div className={styles.headerContent}>
-            <p className={styles.description}>{sectionDesc}</p>
-            <Link
-              href={linkUrl}
-              className={`${styles.link} ${styles.linkDesktop}`}
-            >
-              {linkText}
-            </Link>
+        {(sectionTitle || sectionDesc || linkText) && (
+          <div className={styles.header}>
+            {sectionTitle && <h2 className={styles.title}>{sectionTitle}</h2>}
+            <div className={styles.headerContent}>
+              {sectionDesc && <p className={styles.description}>{sectionDesc}</p>}
+              {linkText && (
+                <Link href={linkUrl} className={`${styles.link} ${styles.linkDesktop}`}>
+                  {linkText}
+                </Link>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <BlogListing articles={articles} />
         
-        <Link
-          href={linkUrl}
-          className={`${styles.link} ${styles.linkResponsive}`}
-        >
-          {linkText}
-        </Link>
+        {linkText && (
+          <Link href={linkUrl} className={`${styles.link} ${styles.linkResponsive}`}>
+            {linkText}
+          </Link>
+        )}
       </div>
     </section>
   );

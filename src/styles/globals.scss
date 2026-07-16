@@ -93,7 +93,7 @@ h2,
   }
 
   @include mq("2xl") {
-    font-size: 52px;
+    font-size: 58px;
   }
 }
 
@@ -122,10 +122,35 @@ h3,
   }
 }
 
+h4,
+.h4 {
+  font-family: $font-monument-wide;
+  color: #03091e;
+  font-size: 24px;
+  line-height: 1.25;
+  font-weight: 400;
+
+  @include mq("sm") {
+    font-size: 24px;
+  }
+
+  @include mq("md") {
+    font-size: 26px;
+  }
+
+  @include mq("lg") {
+    font-size: 28px;
+  }
+
+  @include mq("2xl") {
+    font-size: 30px;
+  }
+}
+
 .label {
   color: var(--Gris-fonc, #5e5e5e);
   font-family: $font-monument-normal;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;

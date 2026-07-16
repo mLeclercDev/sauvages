@@ -7,51 +7,29 @@ interface ClientsScrollProps {
   title?: string;
 }
 
-const FALLBACK_CLIENTS: ClientItem[] = [
-  { id: 1, name: "Tourisme Bretagne", competencies: ["Stratégie", "Contenu", "Social media"] },
-  { id: 2, name: "Yves Rocher", competencies: ["Branding", "Identité visuelle"] },
-  { id: 3, name: "La Française", competencies: ["Conseil", "Création"] },
-  { id: 4, name: "Breizhgo", competencies: ["Activation", "Illustration", "Déclinaisons"] },
-  { id: 5, name: "Fellows", competencies: ["Motion design", "Branding"] },
-  { id: 6, name: "Protys", competencies: ["Digital", "Identité"] },
-  { id: 7, name: "Groupe Giboire", competencies: ["Conseil", "Campagne"] },
-];
-
 export default async function ClientsScroll({ label, title }: ClientsScrollProps) {
   let clients: ClientItem[] = [];
 
   try {
     const res = await fetchAPI("/clients", {
-      populate: { logo: { populate: "*" } },
-      sort: ["order:asc"],
+      filters: { Afficher: { $eq: true } },
+      populate: { Logo: "*", Competences: "*" },
+      sort: ["name:asc"],
     });
 
     const raw: any[] = res?.data || [];
 
-    clients = raw.map((c: any) => {
-      const attrs = c.attributes || c;
-      const competenciesRaw = attrs.competencies || attrs.Competencies || "";
-      const competencies =
-        typeof competenciesRaw === "string"
-          ? competenciesRaw.split(",").map((s: string) => s.trim()).filter(Boolean)
-          : Array.isArray(competenciesRaw)
-          ? competenciesRaw
-          : [];
-
-      return {
-        id: c.id || c.documentId,
-        name: attrs.name || attrs.Name || "",
-        logo: attrs.logo || attrs.Logo,
-        competencies,
-      };
-    });
+    clients = raw.map((c: any) => ({
+      id: c.id,
+      name: c.name || "",
+      logo: c.Logo,
+      competencies: c.Competences?.map((comp: { Nom: string }) => comp.Nom) ?? [],
+    }));
   } catch (e) {
     console.error("Failed to fetch clients:", e);
   }
 
-  if (clients.length === 0) {
-    clients = FALLBACK_CLIENTS;
-  }
+  if (clients.length === 0) return null;
 
   return <ClientsScrollClient clients={clients} label={label} title={title} />;
 }

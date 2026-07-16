@@ -136,17 +136,19 @@ const ExpertiseDetailsSingle: React.FC<ExpertiseDetailsSingleProps> = ({ data })
         )}
 
         <div className={styles.grid}>
-          <div className={styles.imageCol}>
-            <div className={styles.imageWrapper} ref={imageRef}>
-              <Image
-                src={imageUrl || "/images/agence-team.png"}
-                alt={data?.Image?.alternativeText || "Expertise details"}
-                fill
-                className="fit-cover"
-                unoptimized={true}
-              />
+          {imageUrl && (
+            <div className={styles.imageCol}>
+              <div className={styles.imageWrapper} ref={imageRef}>
+                <Image
+                  src={imageUrl}
+                  alt={data?.Image?.alternativeText || ""}
+                  fill
+                  className="fit-cover"
+                  unoptimized={true}
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className={styles.contentCol}>
             {secondaryTitle && <h3 className={`${styles.title} h3`}>{secondaryTitle}</h3>}
