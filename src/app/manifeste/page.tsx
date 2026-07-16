@@ -52,7 +52,6 @@ export default async function ManifestePage() {
       <TitreTexte data={titreTexteData} />
       <TexteImage data={texteImageData} />
       <ManifesteCommitments data={missionData} />
-      <RecentProjects />
       <AgenceCta data={ctaData} />
     </main>
   );
