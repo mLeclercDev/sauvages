@@ -15,7 +15,7 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
 
   if (!titre?.Texte && texte.length === 0) return null;
 
-  const Tag = (titre?.HN || "h2") as keyof JSX.IntrinsicElements;
+  const Tag = (titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
 
   const paragraphs = texte
     .map((block: any) => block.children?.map((c: any) => c.text).join(""))
