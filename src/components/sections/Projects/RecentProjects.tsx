@@ -30,16 +30,13 @@ export default async function RecentProjects({
     }
 
     const projectsData = await fetchAPI("/projets", {
+      sort: ["createdAt:desc"],
+      pagination: { limit },
       populate: {
-        client: { populate: "*" },
-        thumbnail: { populate: "*" },
-        expertise: { populate: "*" },
-        secteur: { populate: "*" },
+        thumbnail: "*",
+        client: "*",
       },
-      sort: ["publishedAt:desc"],
-      pagination: {
-        limit,
-      },
+      status: "published",
       filters,
     });
 
