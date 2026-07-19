@@ -2,8 +2,7 @@
 @use "@/styles/mixins" as *;
 
 .blogArticle {
-  padding-top: 145px;
-  padding-bottom: 120px;
+  padding: $space-64 0;
 
   @include mq-max("2xl") {
     padding-top: 120px;
@@ -31,6 +30,13 @@
   width: 100%;
   aspect-ratio: 1833 / 748;
   overflow: hidden;
+
+  img {
+    height: 120% !important;
+    top: -10% !important;
+    width: 100%;
+    object-fit: cover;
+  }
 }
 
 .contentGrid {
@@ -57,13 +63,13 @@
 }
 
 .title {
-  margin: 16px 0;
+  margin: 24px 0;
 }
 
 .metaInfo {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   font-size: 18px;
 }
 

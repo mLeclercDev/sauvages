@@ -66,6 +66,24 @@ export default async function BlogPostPage({ params }: PageProps) {
     });
   }
 
+  // Calcul du temps de lecture (200 mots/min, minimum 1 minute)
+  const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
+
+  let totalWords = 0;
+  if (attrs.Titre) totalWords += countWords(attrs.Titre);
+  if (attrs.soustitre) totalWords += countWords(attrs.soustitre);
+  if (Array.isArray(attrs.Contenu)) {
+    attrs.Contenu.forEach((block: any) => {
+      if (block.children) {
+        block.children.forEach((c: any) => {
+          if (c.text) totalWords += countWords(c.text);
+        });
+      }
+    });
+  }
+  const readingMinutes = Math.max(1, Math.ceil(totalWords / 200));
+  const readTime = `${readingMinutes} minute${readingMinutes > 1 ? "s" : ""} de lecture`;
+
   // Format date helper
   const formatDate = (dateString: string) => {
     if (!dateString) return "";
@@ -82,7 +100,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <BlogArticle
         title={attrs.Titre || attrs.title}
         date={formatDate(attrs.publishedAt)}
-        readTime={attrs.readTime || ""}
+        readTime={readTime}
         heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || ""}
         intro={attrs.soustitre || ""}
         sections={sections}

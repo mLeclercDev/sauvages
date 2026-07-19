@@ -1,5 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./BlogArticle.module.scss";
 
 interface ContentSection {
@@ -28,11 +32,41 @@ const BlogArticle: React.FC<BlogArticleProps> = ({
   intro,
   sections = [],
 }) => {
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!heroRef.current) return;
+
+    const img = heroRef.current.querySelector("img");
+    if (!img) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        img,
+        { y: "-10%" },
+        {
+          y: "10%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: heroRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        }
+      );
+    });
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className={styles.blogArticle}>
       <div className="container">
         <div className={styles.heroWrapper}>
-          <div className={styles.heroImage}>
+          <div className={styles.heroImage} ref={heroRef}>
             <Image
               src={heroImage}
               alt={title}
@@ -51,7 +85,7 @@ const BlogArticle: React.FC<BlogArticleProps> = ({
             <div className={styles.metaInfo}>
               <time className={styles.date}>{date}</time>
               {readTime && (
-                <span className={styles.readTime}>[ {readTime} ]</span>
+                <span className={styles.readTime}>[{readTime}]</span>
               )}
             </div>
           </div>
@@ -74,7 +108,9 @@ const BlogArticle: React.FC<BlogArticleProps> = ({
                     {section.description && (
                       <div
                         className={styles.sectionDescription}
-                        dangerouslySetInnerHTML={{ __html: section.description }}
+                        dangerouslySetInnerHTML={{
+                          __html: section.description,
+                        }}
                       />
                     )}
                     {section.image && (
