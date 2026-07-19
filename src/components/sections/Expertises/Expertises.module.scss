@@ -40,8 +40,9 @@
   padding: 64px 0;
   border-bottom: 1px solid $color-noir-svgs;
   display: flex;
-  gap: clamp(32px, 11vw, 210px);
+  gap: clamp(24px, 3vw, 48px);
   &.isStatic {
+    gap: clamp(32px, 11vw, 210px);
     padding: 60px 0 96px;
     &:first-child {
       padding-top: 0;
@@ -62,6 +63,18 @@
 
 .itemHeader {
   cursor: default;
+  width: 450px;
+  flex-shrink: 0;
+
+  .isStatic & {
+    width: auto;
+    flex-shrink: 1;
+  }
+
+  @include mq-max("md") {
+    width: auto;
+    flex-shrink: 1;
+  }
 }
 
 .itemMeta {

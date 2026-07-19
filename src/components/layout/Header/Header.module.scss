@@ -81,6 +81,7 @@
   .logoDesktop {
     display: block;
     width: 140px;
+    height: auto;
     @include mq-max("lg") {
       display: none;
     }
