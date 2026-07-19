@@ -47,11 +47,11 @@
     }
 
     @include mq-max("lg") {
-      font-size: 5vw;
+      font-size: 28px;
     }
 
     @include mq-max("md") {
-      font-size: 28px;
+      font-size: 24px;
       margin-bottom: $space-8;
     }
   }

@@ -4,6 +4,21 @@
 .manifesteCommitments {
   padding-top: $space-36;
   padding-bottom: $space-48;
+
+  @include mq-max("2xl") {
+    padding-top: $space-24;
+    padding-bottom: $space-28;
+  }
+
+  @include mq-max("lg") {
+    padding-top: $space-14;
+    padding-bottom: $space-20;
+  }
+
+  @include mq-max("md") {
+    padding-top: $space-12;
+    padding-bottom: $space-16;
+  }
 }
 
 .header {

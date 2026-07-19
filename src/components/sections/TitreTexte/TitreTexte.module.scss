@@ -10,9 +10,14 @@
     padding-bottom: $space-24;
   }
 
+  @include mq-max("lg") {
+    padding-top: $space-14;
+    padding-bottom: $space-14;
+  }
+
   @include mq-max("md") {
-    padding-top: $space-16;
-    padding-bottom: $space-16;
+    padding-top: $space-12;
+    padding-bottom: $space-12;
   }
 }
 
@@ -22,18 +27,21 @@
   gap: $space-40;
   align-items: start;
 
-  @include mq-max("md") {
+  @include mq-max("lg") {
     grid-template-columns: 1fr;
     gap: $space-16;
   }
 
-  @include mq-max("md") {
+  @include mq-max("lg") {
     grid-template-columns: 1fr;
     gap: $space-8;
   }
 }
 
 .title {
+  font-size: clamp(24px, 3vw, 58px);
+  line-height: 1.1;
+  margin: 0;
   margin: 0;
 }
 

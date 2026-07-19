@@ -8,9 +8,12 @@
     padding-top: $space-24;
     padding-bottom: $space-32;
   }
-
+  @include mq-max("lg") {
+    padding-top: $space-14;
+    padding-bottom: $space-20;
+  }
   @include mq-max("md") {
-    padding-top: $space-16;
+    padding-top: $space-12;
     padding-bottom: $space-16;
   }
   .grid {

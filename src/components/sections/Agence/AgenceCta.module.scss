@@ -8,6 +8,15 @@
   justify-content: center;
   gap: $space-6;
   min-height: 90vh;
+  @include mq-max("2xl") {
+    min-height: 80vh;
+  }
+  @include mq-max("lg") {
+    min-height: 60vh;
+  }
+  @include mq-max("md") {
+    min-height: 50vh;
+  }
 }
 
 .arrowIcon {
@@ -29,6 +38,7 @@
 
   @include mq-max("lg") {
     width: calc(100% - 40px);
+    font-size: 26px;
   }
 
   .link {
@@ -37,6 +47,9 @@
     column-gap: 15px;
     position: relative;
     text-decoration: none;
+            @include mq-max("lg") {
+    align-items: start;
+            }
 
     &:hover {
       .textInner {
@@ -54,6 +67,10 @@
       overflow: hidden;
       line-height: 1.25;
       padding-bottom: 6px;
+
+        @include mq-max("lg") {
+          padding-bottom: 2px;
+        }
 
       &::before {
         content: attr(data-text);
@@ -88,6 +105,9 @@
       display: inline-flex;
       align-items: flex-end;
       padding-bottom: 6px;
+        @include mq-max("lg") {
+          padding-bottom: 5px;
+        }
 
       &::after {
         content: "";
@@ -104,9 +124,15 @@
       display: inline-block;
       width: 37px;
       height: 41px;
-
+      svg {
+        height: auto;
+      } 
       @include mq-max("2xl") {
         width: 33px;
+        height: auto;
+      }
+      @include mq-max("lg") {
+        width: 26px;
         height: auto;
       }
     }

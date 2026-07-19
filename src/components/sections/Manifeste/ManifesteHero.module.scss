@@ -11,7 +11,13 @@
   }
 
   @include mq-max("lg") {
+    padding-top: $space-28;
+    padding-bottom: $space-14;
+  }
+
+  @include mq-max("md") {
     padding-top: $space-20;
+    padding-bottom: $space-12;
   }
 }
 
@@ -46,6 +52,14 @@
       font-size: clamp(28px, 5vw, 34px);
     }
 
+    @include mq-max("lg") {
+      font-size: 30px;
+    }
+
+    @include mq-max("md") {
+      font-size: 26px;
+    }
+
     .word {
       opacity: 0.2;
       display: inline-block;
@@ -73,7 +87,7 @@
 
   @include mq-max("lg") {
     grid-template-columns: 1fr;
-    gap: $space-16;
+    gap: $space-12;
     margin-top: $space-16;
   }
 

@@ -9,6 +9,10 @@
   @include mq-max("2xl") {
     padding-top: $space-40;
   }
+  @include mq-max("lg") {
+    padding-top: $space-36;
+    padding-bottom: $space-12;
+  }
 
   @include mq-max("md") {
     padding-top: $space-24;
@@ -43,7 +47,7 @@
   }
 
   @include mq-max("lg") {
-    font-size: 5vw;
+    font-size: 30px;
   }
 
   @include mq-max("md") {
