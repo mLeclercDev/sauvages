@@ -22,7 +22,13 @@ const TextRevealSection: React.FC<TextRevealSectionProps> = ({
   pt = "lg",
   pb = "lg"
 }) => {
-  const text = data ? data.Texte : textProp;
+  const rawTexte = data ? data.Texte : textProp;
+  const text = Array.isArray(rawTexte)
+    ? rawTexte
+        .flatMap((block: any) => block.children?.map((c: any) => c.text) || [])
+        .filter(Boolean)
+        .join(" ")
+    : rawTexte || "";
   const label = data ? data.Label : labelProp;
 
   const containerRef = useRef<HTMLDivElement>(null);
