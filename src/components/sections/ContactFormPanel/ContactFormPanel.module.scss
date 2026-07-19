@@ -65,6 +65,17 @@
   }
 }
 
+.scrollDownIndicator, .closeBtn {
+  color: $color-gris-fonce;
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .toggles {
   display: flex;
   gap: $space-10;
@@ -90,6 +101,16 @@
     color: #fff;
   }
 
+  .toggleCheck {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 1.5px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   @include mq-max("md") {
     font-size: 12px;
     padding: 10px 16px;
@@ -105,10 +126,17 @@
   }
 }
 
-.mainTitle {
-  font-family: $font-monument-wide;
-  font-size: clamp(32px, 5vw, 44px);
+.mainTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: $space-5;
   margin-bottom: $space-24;
+
+  svg {
+    flex-shrink: 0;
+    width: clamp(24px, 2.5vw, 33px);
+    height: auto;
+  }
 
   @include mq-max("2xl") {
     margin-bottom: $space-16;
@@ -117,6 +145,13 @@
   @include mq-max("md") {
     margin-bottom: 50px;
   }
+}
+
+.mainTitle {
+  font-family: $font-monument-wide;
+  font-size: clamp(32px, 5vw, 44px);
+  margin-bottom: 0;
+
 }
 
 .formWrapper {
@@ -129,7 +164,7 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: $space-12 0;
   align-items: flex-start;
-  gap: 300px;
+  gap: 30px;
   &:first-child {
     padding-top: 0;
   }
@@ -179,7 +214,8 @@
   font-family: $font-monument-wide;
   font-size: 30px;
   line-height: 35px;
-  width: 40%;
+  width: 430px;
+  max-width: 100%;
   flex-shrink: 0;
 
   @include mq-max("2xl") {
@@ -199,8 +235,7 @@
 }
 
 .rowContent {
-  flex-grow: 1;
-  width: 100%;
+  width: 40%;
 }
 
 .rowContentFull {
@@ -346,8 +381,7 @@ textarea.inputField {
   display: flex;
   align-items: flex-start;
   gap: $space-5;
-  font-size: 18px;
-  line-height: 1.4;
+  font-size: 16px;
 
   input[type="checkbox"] {
     width: 18px;
