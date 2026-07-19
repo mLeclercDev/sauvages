@@ -90,8 +90,7 @@ export default async function AgencePage() {
 
   return (
     <main>
-      <AgenceHero data={heroData} />
-      <AgenceIdentite data={identiteData} />
+      <AgenceHero data={heroData} identiteData={identiteData} />
       <TitreTexte data={titreTexteData} />
       <TexteImage data={texteImageData} />
       <AgenceValues data={agenceValuesData} />
