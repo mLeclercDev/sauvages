@@ -112,6 +112,15 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
           <div className={styles.rightCol}>
             {title && <h1 className={`${styles.title} h2`}>{title}</h1>}
+            {hero?.Description && hero.Description.length > 0 && (
+              <div className={styles.description}>
+                {hero.Description.map((block, i) => {
+                  if (block.type !== "paragraph") return null;
+                  const text = block.children.map((c) => c.text).join("");
+                  return text ? <p key={i}>{text}</p> : null;
+                })}
+              </div>
+            )}
             <div className={styles.buttonGroup}>
               {btn1 && (
                 <Button

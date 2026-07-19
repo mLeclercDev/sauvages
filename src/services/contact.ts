@@ -33,6 +33,7 @@ export interface StrapiMedia {
 export interface HeroContact {
   id: number;
   Titre?: string;
+  Description?: Array<{ type: string; children: Array<{ type: string; text: string }> }>;
   TexteBouton1?: string;
   TexteBouton2?: string;
   Image?: StrapiMedia;
