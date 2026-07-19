@@ -19,19 +19,20 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   const [activeExpertise, setActiveExpertise] = useState<string>("all");
   const [activeSecteur, setActiveSecteur] = useState<string>("all");
 
-  // Extract unique expertise titles from all projects
+  // Extract unique expertise titles with project counts
   const expertises = useMemo(() => {
-    const set = new Set<string>();
+    const countMap = new Map<string, number>();
     projects.forEach((project) => {
       const attrs = project.attributes || project;
-      // Strapi v5: direct array; Strapi v4: wrapped under .data
       const items: any[] = attrs.expertise?.data || attrs.expertise || [];
       items.forEach((item: any) => {
         const titre = item.attributes?.titre || item.attributes?.name || item.titre || item.name;
-        if (titre) set.add(titre);
+        if (titre) countMap.set(titre, (countMap.get(titre) || 0) + 1);
       });
     });
-    return Array.from(set).sort();
+    return Array.from(countMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
   }, [projects]);
 
   // Extract unique secteurs from all projects
@@ -90,6 +91,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
         onFilterTypeChange={setActiveFilterType}
         expertises={expertises}
         secteurs={secteurs}
+        totalCount={projects.length}
         activeExpertise={activeExpertise}
         activeSecteur={activeSecteur}
         onExpertiseChange={setActiveExpertise}

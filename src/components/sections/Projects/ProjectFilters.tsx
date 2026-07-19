@@ -3,13 +3,19 @@
 import React from "react";
 import styles from "./ProjectFilters.module.scss";
 
+interface ExpertiseOption {
+  name: string;
+  count: number;
+}
+
 interface ProjectFiltersProps {
   currentView: "grid" | "list";
   onViewChange: (view: "grid" | "list") => void;
   activeFilterType: "expertise" | "secteur";
   onFilterTypeChange: (type: "expertise" | "secteur") => void;
-  expertises: string[];
+  expertises: ExpertiseOption[];
   secteurs: string[];
+  totalCount: number;
   activeExpertise: string;
   activeSecteur: string;
   onExpertiseChange: (value: string) => void;
@@ -41,6 +47,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
   onFilterTypeChange,
   expertises,
   secteurs,
+  totalCount,
   activeExpertise,
   activeSecteur,
   onExpertiseChange,
@@ -110,32 +117,38 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
                 else onSecteurChange("all");
               }}
             >
-              TOUS
+              TOUS{activeFilterType === "expertise" && totalCount > 0 && (
+                <sup className={styles.count}>{totalCount}</sup>
+              )}
             </button>
 
             {/* Dynamic tags */}
-            {(activeFilterType === "expertise" ? expertises : secteurs).map(
-              (tag) => {
-                const isActive =
-                  activeFilterType === "expertise"
-                    ? activeExpertise === tag
-                    : activeSecteur === tag;
-
-                return (
-                  <button
-                    key={tag}
-                    className={`${styles.catBtn} ${isActive ? styles.active : ""}`}
-                    onClick={() => {
-                      if (activeFilterType === "expertise")
-                        onExpertiseChange(isActive ? "all" : tag);
-                      else onSecteurChange(isActive ? "all" : tag);
-                    }}
-                  >
-                    {tag.toUpperCase()}
-                  </button>
-                );
-              }
-            )}
+            {activeFilterType === "expertise"
+              ? expertises.map(({ name, count }) => {
+                  const isActive = activeExpertise === name;
+                  return (
+                    <button
+                      key={name}
+                      className={`${styles.catBtn} ${isActive ? styles.active : ""}`}
+                      onClick={() => onExpertiseChange(isActive ? "all" : name)}
+                    >
+                      {name.toUpperCase()}
+                      {count > 0 && <sup className={styles.count}>{count}</sup>}
+                    </button>
+                  );
+                })
+              : secteurs.map((tag) => {
+                  const isActive = activeSecteur === tag;
+                  return (
+                    <button
+                      key={tag}
+                      className={`${styles.catBtn} ${isActive ? styles.active : ""}`}
+                      onClick={() => onSecteurChange(isActive ? "all" : tag)}
+                    >
+                      {tag.toUpperCase()}
+                    </button>
+                  );
+                })}
           </div>
 
           <div className={styles.viewToggle}>
@@ -143,7 +156,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
               className={`${styles.toggleBtn} ${currentView === "grid" ? styles.active : ""}`}
               onClick={() => onViewChange("grid")}
             >
-              VUE GRILLE
+              <span className={styles.viewText}>VUE GRILLE</span>
               <span className={styles.viewIcon}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -165,7 +178,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
               className={`${styles.toggleBtn} ${currentView === "list" ? styles.active : ""}`}
               onClick={() => onViewChange("list")}
             >
-              VUE LISTE
+              <span className={styles.viewText}>VUE LISTE</span>
               <span className={styles.viewIcon}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
