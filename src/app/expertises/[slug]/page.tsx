@@ -1,4 +1,5 @@
 import { fetchAPI } from "@/utils/strapi";
+import styles from "./page.module.scss";
 
 export const revalidate = 60;
 
@@ -90,7 +91,7 @@ export default async function ExpertisePage({ params }: PageProps) {
   );
 
   return (
-    <main>
+    <main className={styles.page}>
       <TextRevealSection data={textRevealBlock} />
       <FullWidthImage data={fullWidthImageBlock} />
       <TitreTexte data={titreTexteBlock} />

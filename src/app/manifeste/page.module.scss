@@ -1,0 +1,9 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+// Surcharges de padding spécifiques à la page Manifeste.
+// Cibler un block : .page > :global(section.pt-top) { padding-top: ... }
+// Ou par ordre : .page > :global(section:nth-child(2)) { padding-top: ... }
+
+.page {
+}

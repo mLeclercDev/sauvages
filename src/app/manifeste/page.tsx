@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./page.module.scss";
 
 export const revalidate = 60;
 
@@ -47,7 +48,7 @@ export default async function ManifestePage() {
   const texteImageData = contenu.find((m) => m.__component === "global.texte-image");
 
   return (
-    <main>
+    <main className={styles.page}>
       <ManifesteHero data={heroData} />
       <TitreTexte data={titreTexteData} />
       <TexteImage data={texteImageData} />
