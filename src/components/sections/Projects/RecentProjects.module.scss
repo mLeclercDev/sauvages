@@ -28,8 +28,9 @@
 
 .viewAllMobile {
   margin-top: $space-10;
-  @include mq("md") {
-    display: none;
+  display: none;
+  @include mq-max("md") {
+    display: flex;
   }
 }
 

@@ -13,6 +13,8 @@ export default async function ExpertisesPage() {
   let listingData = null;
   let titreTexteData = null;
   let texteImageData = null;
+  let clientsScrollData = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let contenu: any[] = [];
 
   try {
@@ -33,6 +35,7 @@ export default async function ExpertisesPage() {
                 populate: "*",
               },
               "global.titre-texte": { populate: "*" },
+              "global.clients-scroll": { populate: "*" },
             },
           },
         },
@@ -49,15 +52,20 @@ export default async function ExpertisesPage() {
       contenu = firstEntry.attributes?.Contenu || firstEntry.Contenu || [];
     }
 
-    heroData = contenu.find((m: any) => m.__component === "expertise.hero-section");
-    listingData = contenu.find((m: any) => m.__component === "global.expertises-listing");
-    titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
-    texteImageData = contenu.find((m: any) => m.__component === "global.texte-image");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    heroData = contenu.find((m: any) => m.__component === "expertise.hero-section") ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    listingData = contenu.find((m: any) => m.__component === "global.expertises-listing") ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte") ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    texteImageData = contenu.find((m: any) => m.__component === "global.texte-image") ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    clientsScrollData = contenu.find((m: any) => m.__component === "global.clients-scroll") ?? null;
   } catch (error) {
     console.error("Failed to fetch expertise data:", error);
   }
 
-  // Si Titre et Bouton sont vides, on masque le header et on désactive l'anim scroll
   const hasHeader = !!(listingData?.Titre || listingData?.Bouton);
 
   return (
@@ -71,7 +79,10 @@ export default async function ExpertisesPage() {
         isScrollAnimated={hasHeader}
       />
       <RecentProjects limit={4} title="Nos réalisations" />
-      <ClientsScroll />
+      <ClientsScroll
+        label={clientsScrollData?.Label}
+        title={clientsScrollData?.Titre?.Texte}
+      />
     </main>
   );
 }
