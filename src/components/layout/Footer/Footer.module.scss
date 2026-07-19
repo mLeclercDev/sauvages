@@ -9,7 +9,8 @@
   overflow: hidden;
   position: relative;
   z-index: 10;
-
+  display: flex;
+  align-items: flex-end;
   .footerInner {
     padding: 48px 0 48px;
     height: 100%;
