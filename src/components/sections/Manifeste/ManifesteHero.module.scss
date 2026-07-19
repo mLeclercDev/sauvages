@@ -2,7 +2,8 @@
 @use "@/styles/mixins" as *;
 
 .manifesteHero {
-  padding-top: $space-50;
+  padding-top: $space-64;
+  padding-bottom: $space-36;
 
   @include mq-max("lg") {
     padding-top: $space-20;
@@ -58,7 +59,7 @@
   display: grid;
   grid-template-columns: 1fr 0.55fr;
   gap: 180px;
-  align-items: center;
+  align-items: flex-end;
   margin-top: $space-32;
 
   @include mq-max("2xl") {
@@ -95,7 +96,7 @@
 
   &:last-child {
     border-bottom: none;
-    padding-bottom: 0;
+    padding-bottom: 20px;
   }
 
   @include mq-max("2xl") {

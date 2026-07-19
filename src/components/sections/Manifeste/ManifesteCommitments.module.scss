@@ -1,6 +1,11 @@
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
+.manifesteCommitments {
+  padding-top: $space-36;
+  padding-bottom: $space-48;
+}
+
 .header {
   margin-bottom: $space-24;
 
