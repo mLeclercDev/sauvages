@@ -9,10 +9,9 @@ import styles from "./AgenceHero.module.scss";
 
 interface AgenceHeroProps {
   data?: any;
-  identiteData?: any;
 }
 
-const AgenceHero: React.FC<AgenceHeroProps> = ({ data, identiteData }) => {
+const AgenceHero: React.FC<AgenceHeroProps> = ({ data }) => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -87,18 +86,18 @@ const AgenceHero: React.FC<AgenceHeroProps> = ({ data, identiteData }) => {
         <h1 className={styles.title} ref={titleRef}>
           {renderWords(fullText)}
         </h1>
-        {identiteData?.Item?.length > 0 && (
+        {data?.IdentiteItem?.length > 0 && (
           <div className={styles.identiteGrid}>
-            {identiteData?.Texte?.length > 0 && (
+            {data?.IdentiteTexte?.length > 0 && (
               <div className={styles.identiteDefinition}>
-                {identiteData.Texte.map((block: any, i: number) => (
+                {data.IdentiteTexte.map((block: any, i: number) => (
                   <p key={i} className="label sm">
                     {block.children?.map((c: any) => c.text).join("")}
                   </p>
                 ))}
               </div>
             )}
-            {identiteData.Item.map((item: any, i: number) => (
+            {data.IdentiteItem.map((item: any, i: number) => (
               <div key={item.id || i} className={styles.identiteItem}>
                 <p className="label sm">{item.Label}</p>
                 <div className={styles.identiteContent}>

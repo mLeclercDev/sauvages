@@ -1,17 +1,12 @@
-import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
+import { fetchAPI } from "@/utils/strapi";
 
 export const revalidate = 60;
 
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
-import AgenceIdentite from "@/components/sections/Agence/AgenceIdentite";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
 import AgenceStaff from "@/components/sections/Agence/AgenceStaff";
 import AgenceTeam from "@/components/sections/Agence/AgenceTeam";
-import AgenceHistory from "@/components/sections/Agence/AgenceHistory";
-import FullWidthImage from "@/components/sections/FullWidthImage/FullWidthImage";
-import TextRevealSection from "@/components/sections/TextRevealSection/TextRevealSection";
-import Blog from "@/components/sections/Blog/Blog";
 
 export default async function AgencePage() {
   let contenu: any[] = [];
@@ -38,10 +33,7 @@ export default async function AgencePage() {
                 },
               },
               "agence.hero-section": {
-                populate: ["Image"],
-              },
-              "agence.identite": {
-                populate: ["Item"],
+                populate: ["Image", "IdentiteItem"],
               },
               "agence.agence": {
                 populate: ["Titre", "Item", "Image"],
@@ -53,7 +45,7 @@ export default async function AgencePage() {
                 populate: ["Image"],
               },
               "global.blog-listing": {
-                populate: "*",
+                populate: ["Titre"],
               },
               "agence.cta": {
                 populate: {
@@ -62,7 +54,7 @@ export default async function AgencePage() {
                   },
                 },
               },
-              "global.titre-texte": { populate: "*" },
+              "global.titre-texte": { populate: ["Titre"] },
             },
           },
         },
@@ -77,7 +69,6 @@ export default async function AgencePage() {
 
   // Extraction des modules pour distribution
   const heroData = contenu.find((m) => m.__component === "agence.hero-section");
-  const identiteData = contenu.find((m) => m.__component === "agence.identite");
   const equipePresentationData = contenu.find(
     (m) => m.__component === "agence.equipe-presentation"
   );
@@ -93,7 +84,7 @@ export default async function AgencePage() {
 
   return (
     <main>
-      <AgenceHero data={heroData} identiteData={identiteData} />
+      <AgenceHero data={heroData} />
       <TitreTexte data={titreTexteData} />
       <AgenceValues data={agenceValuesData} />
       <AgenceTeam data={equipePresentationData} />
