@@ -15,7 +15,7 @@
     margin-bottom: 50px;
   }
   @include mq-max("md") {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 
   h2 {
@@ -55,6 +55,7 @@
   }
   @include mq-max("md") {
     flex-direction: column;
+    padding: 32px 0;
     gap: 0;
   }
 }
@@ -83,12 +84,10 @@
   min-width: 31px;
 
   @include mq-max("lg") {
-    align-items: center;
     font-size: 19px;
   }
 
   @include mq-max("md") {
-    align-items: flex-start;
     font-size: 18px;
     line-height: 1.35;
   }

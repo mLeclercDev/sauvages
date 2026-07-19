@@ -73,7 +73,7 @@
 
   .logoResponsive {
     display: none;
-    width: 140px;
+    //width: 140px;
     @include mq-max("lg") {
       display: block;
     }
