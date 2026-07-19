@@ -4,7 +4,7 @@
 .texteImage {
   .grid {
     display: grid;
-    grid-template-columns: 45fr 55fr;
+    grid-template-columns: 1fr 1fr;
     gap: $space-16;
     align-items: center;
 
@@ -41,15 +41,18 @@
 
 .imageWrapper {
   position: relative;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 610 / 700;
+  width: 610px;
+  max-width: 100%;
   overflow: hidden;
-  border-radius: $rounded-lg;
 }
 
 .content {
   display: flex;
   flex-direction: column;
   gap: $space-8;
+  width: 920px;
+  max-width: 100%;
 }
 
 .title {
@@ -74,11 +77,9 @@
 }
 
 .options {
-  border-top: 1px solid $color-noir-svgs;
 }
 
 .accordionItem {
-  border-bottom: 1px solid rgba($color-noir-svgs, 0.15);
 }
 
 .accordionHeader {
@@ -92,9 +93,8 @@
   text-align: left;
   cursor: pointer;
   font-family: $font-monument-normal;
-  font-size: 13px;
+  font-size: 16px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: $color-gris;
   transition: color 0.2s ease;
 
@@ -117,13 +117,7 @@
 }
 
 .accordionContent {
-  padding-bottom: $space-5;
   font-family: $font-monument-normal;
-  font-size: 14px;
-  line-height: 1.55;
   color: $color-noir-svgs;
-
-  p + p {
-    margin-top: $space-3;
-  }
+  opacity: 0.6;
 }
