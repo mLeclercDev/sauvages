@@ -132,7 +132,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
                       className={`${styles.catBtn} ${isActive ? styles.active : ""}`}
                       onClick={() => onExpertiseChange(isActive ? "all" : name)}
                     >
-                      {name.toUpperCase()}
+                      {name}
                       {count > 0 && <sup className={styles.count}>{count}</sup>}
                     </button>
                   );

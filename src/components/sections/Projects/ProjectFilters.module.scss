@@ -147,7 +147,7 @@
     line-height: 1.35; /* 32.4px */
     opacity: 0.5;
     cursor: pointer;
-    text-transform: capitalize;
+    text-transform: none;
     transition: opacity 0.2s ease;
     &:hover {
       opacity: 0.7;
