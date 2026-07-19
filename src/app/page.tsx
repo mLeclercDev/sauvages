@@ -18,6 +18,7 @@ export default async function Home() {
   let titreTexteData = null;
   let clientsScrollData = null;
   let texteImageData = null;
+  let blogListingData = null;
 
   try {
     const homepageData = await fetchAPI(
@@ -37,6 +38,7 @@ export default async function Home() {
               },
               "global.titre-texte": { populate: "*" },
               "global.clients-scroll": { populate: "*" },
+              "global.blog-listing": { populate: { Titre: true } },
             },
           },
         },
@@ -52,6 +54,7 @@ export default async function Home() {
     titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
     clientsScrollData = contenu.find((m: any) => m.__component === "global.clients-scroll");
     texteImageData = contenu.find((m: any) => m.__component === "global.texte-image");
+    blogListingData = contenu.find((m: any) => m.__component === "global.blog-listing");
   } catch (error) {
     console.error("Failed to fetch homepage data:", error);
   }
@@ -71,7 +74,7 @@ export default async function Home() {
         isScrollAnimated={hasExpertiseHeader}
       />
       <Projects />
-      <Blog />
+      <Blog data={blogListingData} />
       <ClientsScroll label={clientsScrollData?.Label} title={clientsScrollData?.Titre?.Texte} />
     </main>
   );

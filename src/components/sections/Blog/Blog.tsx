@@ -5,30 +5,28 @@ import BlogListing from "./BlogListing";
 import styles from "./Blog.module.scss";
 
 interface BlogProps {
+  data?: any;
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
   pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
-  headerData?: any;
 }
 
-const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: manualHeaderData }) => {
+const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
+  if (!data) return null;
+
   let articles = [];
-  let headerData = manualHeaderData;
 
   try {
-    // 1. Récupération des articles
-    const articlesData = await fetchAPI("/articles", {
-      populate: {
-        Image: {
-          populate: "*",
-        },
+    const articlesData = await fetchAPI(
+      "/articles",
+      {
+        populate: ["Image"],
+        sort: ["createdAt:desc"],
+        pagination: { limit: 3 },
+        status: "published",
       },
-      sort: ["publishedAt:desc"],
-      pagination: {
-        limit: 5,
-      },
-    }, {});
-    
-    // Normalisation identique à celle de la page Blog
+      {}
+    );
+
     articles = (articlesData?.data || []).map((article: any) => {
       const attrs = article.attributes || article;
       return {
@@ -37,27 +35,18 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
           ...attrs,
           title: attrs.Titre || attrs.title,
           image: attrs.Image || attrs.image,
-          slug: attrs.slug || article.documentId || article.id.toString(),
-        }
+          slug: attrs.slug || article.documentId || article.id?.toString(),
+        },
       };
     });
-
-    // 2. Récupération des infos de la section si non fournies
-    if (!headerData) {
-      const sectionResponse = await fetchAPI("/blog-section", { populate: "*" }, {});
-      headerData = sectionResponse?.data?.attributes || sectionResponse?.data || null;
-    }
-
   } catch (error) {
-    console.error("Failed to fetch blog section data:", error);
+    console.error("Failed to fetch blog articles:", error);
   }
 
-  if (articles.length === 0) return null;
-
-  const sectionTitle = headerData?.Titre?.Texte || headerData?.title;
-  const sectionDesc = headerData?.Description;
-  const linkText = headerData?.TexteDuLien;
-  const linkUrl = headerData?.URL || "/blog";
+  const sectionTitle = data?.Titre?.Texte;
+  const sectionDesc = data?.Description;
+  const linkText = data?.TexteDuLien;
+  const linkUrl = data?.URL || "/blog";
 
   return (
     <section className={`${styles.blog} pt-${pt} pb-${pb}`}>
@@ -66,9 +55,14 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
           <div className={styles.header}>
             {sectionTitle && <h2 className={styles.title}>{sectionTitle}</h2>}
             <div className={styles.headerContent}>
-              {sectionDesc && <p className={styles.description}>{sectionDesc}</p>}
+              {sectionDesc && (
+                <p className={styles.description}>{sectionDesc}</p>
+              )}
               {linkText && (
-                <Link href={linkUrl} className={`${styles.link} ${styles.linkDesktop}`}>
+                <Link
+                  href={linkUrl}
+                  className={`${styles.link} ${styles.linkDesktop}`}
+                >
                   {linkText}
                 </Link>
               )}
@@ -76,10 +70,13 @@ const Blog: React.FC<BlogProps> = async ({ pt = "lg", pb = "lg", headerData: man
           </div>
         )}
 
-        <BlogListing articles={articles} />
-        
-        {linkText && (
-          <Link href={linkUrl} className={`${styles.link} ${styles.linkResponsive}`}>
+        {articles.length > 0 && <BlogListing articles={articles} />}
+
+        {linkText && articles.length > 0 && (
+          <Link
+            href={linkUrl}
+            className={`${styles.link} ${styles.linkResponsive}`}
+          >
             {linkText}
           </Link>
         )}
