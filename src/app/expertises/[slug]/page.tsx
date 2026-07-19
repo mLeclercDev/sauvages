@@ -32,7 +32,16 @@ export default async function ExpertisePage({ params }: PageProps) {
     {
       populate: {
         Contenu: {
-          populate: "*",
+          on: {
+            "expertise.hero-section-single": { populate: { Image: true } },
+            "expertise.expertise-description-single": { populate: { Image: true } },
+            "homepage.intro": { populate: { Image: true, Bouton: true } },
+            "global.titre-texte": { populate: { Titre: true } },
+            "global.texte-image": { populate: { Titre: true, Image: true } },
+            "global.text-reveal": {},
+            "global.full-width-image": { populate: { Image: true } },
+            "global.projets-listing": { populate: { Titre: true } },
+          },
         },
       },
     },
@@ -76,6 +85,9 @@ export default async function ExpertisePage({ params }: PageProps) {
   const textRevealBlock = contenu.find(
     (block: any) => block.__component === "global.text-reveal"
   );
+  const projetsListingBlock = contenu.find(
+    (block: any) => block.__component === "global.projets-listing"
+  );
 
   return (
     <main>
@@ -83,7 +95,10 @@ export default async function ExpertisePage({ params }: PageProps) {
       <FullWidthImage data={fullWidthImageBlock} />
       <TitreTexte data={titreTexteBlock} />
       <TexteImage data={texteImageBlock} />
-      <RecentProjects limit={4} />
+      <RecentProjects
+        limit={4}
+        title={projetsListingBlock?.Titre?.Texte}
+      />
     </main>
   );
 }
