@@ -3,6 +3,7 @@ import Link from "next/link";
 import ProjectItem from "@/components/ui/ProjectItem/ProjectItem";
 import { fetchAPI } from "@/utils/strapi";
 import styles from "./RecentProjects.module.scss";
+import Button from "@/components/ui/Button/Button";
 
 interface RecentProjectsProps {
   category?: string;
@@ -49,9 +50,29 @@ export default async function RecentProjects({
       <div className="container">
         <div className={styles.header}>
           {title && <h2 className={styles.title}>{title}</h2>}
-          <Link href="/work" className={styles.viewAllDesktop}>
-            Voir tous les projets
-          </Link>
+          <Button
+            className={styles.viewAllDesktop}
+            label="retourner à la liste de projets"
+            variant="outline"
+            color="black"
+            href={"/work"}
+            icon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="13"
+                viewBox="0 0 14 13"
+                fill="none"
+              >
+                <path
+                  d="M13.0039 0.75V6.07884C13.0039 6.68637 12.5591 7.17884 12.0068 7.17884C9.87641 7.17884 4.76829 7.17884 1.00391 7.17884M5.08391 11.75C5.08391 11.75 2.59725 8.96403 1.00391 7.17884C2.59725 5.39376 3.49057 4.39287 5.08391 2.60778"
+                  stroke="#060606"
+                  stroke-width="1.5"
+                  stroke-linecap="square"
+                />
+              </svg>
+            }
+          />
         </div>
 
         <div className={`${styles.grid} ${limit === 4 ? styles.grid4 : ""}`}>
@@ -72,10 +93,29 @@ export default async function RecentProjects({
             );
           })}
         </div>
-
-        <Link href="/work" className={styles.viewAllMobile}>
-          Voir tous les projets
-        </Link>
+        <Button
+          className={styles.viewAllMobile}
+          label="retourner à la liste de projets"
+          variant="outline"
+          color="black"
+          href={"/work"}
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="13"
+              viewBox="0 0 14 13"
+              fill="none"
+            >
+              <path
+                d="M13.0039 0.75V6.07884C13.0039 6.68637 12.5591 7.17884 12.0068 7.17884C9.87641 7.17884 4.76829 7.17884 1.00391 7.17884M5.08391 11.75C5.08391 11.75 2.59725 8.96403 1.00391 7.17884C2.59725 5.39376 3.49057 4.39287 5.08391 2.60778"
+                stroke="#060606"
+                stroke-width="1.5"
+                stroke-linecap="square"
+              />
+            </svg>
+          }
+        />
       </div>
     </section>
   );

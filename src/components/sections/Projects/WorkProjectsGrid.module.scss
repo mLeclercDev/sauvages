@@ -4,7 +4,7 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  row-gap: 40px;
+  row-gap: 60px;
   column-gap: 20px;
 
   @include mq("sm") {
@@ -17,5 +17,5 @@
 }
 
 .card :global(.image-wrapper) {
-  aspect-ratio: 323 / 423 !important;
+  aspect-ratio: 452 / 632 !important;
 }
