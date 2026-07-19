@@ -68,15 +68,8 @@ const Expertises: React.FC<ExpertisesProps> = ({
 
     if (!section || !list || bodies.length < 2) return;
 
-    // Set initial states: first item open, others collapsed
-    gsap.set(bodies[0], { height: "auto", opacity: 1, y: 0 });
-    for (let i = 1; i < bodies.length; i++) {
-      gsap.set(bodies[i], { height: 0, opacity: 0, y: -30 });
-    }
-
     const tl = gsap.timeline({ paused: true });
 
-    // Transition dynamique selon le nombre d'éléments
     bodies.forEach((body, i) => {
       if (i < bodies.length - 1) {
         const nextBody = bodies[i + 1];
@@ -88,13 +81,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
           startTime + 0.5
         ).to(
           nextBody,
-          {
-            height: "auto",
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power1.inOut",
-          },
+          { height: "auto", opacity: 1, y: 0, duration: 1, ease: "power1.inOut" },
           startTime + 0.7
         );
       }
@@ -104,26 +91,37 @@ const Expertises: React.FC<ExpertisesProps> = ({
 
     mm.add(
       {
-        isDesktop: `(min-width: 768px)`,
-        isMobile: `(max-width: 767px)`,
+        isDesktop: `(min-width: 1025px)`,
+        isMobile: `(max-width: 1024px)`,
       },
       (context) => {
         const { isDesktop } = context.conditions as any;
 
-        ScrollTrigger.create({
-          trigger: list,
-          markers: false,
-          start: isDesktop ? "top 50px" : "top 100px",
-          end: isDesktop
-            ? `+=${window.innerHeight * bodies.length}`
-            : `+=${window.innerHeight * (bodies.length - 1)}`,
-          pin: true,
-          pinSpacing: true,
-          scrub: 2,
-          onUpdate: (self) => {
-            tl.progress(self.progress);
-          },
-        });
+        if (isDesktop) {
+          // Desktop : premier item ouvert, les autres fermés + pin au scroll
+          gsap.set(bodies[0], { height: "auto", opacity: 1, y: 0 });
+          for (let i = 1; i < bodies.length; i++) {
+            gsap.set(bodies[i], { height: 0, opacity: 0, y: -30 });
+          }
+
+          ScrollTrigger.create({
+            trigger: list,
+            markers: false,
+            start: "top 50px",
+            end: `+=${window.innerHeight * bodies.length}`,
+            pin: true,
+            pinSpacing: true,
+            scrub: 2,
+            onUpdate: (self) => {
+              tl.progress(self.progress);
+            },
+          });
+        } else {
+          // Mobile / tablette : tous les items ouverts, pas de pin
+          bodies.forEach((body) => {
+            gsap.set(body, { height: "auto", opacity: 1, y: 0 });
+          });
+        }
       }
     );
 
