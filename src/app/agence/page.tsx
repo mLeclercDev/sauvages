@@ -80,21 +80,17 @@ export default async function AgencePage() {
   // Extraction des modules pour distribution
   const heroData = contenu.find((m) => m.__component === "agence.hero-section");
   const identiteData = contenu.find((m) => m.__component === "agence.identite");
-  const equipePresentationData = contenu.find((m) => m.__component === "agence.equipe-presentation");
   const equipeListingData = contenu.find(
     (m) => m.__component === "agence.equipe-listing"
   );
-  const titreTexteData = contenu.find((m) => m.__component === "global.titre-texte");
-  const agenceValuesData = contenu.find((m) => m.__component === "agence.agence");
-  const texteImageData = contenu.find((m) => m.__component === "global.texte-image");
+  const titreTexteData = contenu.find(
+    (m) => m.__component === "global.titre-texte"
+  );
 
   return (
     <main>
       <AgenceHero data={heroData} identiteData={identiteData} />
       <TitreTexte data={titreTexteData} />
-      <TexteImage data={texteImageData} />
-      <AgenceValues data={agenceValuesData} />
-      <AgenceTeam data={equipePresentationData} />
       <AgenceStaff data={equipeListingData} />
     </main>
   );
