@@ -19,7 +19,7 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
     const articlesData = await fetchAPI(
       "/articles",
       {
-        populate: ["Image"],
+        populate: { Image: "*", Type: "*" },
         sort: ["createdAt:desc"],
         pagination: { limit: 3 },
         status: "published",
@@ -36,6 +36,8 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
           title: attrs.Titre || attrs.title,
           image: attrs.Image || attrs.image,
           slug: attrs.slug || article.documentId || article.id?.toString(),
+          resume: attrs.Resume,
+          type: attrs.Type?.Nom,
         },
       };
     });
