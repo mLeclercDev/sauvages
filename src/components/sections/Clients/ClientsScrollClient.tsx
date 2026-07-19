@@ -104,7 +104,6 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
       onEnter: () =>
         gsap.to(document.body, { backgroundColor: BG_GREY, duration: 0.5, ease: "power2.inOut" }),
       onLeaveBack: revertBg,
-      onLeave: revertBg,
     });
 
     // Scroll listener for active client detection

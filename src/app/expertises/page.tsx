@@ -5,6 +5,7 @@ import TexteImage from "@/components/sections/TexteImage/TexteImage";
 import LogoSlider from "@/components/sections/LogoSlider/LogoSlider";
 import Expertises from "@/components/sections/Expertises/Expertises";
 import ExpertiseHero from "@/components/sections/Expertises/ExpertiseHero";
+import ClientsScroll from "@/components/sections/Clients/ClientsScroll";
 import { fetchAPI } from "@/utils/strapi";
 
 export default async function ExpertisesPage() {
@@ -69,8 +70,8 @@ export default async function ExpertisesPage() {
         showHeader={hasHeader}
         isScrollAnimated={hasHeader}
       />
-      <RecentProjects limit={4} />
-      <LogoSlider />
+      <RecentProjects limit={4} title="Nos réalisations" />
+      <ClientsScroll />
     </main>
   );
 }

@@ -2,20 +2,25 @@
 @use "@/styles/mixins" as *;
 
 .expertiseHero {
-  padding: $space-50 0 80px;
+  padding: $space-64 0 80px;
   background-color: transparent;
   min-height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
+  @include mq-max("2xl") {
+    padding-top: $space-40;
+    padding-bottom: $space-14;
+  }
+
   @include mq-max("lg") {
-    padding: 100px 0 60px;
+    padding: $space-24 0 $space-12;
     min-height: auto;
   }
 
   @include mq-max("md") {
-    padding: 80px 0 40px;
+    padding: $space-20 0 $space-10;
     min-height: auto;
   }
 }

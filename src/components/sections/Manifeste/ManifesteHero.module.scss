@@ -5,6 +5,11 @@
   padding-top: $space-64;
   padding-bottom: $space-36;
 
+  @include mq-max("2xl") {
+    padding-top: $space-40;
+    padding-bottom: $space-28;
+  }
+
   @include mq-max("lg") {
     padding-top: $space-20;
   }
