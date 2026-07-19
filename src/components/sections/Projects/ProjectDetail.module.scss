@@ -3,8 +3,8 @@
 
 .projectDetail {
   position: relative;
-  padding-top: $space-40;
-  padding-bottom: $space-40;
+  padding-top: $space-64;
+  padding-bottom: $space-32;
 }
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
@@ -16,8 +16,8 @@
   align-items: flex-start;
 
   @include mq("lg") {
-    grid-template-columns: 30% 1fr;
-    gap: $space-8;
+    grid-template-columns: 27% 1fr;
+    gap: $space-44;
   }
 }
 
@@ -63,28 +63,30 @@
   align-items: center;
   gap: $space-3;
   width: 100%;
-  padding: $space-3 0;
-  background: none;
-  border: none;
-  text-align: left;
-  cursor: pointer;
+  padding: 10px 0;
   font-family: $font-monument-normal;
-  font-size: 13px;
+  font-size: 14px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: $color-gris;
-  transition: color 0.2s ease;
-
-  .open & {
-    color: $color-noir-svgs;
-  }
+  color: $color-noir-svgs;
 }
 
 .accordionIcon {
-  display: inline-block;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   width: 14px;
+  height: 1em;
   flex-shrink: 0;
   font-size: 16px;
+  line-height: 1;
+}
+
+.iconOpen,
+.iconClosed {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   line-height: 1;
 }
 

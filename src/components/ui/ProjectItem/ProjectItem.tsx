@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useRef } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getStrapiMedia } from "@/utils/strapi";
@@ -55,7 +55,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   }, []);
 
   return (
-    <Link
+    <TransitionLink
       href={`/work/${slug}`}
       className={`${styles.projectItem} ${className} project-item`}
       onMouseEnter={onMouseEnter}
@@ -97,7 +97,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
           <h3 className={styles.title}>{title}</h3>
         </div>
       </div>
-    </Link>
+    </TransitionLink>
   );
 };
 

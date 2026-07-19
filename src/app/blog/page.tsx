@@ -21,14 +21,12 @@ export default async function BlogPage() {
     // 1. Récupération des articles avec le bon populate (Image avec majuscule)
     const articlesData = await fetchAPI("/articles", {
       populate: {
-        Image: {
-          populate: "*",
-        },
+        Image: { populate: "*" },
+        Type: { populate: "*" },
       },
       sort: ["publishedAt:desc"],
-      pagination: {
-        limit: 100,
-      },
+      pagination: { limit: 100 },
+      status: "published",
     }, {});
     
     // Normalisation des articles pour le composant BlogListing
@@ -38,9 +36,11 @@ export default async function BlogPage() {
         ...article,
         attributes: {
           ...attrs,
-          title: attrs.Titre || attrs.title, // Supporte les deux
-          image: attrs.Image || attrs.image, // Supporte les deux
+          title: attrs.Titre || attrs.title,
+          image: attrs.Image || attrs.image,
           slug: attrs.slug || article.documentId || article.id.toString(),
+          resume: attrs.Resume,
+          type: attrs.Type?.Nom,
         }
       };
     });

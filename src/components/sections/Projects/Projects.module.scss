@@ -116,11 +116,11 @@
 }
 
 .seeMoreWrapper {
-  margin-top: 112px;
+  margin-top: 80px;
   display: flex;
   justify-content: center;
 
   @include mq-max("md") {
-    margin-top: 64px;
+    margin-top: 44px;
   }
 }

@@ -136,7 +136,9 @@ const Expertises: React.FC<ExpertisesProps> = ({
   return (
     <section
       ref={sectionRef}
-      className={`${styles.expertises} pt-top pb-bottom`}
+      className={`${styles.expertises} ${
+        !isScrollAnimated ? styles.isStatic : styles.isAnimatedBlock
+      } pt-top pb-bottom`}
     >
       <div className="container">
         {showHeader && (

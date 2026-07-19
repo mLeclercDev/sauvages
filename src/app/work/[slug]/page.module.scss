@@ -1,0 +1,8 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.page {
+  > :global(section) {
+    padding: $space-32 0 $space-64;
+  }
+}

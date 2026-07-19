@@ -9,6 +9,8 @@ interface TransitionLinkProps extends React.PropsWithChildren<LinkProps> {
   href: string;
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onMouseEnter?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  onMouseLeave?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 const TransitionLink = ({
@@ -16,6 +18,8 @@ const TransitionLink = ({
   children,
   className,
   onClick,
+  onMouseEnter,
+  onMouseLeave,
   ...props
 }: TransitionLinkProps) => {
   const { transitionTo } = useTransitionPage();
@@ -35,7 +39,7 @@ const TransitionLink = ({
   };
 
   return (
-    <Link {...props} href={href} className={className} onClick={handleTransition}>
+    <Link {...props} href={href} className={className} onClick={handleTransition} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {children}
     </Link>
   );

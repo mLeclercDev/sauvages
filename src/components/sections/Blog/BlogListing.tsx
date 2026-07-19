@@ -209,7 +209,7 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
                 {attrs.type || ""}
               </div>
               <div className={styles.colSummary}>
-                {attrs.excerpt || ""}
+                {attrs.resume || ""}
               </div>
               <div className={styles.colImage}>
                 {thumbnailUrl && (

@@ -1,5 +1,6 @@
 import React from "react";
 import { fetchAPI } from "@/utils/strapi";
+import styles from "./page.module.scss";
 
 export const revalidate = 60;
 
@@ -51,9 +52,9 @@ export default async function ProjetDetailPage({ params }: PageProps) {
   }
 
   return (
-    <main>
+    <main className={styles.page}>
       <ProjectDetail project={project} otherProjects={otherProjects} />
-      <RecentProjects limit={4} />
+      <RecentProjects limit={4} title="Plus de projets" />
     </main>
   );
 }
