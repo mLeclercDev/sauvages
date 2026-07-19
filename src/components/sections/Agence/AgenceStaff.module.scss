@@ -3,10 +3,10 @@
 
 .agenceStaff {
   padding-top: $space-32;
-  padding-bottom: $space-32;
+  padding-bottom: $space-64;
   @include mq-max("2xl") {
     padding-top: $space-24;
-    padding-bottom: $space-24;
+    padding-bottom: $space-32;
   }
 
   @include mq-max("md") {
@@ -35,7 +35,7 @@
       position: relative;
       aspect-ratio: 445 / 538;
       overflow: hidden;
-      margin-bottom: 20px;
+      margin-bottom: $space-10;
 
       .hoverVideo {
         position: absolute;
@@ -59,10 +59,9 @@
     }
 
     .name {
-      font-family: $font-monument-normal;
-      font-size: 24px;
+      font-family: $font-monument-wide;
+      font-size: 30px;
       line-height: 1.2;
-      text-transform: uppercase;
 
       @include mq-max("2xl") {
         font-size: 20px;

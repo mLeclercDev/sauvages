@@ -60,10 +60,12 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
         for (let i = 0; i < bodies.length - 1; i++) {
           const startTime = i * 2;
 
-          tl.to(bodies[i], { height: 0, opacity: 0, duration: 1, ease: "power1.inOut" }, startTime + 0.5)
-            .to(bodies[i + 1], { height: "auto", opacity: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7)
-            .to(images[i], { scale: 0, duration: 0.6, ease: "power2.inOut" }, startTime + 0.5)
-            .to(images[i + 1], { scale: 1, duration: 0.6, ease: "expo.out" }, startTime + 0.5);
+          // Corps ferme i
+          tl.to(bodies[i], { height: 0, opacity: 0, duration: 1, ease: "power1.inOut" }, startTime + 0.5);
+
+          // Corps ouvre i+1 + image i+1 scale en même temps — les images ne redescendent jamais en avançant
+          tl.to(bodies[i + 1], { height: "auto", opacity: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
+          tl.to(images[i + 1], { scale: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
         }
 
         const st = ScrollTrigger.create({

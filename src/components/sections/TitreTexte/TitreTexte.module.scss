@@ -18,9 +18,14 @@
 
 .inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: $space-16;
+  grid-template-columns: 0.9fr 1fr;
+  gap: $space-40;
   align-items: start;
+
+  @include mq-max("md") {
+    grid-template-columns: 1fr;
+    gap: $space-16;
+  }
 
   @include mq-max("md") {
     grid-template-columns: 1fr;
@@ -29,10 +34,6 @@
 }
 
 .title {
-  font-family: $font-monument-wide;
-  font-size: clamp(32px, 4vw, 52px);
-  font-weight: 400;
-  line-height: 1.1;
   margin: 0;
 }
 
@@ -40,11 +41,4 @@
   display: flex;
   flex-direction: column;
   gap: $space-6;
-
-  p {
-    font-size: clamp(15px, 1.2vw, 17px);
-    line-height: 1.65;
-    margin: 0;
-    color: $color-noir-svgs;
-  }
 }

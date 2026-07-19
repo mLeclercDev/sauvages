@@ -5,6 +5,11 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+
+  @include mq-max("lg") {
+    min-height: auto;
+    align-items: flex-start;
+  }
 }
 
 // ── Main layout: title | image | names ───────────────────────────────────────
@@ -89,6 +94,11 @@
 .right {
   width: fit-content;
   margin-left: auto;
+
+  @include mq-max("lg") {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 // ── Client list ───────────────────────────────────────────────────────────────
@@ -97,10 +107,20 @@
   grid-template-columns: max-content 1fr;
   column-gap: 40px;
   width: 100%;
+
+  @include mq-max("lg") {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 .clientRow {
   display: contents;
+
+  @include mq-max("lg") {
+    display: block;
+  }
 }
 
 .clientName {
@@ -111,6 +131,14 @@
 
   .active & {
     color: $color-noir-svgs;
+  }
+
+  @include mq-max("lg") {
+    display: block;
+    font-size: clamp(18px, 4vw, 26px);
+    color: $color-noir-svgs;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba($color-noir-svgs, 0.12);
   }
 }
 
@@ -123,4 +151,8 @@
   line-height: 1.6;
   text-align: right;
   opacity: 0;
+
+  @include mq-max("lg") {
+    display: none;
+  }
 }
