@@ -14,6 +14,7 @@ interface ProjectItemProps {
   slug: string;
   thumbnail: any;
   className?: string;
+  imageAspectRatio?: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -24,6 +25,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   slug,
   thumbnail,
   className = "",
+  imageAspectRatio,
   onMouseEnter,
   onMouseLeave,
 }) => {
@@ -62,6 +64,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       <div
         ref={containerRef}
         className={`${styles.imageWrapper} image-wrapper`}
+        style={imageAspectRatio ? { aspectRatio: imageAspectRatio } : undefined}
       >
         <div ref={imageRef} className={styles.imageWrapperInner}>
           {imageUrl ? (

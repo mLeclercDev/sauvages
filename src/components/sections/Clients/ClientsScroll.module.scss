@@ -10,12 +10,12 @@
 // ── Main layout: title | image | names ───────────────────────────────────────
 .layout {
   display: grid;
-  grid-template-columns: 32% 150px auto;
+  grid-template-columns: 32% 150px 1fr;
   gap: 80px;
   align-items: start;
 
   @include mq-max("2xl") {
-    grid-template-columns: 29% 120px auto;
+    grid-template-columns: 29% 120px 1fr;
     gap: 60px;
   }
 
@@ -87,7 +87,8 @@
 
 // ── Right column ─────────────────────────────────────────────────────────────
 .right {
-  width: 100%;
+  width: fit-content;
+  margin-left: auto;
 }
 
 // ── Client list ───────────────────────────────────────────────────────────────

@@ -70,6 +70,7 @@ const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
               slug={attrs.slug}
               thumbnail={attrs.thumbnail}
               className={styles.card}
+              imageAspectRatio="452 / 400"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             />

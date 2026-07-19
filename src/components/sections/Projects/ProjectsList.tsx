@@ -43,6 +43,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
 
   const renderCard = (project: any, sizeClass: string) => {
     const attrs = project.attributes || project;
+    const isSmall = sizeClass === styles.cardSmall;
     return (
       <ProjectItem
         key={project.id}
@@ -55,6 +56,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
         slug={attrs.slug}
         thumbnail={attrs.thumbnail}
         className={`${styles.projectCard} ${sizeClass}`}
+        imageAspectRatio={isSmall ? "452 / 400" : undefined}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       />
