@@ -2,9 +2,17 @@
 @use "@/styles/variables" as *;
 
 .contactSection {
-  padding: $space-62 0 $space-62;
+  padding: $space-62 0;
   background-color: #f7f7f7; // Fallback subtle background color that matches visual
   color: $color-noir-svgs;
+
+  @include mq-max("2xl") {
+  padding: $space-44 0;
+  }
+
+  @include mq-max("xl") {
+  padding: $space-32 0;
+  }
 
   @include mq-max("lg") {
     padding: $space-20 0;
@@ -24,6 +32,9 @@
   @include mq-max("lg") {
     grid-template-columns: 1fr;
     gap: $space-16;
+  }
+  @include mq-max("md") {
+    gap: $space-10;
   }
 }
 
