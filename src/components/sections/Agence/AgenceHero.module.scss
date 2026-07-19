@@ -3,7 +3,7 @@
 
 .agenceHero {
   padding-top: 250px;
-  padding-bottom: $space-16;
+  padding-bottom: $space-32;
   background-color: transparent;
 
   @include mq-max("2xl") {
@@ -21,7 +21,7 @@
   font-size: 38px;
   line-height: 1.25;
   margin-top: $space-7;
-  margin-bottom: $space-20;
+  margin-bottom: $space-28;
   font-weight: 400;
   max-width: 95%;
   margin-top: $space-3;
@@ -59,7 +59,7 @@
   grid-template-columns: repeat(4, minmax(0, 315px));
   justify-content: space-between;
   gap: $space-8;
-  margin-bottom: $space-20;
+  margin-bottom: $space-28;
 
   @include mq-max("2xl") {
     gap: $space-20;

@@ -6,13 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./BlogArticle.module.scss";
 
-interface ContentSection {
-  id: number;
-  title?: string;
-  description: string;
-  image?: string;
-}
-
 interface BlogArticleProps {
   title: string;
   category?: string;
@@ -20,7 +13,7 @@ interface BlogArticleProps {
   readTime?: string;
   heroImage: string;
   intro?: string;
-  sections?: ContentSection[];
+  contentHtml?: string;
 }
 
 const BlogArticle: React.FC<BlogArticleProps> = ({
@@ -30,7 +23,7 @@ const BlogArticle: React.FC<BlogArticleProps> = ({
   readTime,
   heroImage,
   intro,
-  sections = [],
+  contentHtml = "",
 }) => {
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -98,39 +91,12 @@ const BlogArticle: React.FC<BlogArticleProps> = ({
               />
             )}
 
-            <div className={styles.content}>
-              {sections.length > 0 ? (
-                sections.map((section) => (
-                  <div key={section.id} className={styles.sectionWrap}>
-                    {section.title && (
-                      <h3 className={styles.sectionTitle}>{section.title}</h3>
-                    )}
-                    {section.description && (
-                      <div
-                        className={styles.sectionDescription}
-                        dangerouslySetInnerHTML={{
-                          __html: section.description,
-                        }}
-                      />
-                    )}
-                    {section.image && (
-                      <div className={styles.inlineImageWrapper}>
-                        <Image
-                          src={section.image}
-                          alt={section.title || "Section image"}
-                          width={1040}
-                          height={500}
-                          className=""
-                          unoptimized={true}
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <p>Aucun contenu disponible pour le moment.</p>
-              )}
-            </div>
+            {contentHtml && (
+              <div
+                className={styles.richText}
+                dangerouslySetInnerHTML={{ __html: contentHtml }}
+              />
+            )}
           </div>
         </div>
       </div>

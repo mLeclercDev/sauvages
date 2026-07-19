@@ -29,42 +29,55 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const attrs = articleWrap.attributes || articleWrap;
 
-  // Transformation du champ "Contenu" (blocs Strapi) en "sections" pour BlogArticle
-  // On va grouper les blocs de texte et isoler les images
-  const sections: any[] = [];
-  let currentId = 0;
+  // Conversion des blocs Strapi rich text en HTML
+  const renderChild = (child: any): string => {
+    let text = child.text || "";
+    if (!text) return "";
+    if (child.bold) text = `<strong>${text}</strong>`;
+    if (child.italic) text = `<em>${text}</em>`;
+    if (child.underline) text = `<u>${text}</u>`;
+    if (child.strikethrough) text = `<s>${text}</s>`;
+    if (child.code) text = `<code>${text}</code>`;
+    return text;
+  };
 
-  if (Array.isArray(attrs.Contenu)) {
-    attrs.Contenu.forEach((block: any) => {
-      if (block.type === "heading") {
-        const text = block.children?.map((c: any) => c.text).join("") || "";
-        sections.push({
-          id: ++currentId,
-          title: text,
-          description: "",
-        });
-      } else if (block.type === "paragraph") {
-        const text = block.children?.map((c: any) => c.text).join("") || "";
-        // On l'ajoute à la dernière section si elle n'a pas encore de texte, sinon on en crée une
-        if (sections.length > 0 && !sections[sections.length - 1].image && !sections[sections.length - 1].description) {
-          sections[sections.length - 1].description = `<p>${text}</p>`;
-        } else if (sections.length > 0 && !sections[sections.length - 1].image) {
-          sections[sections.length - 1].description += `<p>${text}</p>`;
-        } else {
-          sections.push({
-            id: ++currentId,
-            description: `<p>${text}</p>`,
-          });
-        }
-      } else if (block.type === "image") {
-        sections.push({
-          id: ++currentId,
-          description: "",
-          image: getStrapiMedia(block.image, undefined),
-        });
+  const renderBlock = (block: any): string => {
+    switch (block.type) {
+      case "paragraph": {
+        const inner = block.children?.map(renderChild).join("") || "";
+        return inner ? `<p>${inner}</p>` : "";
       }
-    });
-  }
+      case "heading": {
+        const level = block.level || 2;
+        const inner = block.children?.map(renderChild).join("") || "";
+        return `<h${level}>${inner}</h${level}>`;
+      }
+      case "list": {
+        const tag = block.format === "ordered" ? "ol" : "ul";
+        const items = block.children?.map((item: any) => {
+          const inner = item.children?.map(renderChild).join("") || "";
+          return `<li>${inner}</li>`;
+        }).join("") || "";
+        return `<${tag}>${items}</${tag}>`;
+      }
+      case "image": {
+        const url = getStrapiMedia(block.image, undefined);
+        if (!url) return "";
+        const alt = block.image?.alternativeText || "";
+        return `<figure><img src="${url}" alt="${alt}" /></figure>`;
+      }
+      case "code": {
+        const inner = block.children?.map(renderChild).join("") || "";
+        return `<pre><code>${inner}</code></pre>`;
+      }
+      default:
+        return "";
+    }
+  };
+
+  const contentHtml = Array.isArray(attrs.Contenu)
+    ? attrs.Contenu.map(renderBlock).join("")
+    : "";
 
   // Calcul du temps de lecture (200 mots/min, minimum 1 minute)
   const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
@@ -103,7 +116,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         readTime={readTime}
         heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || ""}
         intro={attrs.soustitre || ""}
-        sections={sections}
+        contentHtml={contentHtml}
       />
     </main>
   );

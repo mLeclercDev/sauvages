@@ -1,6 +1,21 @@
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
 
+.titreTexte {
+  padding-top: $space-32;
+  padding-bottom: $space-32;
+
+  @include mq-max("2xl") {
+    padding-top: $space-24;
+    padding-bottom: $space-24;
+  }
+
+  @include mq-max("md") {
+    padding-top: $space-16;
+    padding-bottom: $space-16;
+  }
+}
+
 .inner {
   display: grid;
   grid-template-columns: 1fr 1fr;
