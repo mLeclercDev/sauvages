@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { getStrapiMedia } from "@/utils/strapi";
 import styles from "./ProjectDetail.module.scss";
 
@@ -26,6 +27,10 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
   const expertisesIconOpenRef = useRef<HTMLSpanElement>(null);
   const expertisesIconClosedRef = useRef<HTMLSpanElement>(null);
 
+  const scrubTriggerRef = useRef<ScrollTrigger | null>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const isClickAnimating = useRef(false);
+
   const attrs = project.attributes || project;
   const sections = attrs.sections || [];
 
@@ -40,8 +45,41 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
     )
     .filter(Boolean);
 
+  const handleAccordionClick = useCallback((idx: number) => {
+    const st = scrubTriggerRef.current;
+    const tl = tlRef.current;
+    if (!st || !tl || window.innerWidth < 1024) return;
+
+    const totalDuration = tl.duration();
+    const targetProgress =
+      idx === 0
+        ? 0
+        : Math.min(((idx - 1) * 2 + 1.8) / totalDuration, 1);
+
+    const targetScrollY = st.start + targetProgress * (st.end - st.start);
+
+    isClickAnimating.current = true;
+
+    gsap.to(tl, {
+      progress: targetProgress,
+      duration: 0.8,
+      ease: "power2.inOut",
+      overwrite: true,
+    });
+
+    gsap.to(window, {
+      scrollTo: { y: targetScrollY, autoKill: false },
+      duration: 0.8,
+      ease: "power2.inOut",
+      overwrite: true,
+      onComplete: () => {
+        isClickAnimating.current = false;
+      },
+    });
+  }, []);
+
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
     if (!leftContentRef.current || !layoutRef.current) return;
 
@@ -98,29 +136,32 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                 const startTime = i * 2;
 
                 tl
-                  // Corps : ferme i, ouvre i+1
                   .to(body, { height: 0, opacity: 0, duration: 1, ease: "power1.inOut" }, startTime + 0.5)
                   .to(next, { height: "auto", opacity: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7)
-                  // Header i : réduit l'opacité, passe à —
                   .to(allHeaders[i], { opacity: 0.4, duration: 0.6, ease: "power1.inOut" }, startTime + 0.5)
                   .to(allIconsOpen[i], { opacity: 0, duration: 0.4, ease: "power1.inOut" }, startTime + 0.5)
                   .to(allIconsClosed[i], { opacity: 1, duration: 0.4, ease: "power1.inOut" }, startTime + 0.5)
-                  // Header i+1 : restaure l'opacité, passe à +
                   .to(allHeaders[i + 1], { opacity: 1, duration: 0.6, ease: "power1.inOut" }, startTime + 0.7)
                   .to(allIconsOpen[i + 1], { opacity: 1, duration: 0.4, ease: "power1.inOut" }, startTime + 0.7)
                   .to(allIconsClosed[i + 1], { opacity: 0, duration: 0.4, ease: "power1.inOut" }, startTime + 0.7);
               }
             });
 
-            ScrollTrigger.create({
+            tlRef.current = tl;
+
+            const scrubST = ScrollTrigger.create({
               trigger: layoutRef.current,
               start: "top top+=100",
               end: "bottom bottom",
               scrub: 2,
               onUpdate: (self) => {
-                tl.progress(self.progress);
+                if (!isClickAnimating.current) {
+                  tl.progress(self.progress);
+                }
               },
             });
+
+            scrubTriggerRef.current = scrubST;
           }
         } else {
           // Mobile : tout ouvert, icône + partout
@@ -135,9 +176,13 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
     return () => {
       clearTimeout(timer);
+      scrubTriggerRef.current = null;
+      tlRef.current = null;
       mm.revert();
     };
   }, [project, sections.length, expertises.length]);
+
+  const expertisesIdx = sections.length;
 
   return (
     <div className={styles.projectDetail}>
@@ -162,6 +207,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                       <div
                         className={styles.accordionHeader}
                         ref={(el) => { accordionHeaderRefs.current[idx] = el; }}
+                        onClick={() => handleAccordionClick(idx)}
                       >
                         <span className={styles.accordionIcon}>
                           <span
@@ -191,7 +237,11 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
                   {expertises.length > 0 && (
                     <div className={styles.accordionItem}>
-                      <div className={styles.accordionHeader} ref={expertisesHeaderRef}>
+                      <div
+                        className={styles.accordionHeader}
+                        ref={expertisesHeaderRef}
+                        onClick={() => handleAccordionClick(expertisesIdx)}
+                      >
                         <span className={styles.accordionIcon}>
                           <span className={styles.iconOpen} ref={expertisesIconOpenRef}>+</span>
                           <span className={styles.iconClosed} ref={expertisesIconClosedRef}>—</span>

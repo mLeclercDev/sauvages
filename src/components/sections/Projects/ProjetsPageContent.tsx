@@ -32,9 +32,17 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
         if (titre) countMap.set(titre, (countMap.get(titre) || 0) + 1);
       });
     });
+    const ORDER = ["Conseil", "Design", "Activation"];
     return Array.from(countMap.entries())
       .map(([name, count]) => ({ name, count }))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        const ia = ORDER.indexOf(a.name);
+        const ib = ORDER.indexOf(b.name);
+        if (ia !== -1 && ib !== -1) return ia - ib;
+        if (ia !== -1) return -1;
+        if (ib !== -1) return 1;
+        return a.name.localeCompare(b.name);
+      });
   }, [projects]);
 
   // Extract unique secteurs from all projects

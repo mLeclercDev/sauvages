@@ -21,11 +21,14 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
 
   const [selectedChips, setSelectedChips] = useState<string[]>([]);
   const [formValues, setFormValues] = useState<Record<string, string>>({});
+  const [honeypot, setHoneypot] = useState("");
+  const [formOpenedAt] = useState(() => Date.now());
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     // Reset validation and status when switching forms or opening
@@ -132,17 +135,32 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
 
     setIsSubmitting(true);
     setSubmitStatus("idle");
+    setSubmitError("");
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Form submitted:", { formValues, selectedChips });
-      setSubmitStatus("success");
-      // Optional: closePanel after success
-      // setTimeout(closePanel, 2000);
-    } catch (error) {
-      console.error("Submission error:", error);
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _honeypot: honeypot,
+          _timestamp: formOpenedAt,
+          form: activeForm,
+          fields: formValues,
+          chips: selectedChips,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setSubmitError(json.error || "Une erreur est survenue.");
+        setSubmitStatus("error");
+      } else {
+        setSubmitStatus("success");
+      }
+    } catch {
       setSubmitStatus("error");
+      setSubmitError("Une erreur est survenue. Réessaie plus tard.");
     } finally {
       setIsSubmitting(false);
     }
@@ -435,6 +453,18 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
             onSubmit={handleSubmit}
             noValidate
           >
+            {/* Honeypot — invisible pour les humains, les bots le remplissent */}
+            <div style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">
+              <input
+                type="text"
+                name="website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {currentStrapiForm?.Champs?.map((field, idx) =>
               renderField(field, idx)
             )}
@@ -502,7 +532,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
               )}
               {submitStatus === "error" && (
                 <p className={styles.errorMessageGlobal}>
-                  Une erreur est survenue lors de l'envoi. Veuillez réessayer.
+                  {submitError || "Une erreur est survenue lors de l'envoi. Veuillez réessayer."}
                 </p>
               )}
             </div>
