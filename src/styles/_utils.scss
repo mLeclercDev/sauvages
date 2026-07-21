@@ -9,15 +9,7 @@
   padding: 0 $size-5;
 
   @include mq("md") {
-    padding: 0 $space-8;
-  }
-
-  @include mq("lg") {
-    padding: 0 $space-8;
-  }
-
-  @include mq("2xl") {
-    padding: 0 $space-11;
+    padding: 0 $space-6;
   }
 }
 

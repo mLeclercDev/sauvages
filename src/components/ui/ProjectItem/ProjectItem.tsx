@@ -29,7 +29,9 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   onMouseEnter,
   onMouseLeave,
 }) => {
-  const imageUrl = getStrapiMedia(thumbnail, "large");
+  const mediaUrl = getStrapiMedia(thumbnail, "large");
+  const thumbnailAttrs = thumbnail?.data?.attributes || thumbnail?.attributes || thumbnail || {};
+  const isVideo = (thumbnailAttrs.mime as string || "").startsWith("video/");
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -67,14 +69,25 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
         style={imageAspectRatio ? { aspectRatio: imageAspectRatio } : undefined}
       >
         <div ref={imageRef} className={styles.imageWrapperInner}>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="fit-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+          {mediaUrl ? (
+            isVideo ? (
+              <video
+                src={mediaUrl}
+                className={styles.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              <Image
+                src={mediaUrl}
+                alt={title}
+                fill
+                className="fit-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : (
             <div className={styles.placeholder} />
           )}
@@ -82,14 +95,25 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       </div>
       <div className={styles.content}>
         <div className={styles.imgWrapper}>
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={title}
-              fill
-              className="fit-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+          {mediaUrl ? (
+            isVideo ? (
+              <video
+                src={mediaUrl}
+                className={styles.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            ) : (
+              <Image
+                src={mediaUrl}
+                alt={title}
+                fill
+                className="fit-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            )
           ) : null}
         </div>
         <div className={styles.infoWrapper}>

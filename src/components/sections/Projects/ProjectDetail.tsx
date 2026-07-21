@@ -213,29 +213,43 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
             </div>
           </div>
 
-          {/* ── Right Column — images only ── */}
+          {/* ── Right Column — images & videos ── */}
           <div className={styles.rightCol}>
             <div className={styles.gallery}>
               {sections.length > 0 ? (
                 sections.map((section: any, idx: number) => {
                   const raw = section.image?.data || section.image || [];
-                  const images = Array.isArray(raw) ? raw : [raw];
-                  if (images.length === 0) return null;
+                  const medias = Array.isArray(raw) ? raw : [raw];
+                  if (medias.length === 0) return null;
                   return (
                     <div key={idx} className={styles.sectionImages}>
-                      {images.map((img: any, imgIdx: number) => {
-                        const url = getStrapiMedia(img);
+                      {medias.map((media: any, mediaIdx: number) => {
+                        const url = getStrapiMedia(media);
                         if (!url) return null;
+                        const mime: string = media.mime || media.attributes?.mime || "";
+                        const isVideo = mime.startsWith("video/");
                         return (
-                          <div key={imgIdx} className={styles.galleryItem}>
-                            <Image
-                              src={url}
-                              alt={`${section.title || attrs.title} — ${imgIdx + 1}`}
-                              width={1200}
-                              height={1600}
-                              className={styles.image}
-                              onLoad={() => ScrollTrigger.refresh()}
-                            />
+                          <div key={mediaIdx} className={styles.galleryItem}>
+                            {isVideo ? (
+                              <video
+                                src={url}
+                                className={styles.image}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                onLoadedData={() => ScrollTrigger.refresh()}
+                              />
+                            ) : (
+                              <Image
+                                src={url}
+                                alt={`${section.title || attrs.title} — ${mediaIdx + 1}`}
+                                width={1200}
+                                height={1600}
+                                className={styles.image}
+                                onLoad={() => ScrollTrigger.refresh()}
+                              />
+                            )}
                           </div>
                         );
                       })}

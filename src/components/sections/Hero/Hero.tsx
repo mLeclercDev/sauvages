@@ -107,7 +107,7 @@ export default function Hero({ data }: HeroProps) {
 
           // Interpolate values based on progress
           const ASPECT_RATIO = 360 / 202.5;
-          const vWidth = 360 + (windowWidth - 360 - 64) * progress;
+          const vWidth = 360 + (windowWidth - 360 - 48) * progress;
           const vHeight = vWidth / ASPECT_RATIO;
 
           const lPt = targetPt;
@@ -221,7 +221,7 @@ export default function Hero({ data }: HeroProps) {
         : `${142 + (window.innerHeight - scrollData.videoHeight - 142) * scrollData.progress}px`
       : "142px",
     "--reel-bottom": scrollData.progress === 1 ? "0" : "auto",
-    "--reel-right": "32px",
+    "--reel-right": "24px",
     "--video-background-color": "#060606",
   } as React.CSSProperties;
 
