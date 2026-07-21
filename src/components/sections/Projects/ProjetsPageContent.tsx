@@ -9,10 +9,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface ProjetsPageContentProps {
   projects: any[];
+  title?: string | null;
 }
 
 const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   projects,
+  title,
 }) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [activeFilterType, setActiveFilterType] = useState<"expertise" | "secteur">("expertise");
@@ -83,7 +85,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
 
   return (
     <>
-      <ProjectsHeader />
+      <ProjectsHeader title={title} />
       <ProjectFilters
         currentView={viewMode}
         onViewChange={setViewMode}

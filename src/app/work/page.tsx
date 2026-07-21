@@ -11,6 +11,7 @@ export default async function ProjetsPage() {
   let projects = [];
   let titreTexteData = null;
   let texteImageData = null;
+  let pageTitle: string | null = null;
 
   try {
     const [projectsData, workData] = await Promise.all([
@@ -27,12 +28,11 @@ export default async function ProjetsPage() {
 
     projects = projectsData?.data || [];
 
-    const contenu =
-      workData?.data?.attributes?.Contenu ||
-      workData?.data?.Contenu ||
-      [];
+    const workAttrs = workData?.data?.attributes || workData?.data || {};
+    const contenu = workAttrs.Contenu || [];
     titreTexteData = contenu.find((m: any) => m.__component === "global.titre-texte");
     texteImageData = contenu.find((m: any) => m.__component === "global.texte-image");
+    pageTitle = workAttrs.Titre || null;
   } catch (error) {
     console.error("Failed to fetch projects:", error);
   }
@@ -41,7 +41,7 @@ export default async function ProjetsPage() {
     <main>
       <TitreTexte data={titreTexteData} />
       <TexteImage data={texteImageData} />
-      <ProjetsPageContent projects={projects} />
+      <ProjetsPageContent projects={projects} title={pageTitle} />
     </main>
   );
 }
