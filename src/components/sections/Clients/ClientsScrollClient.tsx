@@ -20,7 +20,7 @@ interface ClientsScrollClientProps {
   title?: string;
 }
 
-const BG_GREY = "#e3e3e3";
+const BG_GREY = "#A2A2A2";
 const BG_DEFAULT = "#f6f6f6";
 
 const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({

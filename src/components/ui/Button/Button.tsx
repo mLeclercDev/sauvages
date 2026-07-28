@@ -5,15 +5,12 @@ import Link from "next/link";
 import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import styles from "./Button.module.scss";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string;
   icon?: React.ReactNode;
   href?: string;
-  onClick?: () => void;
-  className?: string;
   variant?: "primary" | "secondary" | "outline";
   color?: "black" | "white";
-  type?: "button" | "submit" | "reset";
   target?: string;
 }
 
@@ -27,6 +24,7 @@ const Button: React.FC<ButtonProps> = ({
   color = "black",
   type = "button",
   target,
+  ...rest
 }) => {
   const buttonClasses = `${styles.button} ${styles[variant]} ${styles[color]} ${className}`;
 
@@ -57,7 +55,7 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button type={type} onClick={onClick} className={buttonClasses}>
+    <button type={type} onClick={onClick} className={buttonClasses} {...rest}>
       {content}
     </button>
   );

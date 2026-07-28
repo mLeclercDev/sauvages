@@ -16,6 +16,7 @@ interface ProjectDetailProps {
 const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
   const leftContentRef = useRef<HTMLDivElement>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
 
   const accordionBodyRefs = useRef<(HTMLDivElement | null)[]>([]);
   const accordionHeaderRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -44,6 +45,26 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         exp.attributes?.titre || exp.attributes?.name || exp.titre || exp.name
     )
     .filter(Boolean);
+
+  const rawDescription = attrs.description || attrs.Description;
+  const hasDescription = typeof rawDescription === "string"
+    ? rawDescription.trim().length > 0
+    : Array.isArray(rawDescription) && rawDescription.length > 0;
+
+  const renderDescription = (content: any) => {
+    if (typeof content === "string") {
+      return <div dangerouslySetInnerHTML={{ __html: content }} />;
+    }
+    if (Array.isArray(content)) {
+      return content.map((block: any, i: number) => {
+        if (block.type === "paragraph") {
+          return <p key={i}>{block.children?.map((c: any) => c.text).join("")}</p>;
+        }
+        return null;
+      });
+    }
+    return null;
+  };
 
   const handleAccordionClick = useCallback((idx: number) => {
     const st = scrubTriggerRef.current;
@@ -180,9 +201,36 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
       tlRef.current = null;
       mm.revert();
     };
-  }, [project, sections.length, expertises.length]);
+  }, [project, sections.length, expertises.length, hasDescription]);
 
-  const expertisesIdx = sections.length;
+  // Parallax sur les images de la galerie droite
+  useEffect(() => {
+    if (!galleryRef.current) return;
+    const items = galleryRef.current.querySelectorAll<HTMLElement>("[data-parallax]");
+    const ctx = gsap.context(() => {
+      items.forEach((el) => {
+        gsap.fromTo(
+          el,
+          { yPercent: -8 },
+          {
+            yPercent: 8,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el.parentElement,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      });
+    }, galleryRef);
+    return () => ctx.revert();
+  }, [sections.length]);
+
+  const descriptionOffset = hasDescription ? 1 : 0;
+  const expertisesIdx = sections.length + descriptionOffset;
 
   return (
     <div className={styles.projectDetail}>
@@ -199,31 +247,63 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                 <div className={`${styles.sector} label`}>{attrs.sector}</div>
               )}
 
-              {(sections.length > 0 || expertises.length > 0) && (
+              {(sections.length > 0 || expertises.length > 0 || hasDescription) && (
                 <div className={styles.accordions}>
 
-                  {sections.map((section: any, idx: number) => (
-                    <div key={idx} className={styles.accordionItem}>
+                  {hasDescription && (
+                    <div className={styles.accordionItem}>
                       <div
                         className={styles.accordionHeader}
-                        ref={(el) => { accordionHeaderRefs.current[idx] = el; }}
-                        onClick={() => handleAccordionClick(idx)}
+                        ref={(el) => { accordionHeaderRefs.current[0] = el; }}
+                        onClick={() => handleAccordionClick(0)}
                       >
                         <span className={styles.accordionIcon}>
                           <span
                             className={styles.iconOpen}
-                            ref={(el) => { iconOpenRefs.current[idx] = el; }}
+                            ref={(el) => { iconOpenRefs.current[0] = el; }}
                           >+</span>
                           <span
                             className={styles.iconClosed}
-                            ref={(el) => { iconClosedRefs.current[idx] = el; }}
+                            ref={(el) => { iconClosedRefs.current[0] = el; }}
+                          >—</span>
+                        </span>
+                        Description
+                      </div>
+                      <div
+                        className={styles.accordionBody}
+                        ref={(el) => { accordionBodyRefs.current[0] = el; }}
+                      >
+                        <div className={styles.accordionContent}>
+                          {renderDescription(rawDescription)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {sections.map((section: any, idx: number) => {
+                    const refIdx = idx + descriptionOffset;
+                    return (
+                    <div key={refIdx} className={styles.accordionItem}>
+                      <div
+                        className={styles.accordionHeader}
+                        ref={(el) => { accordionHeaderRefs.current[refIdx] = el; }}
+                        onClick={() => handleAccordionClick(refIdx)}
+                      >
+                        <span className={styles.accordionIcon}>
+                          <span
+                            className={styles.iconOpen}
+                            ref={(el) => { iconOpenRefs.current[refIdx] = el; }}
+                          >+</span>
+                          <span
+                            className={styles.iconClosed}
+                            ref={(el) => { iconClosedRefs.current[refIdx] = el; }}
                           >—</span>
                         </span>
                         {section.title}
                       </div>
                       <div
                         className={styles.accordionBody}
-                        ref={(el) => { accordionBodyRefs.current[idx] = el; }}
+                        ref={(el) => { accordionBodyRefs.current[refIdx] = el; }}
                       >
                         {section.description && (
                           <div
@@ -233,7 +313,8 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                         )}
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
 
                   {expertises.length > 0 && (
                     <div className={styles.accordionItem}>
@@ -265,23 +346,29 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
           {/* ── Right Column — images & videos ── */}
           <div className={styles.rightCol}>
-            <div className={styles.gallery}>
+            <div className={styles.gallery} ref={galleryRef}>
               {sections.length > 0 ? (
                 sections.map((section: any, idx: number) => {
                   const raw = section.image?.data || section.image || [];
                   const medias = Array.isArray(raw) ? raw : [raw];
                   if (medias.length === 0) return null;
+                  const isDouble = medias.length >= 2;
                   return (
-                    <div key={idx} className={styles.sectionImages}>
+                    <div
+                      key={idx}
+                      className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
+                    >
                       {medias.map((media: any, mediaIdx: number) => {
                         const url = getStrapiMedia(media);
                         if (!url) return null;
                         const mime: string = media.mime || media.attributes?.mime || "";
                         const isVideo = mime.startsWith("video/");
+                        const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
                         return (
-                          <div key={mediaIdx} className={styles.galleryItem}>
+                          <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
                             {isVideo ? (
                               <video
+                                data-parallax
                                 src={url}
                                 className={styles.image}
                                 autoPlay
@@ -292,6 +379,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                               />
                             ) : (
                               <Image
+                                data-parallax
                                 src={url}
                                 alt={`${section.title || attrs.title} — ${mediaIdx + 1}`}
                                 width={1200}

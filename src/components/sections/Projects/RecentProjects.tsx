@@ -31,9 +31,12 @@ export default async function RecentProjects({
     }
 
     const projectsData = await fetchAPI("/projets", {
-      sort: ["createdAt:desc"],
+      sort: ["rank:asc"],
       pagination: { limit },
-      populate: ["thumbnail", "client"],
+      populate: {
+        thumbnail: true,
+        client: { populate: { Favicon: true } },
+      },
       status: "published",
       filters,
     });
@@ -89,6 +92,10 @@ export default async function RecentProjects({
                 }
                 slug={attrs.slug}
                 thumbnail={attrs.thumbnail}
+                clientFavicon={
+                  attrs.client?.Favicon ||
+                  attrs.client?.data?.attributes?.Favicon
+                }
               />
             );
           })}

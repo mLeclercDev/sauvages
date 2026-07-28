@@ -69,6 +69,10 @@ const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
               }
               slug={attrs.slug}
               thumbnail={attrs.thumbnail}
+              clientFavicon={
+                attrs.client?.Favicon ||
+                attrs.client?.data?.attributes?.Favicon
+              }
               className={styles.card}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}

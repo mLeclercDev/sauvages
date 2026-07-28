@@ -7,6 +7,8 @@ import WorkProjectsGrid from "./WorkProjectsGrid";
 import ProjectsTable from "./ProjectsTable";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+export type Section = "work" | "archives" | "vus_pas_pris";
+
 interface ProjetsPageContentProps {
   projects: any[];
   title?: string | null;
@@ -17,14 +19,34 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   title,
 }) => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [activeSection, setActiveSection] = useState<Section>("work");
   const [activeFilterType, setActiveFilterType] = useState<"expertise" | "secteur">("expertise");
   const [activeExpertise, setActiveExpertise] = useState<string>("all");
   const [activeSecteur, setActiveSecteur] = useState<string>("all");
 
-  // Extract unique expertise titles with project counts
+  const handleSectionChange = (section: Section) => {
+    setActiveSection(section);
+    setViewMode(section === "archives" ? "list" : "grid");
+    setActiveExpertise("all");
+    setActiveSecteur("all");
+  };
+
+  // Projects filtered by Statut (section)
+  const sectionProjects = useMemo(() => {
+    return projects.filter((project) => {
+      const attrs = project.attributes || project;
+      const statut = (attrs.Statut || "actif").toLowerCase();
+      if (activeSection === "work") return statut === "actif";
+      if (activeSection === "archives") return statut === "archive";
+      if (activeSection === "vus_pas_pris") return statut === "vus_pas_pris";
+      return false;
+    });
+  }, [projects, activeSection]);
+
+  // Extract unique expertise titles with project counts (from section projects)
   const expertises = useMemo(() => {
     const countMap = new Map<string, number>();
-    projects.forEach((project) => {
+    sectionProjects.forEach((project) => {
       const attrs = project.attributes || project;
       const items: any[] = attrs.expertise?.data || attrs.expertise || [];
       items.forEach((item: any) => {
@@ -43,31 +65,28 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
         if (ib !== -1) return 1;
         return a.name.localeCompare(b.name);
       });
-  }, [projects]);
+  }, [sectionProjects]);
 
-  // Extract unique secteurs from all projects
-  // sector is a plain string field on the project: attrs.sector
+  // Extract unique secteurs (from section projects)
   const secteurs = useMemo(() => {
     const set = new Set<string>();
-    projects.forEach((project) => {
+    sectionProjects.forEach((project) => {
       const attrs = project.attributes || project;
       const sector = attrs.sector || attrs.secteur;
       if (sector && typeof sector === "string") set.add(sector);
     });
     return Array.from(set).sort();
-  }, [projects]);
+  }, [sectionProjects]);
 
-  // Filtering logic
+  // Filtering by expertise + secteur within the current section
   const filteredProjects = useMemo(() => {
-    return projects.filter((project) => {
+    return sectionProjects.filter((project) => {
       const attrs = project.attributes || project;
 
-      // expertise = relation array (v5: direct array, v4: wrapped under .data)
       const expertiseTitres: string[] = (attrs.expertise?.data || attrs.expertise || []).map(
         (item: any) => (item.attributes?.titre || item.attributes?.name || item.titre || item.name || "").toLowerCase()
       );
 
-      // sector = plain string
       const sectorValue = (attrs.sector || attrs.secteur || "").toLowerCase();
 
       const matchesExpertise =
@@ -80,7 +99,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
 
       return matchesExpertise && matchesSecteur;
     });
-  }, [projects, activeExpertise, activeSecteur]);
+  }, [sectionProjects, activeExpertise, activeSecteur]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -97,11 +116,13 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
       <ProjectFilters
         currentView={viewMode}
         onViewChange={setViewMode}
+        activeSection={activeSection}
+        onSectionChange={handleSectionChange}
         activeFilterType={activeFilterType}
         onFilterTypeChange={setActiveFilterType}
         expertises={expertises}
         secteurs={secteurs}
-        totalCount={projects.length}
+        totalCount={sectionProjects.length}
         activeExpertise={activeExpertise}
         activeSecteur={activeSecteur}
         onExpertiseChange={setActiveExpertise}

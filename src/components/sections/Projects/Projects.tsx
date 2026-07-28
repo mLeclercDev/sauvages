@@ -9,8 +9,11 @@ const Projects: React.FC = async () => {
 
   try {
     const projectsData = await fetchAPI("/projets", {
-      populate: ["thumbnail", "client"],
-      sort: ["publishedAt:desc"],
+      populate: {
+        thumbnail: true,
+        client: { populate: { Favicon: true } },
+      },
+      sort: ["rank:asc"],
       pagination: { limit: 5 },
     });
     projects = projectsData?.data || [];

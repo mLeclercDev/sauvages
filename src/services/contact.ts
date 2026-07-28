@@ -19,12 +19,15 @@ export interface StrapiForm {
   id: number;
   __component: "contact.formulaire";
   TitreFormulaire: string;
+  Accroche?: string;
+  Icone?: StrapiMedia;
   Champs: StrapiField[];
 }
 
 export interface StrapiMedia {
   id: number;
   url: string;
+  mime?: string;
   width?: number;
   height?: number;
   alternativeText?: string | null;
@@ -60,7 +63,7 @@ export async function getContactData(): Promise<ContactData | null> {
           Formulaires: {
             on: {
               "contact.formulaire": {
-                populate: { Champs: { populate: "*" } },
+                populate: { Champs: { populate: "*" }, Icone: true },
               },
             },
           },

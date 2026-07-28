@@ -13,6 +13,7 @@ interface ProjectItemProps {
   client: string;
   slug: string;
   thumbnail: any;
+  clientFavicon?: any;
   className?: string;
   imageAspectRatio?: string;
   onMouseEnter?: () => void;
@@ -24,12 +25,14 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   client,
   slug,
   thumbnail,
+  clientFavicon,
   className = "",
   imageAspectRatio,
   onMouseEnter,
   onMouseLeave,
 }) => {
   const mediaUrl = getStrapiMedia(thumbnail, "large");
+  const faviconUrl = getStrapiMedia(clientFavicon);
   const thumbnailAttrs = thumbnail?.data?.attributes || thumbnail?.attributes || thumbnail || {};
   const isVideo = (thumbnailAttrs.mime as string || "").startsWith("video/");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -95,24 +98,18 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       </div>
       <div className={styles.content}>
         <div className={styles.imgWrapper}>
-          {mediaUrl ? (
+          {faviconUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={faviconUrl}
+              alt={client}
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
+            />
+          ) : mediaUrl ? (
             isVideo ? (
-              <video
-                src={mediaUrl}
-                className={styles.video}
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
+              <video src={mediaUrl} autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             ) : (
-              <Image
-                src={mediaUrl}
-                alt={title}
-                fill
-                className="fit-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
+              <Image src={mediaUrl} alt={title} fill className="fit-cover" sizes="80px" />
             )
           ) : null}
         </div>

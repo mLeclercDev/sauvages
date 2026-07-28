@@ -155,6 +155,10 @@
   gap: $space-3;
   margin-bottom: $space-16;
 
+  &.sectionImagesDouble {
+    flex-direction: row;
+  }
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -164,13 +168,25 @@
   width: 100%;
   position: relative;
   overflow: hidden;
+
+  &.galleryItemSingle {
+    aspect-ratio: 16 / 9;
+  }
+
+  &.galleryItemDouble {
+    aspect-ratio: 4 / 5;
+    flex: 1;
+    min-width: 0;
+  }
 }
 
 .image {
   width: 100%;
-  height: auto;
+  height: 110%;
+  margin-top: -5%;
   display: block;
   object-fit: cover;
+  will-change: transform;
 }
 
 // ─── Expertises sentinel (scroll trigger at end of gallery) ──────────────────

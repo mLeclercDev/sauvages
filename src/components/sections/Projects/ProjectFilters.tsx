@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./ProjectFilters.module.scss";
+import type { Section } from "./ProjetsPageContent";
 
 interface ExpertiseOption {
   name: string;
@@ -11,6 +12,8 @@ interface ExpertiseOption {
 interface ProjectFiltersProps {
   currentView: "grid" | "list";
   onViewChange: (view: "grid" | "list") => void;
+  activeSection: Section;
+  onSectionChange: (section: Section) => void;
   activeFilterType: "expertise" | "secteur";
   onFilterTypeChange: (type: "expertise" | "secteur") => void;
   expertises: ExpertiseOption[];
@@ -40,9 +43,17 @@ const ChevronIcon = ({ open }: { open: boolean }) => (
   </svg>
 );
 
+const SECTIONS: { key: Section; label: string }[] = [
+  { key: "work", label: "WORK" },
+  { key: "vus_pas_pris", label: "VUS PAS PRIS" },
+  { key: "archives", label: "ARCHIVES" },
+];
+
 const ProjectFilters: React.FC<ProjectFiltersProps> = ({
   currentView,
   onViewChange,
+  activeSection,
+  onSectionChange,
   activeFilterType,
   onFilterTypeChange,
   expertises,
@@ -85,8 +96,15 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
           </div>
 
           <div className={styles.navRight}>
-            <button className={styles.navItemRight}>ÉTUDES DES CAS</button>
-            <button className={styles.navItemRight}>ARCHIVES</button>
+            {SECTIONS.map(({ key, label }) => (
+              <button
+                key={key}
+                className={`${styles.navItemRight} ${activeSection === key ? styles.active : ""}`}
+                onClick={() => onSectionChange(key)}
+              >
+                {label}
+              </button>
+            ))}
             {activeCount > 0 && (
               <button
                 className={`${styles.navItemRight} ${styles.resetBtn}`}
@@ -152,7 +170,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
                 })}
           </div>
 
-          <div className={styles.viewToggle}>
+          {activeSection !== "archives" && <div className={styles.viewToggle}>
             <button
               className={`${styles.toggleBtn} ${currentView === "grid" ? styles.active : ""}`}
               onClick={() => onViewChange("grid")}
@@ -195,7 +213,7 @@ const ProjectFilters: React.FC<ProjectFiltersProps> = ({
                 </svg>
               </span>
             </button>
-          </div>
+          </div>}
         </div>
       </div>
     </div>

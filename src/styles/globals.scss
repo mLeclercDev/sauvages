@@ -55,6 +55,17 @@ html.is-first-visit header svg path {
   opacity: 0;
 }
 
+// Logo toujours noir pendant le preloader — désactive le mix-blend-mode difference
+// qui inverserait la couleur du logo selon le fond coloré aléatoire.
+html.is-first-visit header {
+  mix-blend-mode: normal !important;
+  background-color: transparent !important;
+
+  svg path {
+    fill: #000 !important;
+  }
+}
+
 
 p {
   font-size: var(--font-size-body);

@@ -43,7 +43,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         thumbnail: { populate: "*" },
         client: { populate: "*" },
       },
-      sort: ["publishedAt:desc"],
+      sort: ["rank:asc"],
     });
     otherProjects = otherProjectsData?.data || [];
   } catch (error) {

@@ -50,3 +50,24 @@
   flex-direction: column;
   gap: $space-6;
 }
+
+.innerWithImage {
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+
+  @include mq-max("lg") {
+    grid-template-columns: 1fr;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}

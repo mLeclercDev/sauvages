@@ -55,6 +55,10 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
         }
         slug={attrs.slug}
         thumbnail={attrs.thumbnail}
+        clientFavicon={
+          attrs.client?.Favicon ||
+          attrs.client?.data?.attributes?.Favicon
+        }
         className={`${styles.projectCard} ${sizeClass}`}
         imageAspectRatio={isSmall ? "452 / 400" : "768 / 708"}
         onMouseEnter={() => setIsHovered(true)}

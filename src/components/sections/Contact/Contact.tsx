@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getCalApi } from "@calcom/embed-react";
 import styles from "./Contact.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
 import Button from "@/components/ui/Button/Button";
@@ -17,6 +18,16 @@ interface ContactProps {
 const Contact: React.FC<ContactProps> = ({ data }) => {
   const imageRef = useRef<HTMLDivElement>(null);
   const { openPanel } = useContactPanel();
+
+  useEffect(() => {
+    (async () => {
+      const cal = await getCalApi({
+        namespace: "conversation-rapide",
+        embedJsUrl: "https://cal.eu/embed.js",
+      });
+      cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+    })();
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -111,7 +122,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
           </div>
 
           <div className={styles.rightCol}>
-            {title && <h1 className={`${styles.title} h2`}>{title}</h1>}
+            {title && <h1 className={`${styles.title}`}>{title}</h1>}
             {hero?.Description && hero.Description.length > 0 && (
               <div className={styles.description}>
                 {hero.Description.map((block, i) => {
@@ -126,10 +137,10 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                 <Button
                   label={btn1}
                   variant="outline"
-                  onClick={() => {
-                    console.log("Open Calendly");
-                  }}
                   icon={icon1Node}
+                  data-cal-namespace="conversation-rapide"
+                  data-cal-link="agence-sauvages/conversation-rapide"
+                  data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                 />
               )}
               {btn2 && (

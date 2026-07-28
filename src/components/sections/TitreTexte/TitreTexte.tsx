@@ -1,5 +1,7 @@
 import React from "react";
+import Image from "next/image";
 import styles from "./TitreTexte.module.scss";
+import { getStrapiMedia } from "@/utils/strapi";
 
 interface TitreTexteProps {
   data?: any;
@@ -21,12 +23,27 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
     .map((block: any) => block.children?.map((c: any) => c.text).join(""))
     .filter(Boolean);
 
+  const image = data.Image || null;
+  const imageUrl = getStrapiMedia(image);
+  const hasImage = !!imageUrl;
+
   return (
     <section className={`${styles.titreTexte} pt-${pt} pb-${pb}`}>
       <div className="container">
-        <div className={styles.inner}>
+        <div className={`${styles.inner} ${hasImage ? styles.innerWithImage : ""}`}>
           {titre?.Texte && (
             <Tag className={styles.title}>{titre.Texte}</Tag>
+          )}
+          {hasImage && (
+            <div className={styles.imageWrapper}>
+              <Image
+                src={imageUrl}
+                alt={image.alternativeText || ""}
+                width={image.width || 800}
+                height={image.height || 600}
+                className={styles.image}
+              />
+            </div>
           )}
           {paragraphs.length > 0 && (
             <div className={styles.body}>

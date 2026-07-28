@@ -46,6 +46,11 @@
 .title {
   margin-top: 0;
   margin-bottom: $space-6;
+  font-size: clamp(3rem, 5vw, 68px);
+      font-weight: 800;
+    line-height: .85;
+    font-family: $font-monument-black;
+    text-transform: uppercase;
 
   @include mq-max("lg") {
     margin-bottom: $space-8;
