@@ -19,9 +19,15 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
 
   const Tag = (titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
 
-  const paragraphs = texte
-    .map((block: any) => block.children?.map((c: any) => c.text).join(""))
-    .filter(Boolean);
+  const renderBlock = (block: any, i: number) => {
+    if (!block.children?.length) return null;
+    const content = block.children.map((child: any, j: number) => {
+      if (!child.text) return null;
+      if (child.bold) return <strong key={j}>{child.text}</strong>;
+      return child.text;
+    });
+    return <p key={i}>{content}</p>;
+  };
 
   const image = data.Image || null;
   const imageUrl = getStrapiMedia(image);
@@ -41,15 +47,13 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
                 alt={image.alternativeText || ""}
                 width={image.width || 800}
                 height={image.height || 600}
-                className={styles.image}
+                className={`${styles.image} fit-cover`}
               />
             </div>
           )}
-          {paragraphs.length > 0 && (
+          {texte.length > 0 && (
             <div className={styles.body}>
-              {paragraphs.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+              {texte.map((block, i) => renderBlock(block, i))}
             </div>
           )}
         </div>

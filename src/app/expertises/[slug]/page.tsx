@@ -37,7 +37,7 @@ export default async function ExpertisePage({ params }: PageProps) {
             "expertise.hero-section-single": { populate: { Image: true } },
             "expertise.expertise-description-single": { populate: { Image: true } },
             "homepage.intro": { populate: { Image: true, Bouton: true } },
-            "global.titre-texte": { populate: { Titre: true } },
+            "global.titre-texte": { populate: { Titre: true, Image: true } },
             "global.texte-image": { populate: { Titre: true, Image: true, Options: true } },
             "global.text-reveal": { fields: ["Texte", "Label"] },
             "global.full-width-image": { populate: { Image: true } },

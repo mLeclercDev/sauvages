@@ -52,17 +52,30 @@
 }
 
 .innerWithImage {
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
+  grid-template-columns: 40% 1fr 373px 30px auto;
+  column-gap: 0;
+  align-items: flex-start;
+
+  .title { grid-column: 1; }
+  .imageWrapper { grid-column: 3; }
+  .body { grid-column: 5;
+  width: 100%;
+max-width: 520px  }
 
   @include mq-max("lg") {
     grid-template-columns: 1fr;
+
+    .title,
+    .imageWrapper,
+    .body { grid-column: 1; }
   }
 }
 
 .imageWrapper {
   width: 100%;
   overflow: hidden;
+  aspect-ratio: 373 / 326;
+  position: relative;
 }
 
 .image {

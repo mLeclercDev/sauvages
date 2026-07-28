@@ -55,7 +55,7 @@ export default async function AgencePage() {
                   },
                 },
               },
-              "global.titre-texte": { populate: ["Titre"] },
+              "global.titre-texte": { populate: ["Titre", "Image"] },
             },
           },
         },
