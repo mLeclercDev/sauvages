@@ -32,13 +32,13 @@ export default async function Home() {
               "global.expertises-listing": {
                 populate: {
                   Titre: true,
-                  Bouton: true,
+                  Bouton: { populate: "*" },
                   Item: { populate: "*" },
                 },
               },
               "global.titre-texte": { populate: "*" },
               "global.clients-scroll": { populate: "*" },
-              "global.blog-listing": { populate: { Titre: true } },
+              "global.blog-listing": { populate: { Titre: true, Bouton: { populate: { Icone: true } } } },
             },
           },
         },

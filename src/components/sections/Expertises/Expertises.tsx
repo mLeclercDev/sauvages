@@ -148,17 +148,31 @@ const Expertises: React.FC<ExpertisesProps> = ({
                 {data?.Titre?.Texte || data?.Titre}
               </h2>
             )}
-
-            {data?.Bouton?.Texte && (
-              <Button
-                className={styles.buttonDesktop}
-                label={data.Bouton.Texte}
-                variant="outline"
-                icon={arrowIcon}
-                href={getButtonHref(data?.Bouton)}
-                target={getButtonTarget(data?.Bouton)}
-              />
-            )}
+            <div className={styles.headerContent}>
+              {Array.isArray(data?.Description) && data.Description.length > 0 && (
+                <div className={styles.headerDescription}>
+                  {data.Description.map((block: any, i: number) => {
+                    if (!block.children?.length) return null;
+                    const content = block.children.map((child: any, j: number) => {
+                      if (!child.text) return null;
+                      if (child.bold) return <strong key={j}>{child.text}</strong>;
+                      return child.text;
+                    });
+                    return <p key={i}>{content}</p>;
+                  })}
+                </div>
+              )}
+              {data?.Bouton?.Texte && (
+                <Button
+                  className={styles.buttonDesktop}
+                  label={data.Bouton.Texte}
+                  variant="outline"
+                  icon={arrowIcon}
+                  href={getButtonHref(data?.Bouton)}
+                  target={getButtonTarget(data?.Bouton)}
+                />
+              )}
+            </div>
           </div>
         )}
 
@@ -215,7 +229,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
                         <li key={i}>{sub}</li>
                       ))}
                     </ul>
-                    {(!showHeader || item.hasButton) && (
+                    {item.hasButton && (
                       <Button
                         label={item.button?.Texte || data?.Bouton?.Texte || ""}
                         variant="outline"

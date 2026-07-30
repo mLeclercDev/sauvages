@@ -7,6 +7,7 @@ import AgenceHero from "@/components/sections/Agence/AgenceHero";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";
 import AgenceStaff from "@/components/sections/Agence/AgenceStaff";
 import AgenceTeam from "@/components/sections/Agence/AgenceTeam";
+import Blog from "@/components/sections/Blog/Blog";
 
 export default async function AgencePage() {
   let contenu: any[] = [];
@@ -46,7 +47,7 @@ export default async function AgencePage() {
                 populate: ["Image"],
               },
               "global.blog-listing": {
-                populate: ["Titre"],
+                populate: { Titre: true, Bouton: { populate: { Icone: true } } },
               },
               "agence.cta": {
                 populate: {
@@ -82,6 +83,7 @@ export default async function AgencePage() {
   const agenceValuesData = contenu.find(
     (m) => m.__component === "agence.agence"
   );
+  const blogListingData = contenu.find((m) => m.__component === "global.blog-listing");
 
   return (
     <main>
@@ -89,6 +91,7 @@ export default async function AgencePage() {
       <AgenceTeam data={equipePresentationData} />
       <TitreTexte data={titreTexteData} />
       <AgenceStaff data={equipeListingData} />
+      <Blog data={blogListingData} />
     </main>
   );
 }

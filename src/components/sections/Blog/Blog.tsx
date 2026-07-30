@@ -1,7 +1,7 @@
 import React from "react";
-import { fetchAPI } from "@/utils/strapi";
-import Link from "next/link";
+import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
 import BlogListing from "./BlogListing";
+import Button from "@/components/ui/Button/Button";
 import styles from "./Blog.module.scss";
 
 interface BlogProps {
@@ -47,26 +47,26 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
 
   const sectionTitle = data?.Titre?.Texte;
   const sectionDesc = data?.Description;
-  const linkText = data?.TexteDuLien;
-  const linkUrl = data?.URL || "/blog";
+  const bouton = data?.Bouton ?? null;
 
   return (
     <section className={`${styles.blog} pt-${pt} pb-${pb}`}>
       <div className="container">
-        {(sectionTitle || sectionDesc || linkText) && (
+        {(sectionTitle || sectionDesc || bouton) && (
           <div className={styles.header}>
             {sectionTitle && <h2 className={styles.title}>{sectionTitle}</h2>}
             <div className={styles.headerContent}>
               {sectionDesc && (
                 <p className={styles.description}>{sectionDesc}</p>
               )}
-              {linkText && (
-                <Link
-                  href={linkUrl}
-                  className={`${styles.link} ${styles.linkDesktop}`}
-                >
-                  {linkText}
-                </Link>
+              {bouton && (
+                <Button
+                  label={bouton.Texte}
+                  href={bouton.Url}
+                  target={bouton.Blank ? "_blank" : undefined}
+                  icon={getStrapiMedia(bouton.Icone) ? <img src={getStrapiMedia(bouton.Icone)!} alt="" /> : undefined}
+                  className={styles.linkDesktop}
+                />
               )}
             </div>
           </div>
@@ -74,13 +74,14 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
 
         {articles.length > 0 && <BlogListing articles={articles} />}
 
-        {linkText && articles.length > 0 && (
-          <Link
-            href={linkUrl}
-            className={`${styles.link} ${styles.linkResponsive}`}
-          >
-            {linkText}
-          </Link>
+        {bouton && articles.length > 0 && (
+          <Button
+            label={bouton.Texte}
+            href={bouton.Url}
+            target={bouton.Blank ? "_blank" : undefined}
+            icon={getStrapiMedia(bouton.Icone) ? <img src={getStrapiMedia(bouton.Icone)!} alt="" /> : undefined}
+            className={styles.linkResponsive}
+          />
         )}
       </div>
     </section>

@@ -27,7 +27,7 @@ export default async function ExpertisesPage() {
               "global.expertises-listing": {
                 populate: {
                   Titre: true,
-                  Bouton: true,
+                  Bouton: { populate: "*" },
                   Item: { populate: "*" },
                 },
               },

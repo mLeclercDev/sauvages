@@ -13,7 +13,7 @@ const Projects: React.FC = async () => {
         thumbnail: true,
         client: { populate: { Favicon: true } },
       },
-      sort: ["rank:asc"],
+      sort: ["rank:desc"],
       pagination: { limit: 5 },
     });
     projects = projectsData?.data || [];

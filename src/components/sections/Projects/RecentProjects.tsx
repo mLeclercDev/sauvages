@@ -31,7 +31,7 @@ export default async function RecentProjects({
     }
 
     const projectsData = await fetchAPI("/projets", {
-      sort: ["rank:asc"],
+      sort: ["rank:desc"],
       pagination: { limit },
       populate: {
         thumbnail: true,

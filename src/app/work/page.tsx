@@ -21,7 +21,7 @@ export default async function ProjetsPage() {
           thumbnail: { populate: "*" },
           expertise: { populate: "*" },
         },
-        sort: ["rank:asc"],
+        sort: ["rank:desc"],
       }),
       fetchAPI("/work", { populate: "deep" }),
     ]);
