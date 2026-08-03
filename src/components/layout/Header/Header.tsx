@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.scss";
 import Button from "@/components/ui/Button/Button";
@@ -68,50 +67,15 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
     updateTime();
     const interval = setInterval(updateTime, 1000 * 60);
 
-    // GSAP Header Hide/Show on Footer reveal
-    gsap.registerPlugin(ScrollTrigger);
-
-    let st: ScrollTrigger | null = null;
-
-    const initHeaderTrigger = () => {
-      const footer = document.querySelector("footer");
-      if (footer && headerRef.current) {
-        if (st) st.kill();
-
-        st = ScrollTrigger.create({
-          trigger: footer,
-          start: "top 15%", // Hides when footer top reaches 15% of viewport
-          markers: false,
-          onEnter: () => {
-            gsap.to(headerRef.current, {
-              yPercent: -150,
-              opacity: 0,
-              duration: 0.8,
-              ease: "power2.inOut",
-            });
-          },
-          onLeaveBack: () => {
-            gsap.to(headerRef.current, {
-              yPercent: 0,
-              opacity: 1,
-              duration: 0.4,
-              ease: "power2.out",
-            });
-          },
-        });
-      }
-    };
-
-    // Delay to wait for page content to settle and footer to be in place
-    const timeout = setTimeout(initHeaderTrigger, 200);
+    // Fix bug disparition : reset au changement de page
+    if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
 
     return () => {
       clearInterval(interval);
-      clearTimeout(timeout);
-      if (st) st.kill();
-      document.body.style.overflow = ""; // Cleanup
+      if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
+      document.body.style.overflow = "";
     };
-  }, [pathname]); // Refresh on route change
+  }, [pathname]);
 
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const onOpenCompleteRef = useRef<(() => void) | null>(null);

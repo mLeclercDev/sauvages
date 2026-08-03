@@ -126,7 +126,7 @@
 .clientName {
   font-family: $font-monument-wide;
   font-size: clamp(20px, 1.8vw, 30px);
-  color: $color-gris;
+  color: $color-gris-fonce; 
   transition: color 0.4s ease;
 
   .active & {

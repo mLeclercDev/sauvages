@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { usePathname } from "next/navigation";
 import styles from "./ContactFormPanel.module.scss";
 import { useContactPanel } from "@/context/ContactPanelContext";
 import Button from "@/components/ui/Button/Button";
@@ -15,8 +16,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
   const { isOpen, activeForm, setForm, closePanel } = useContactPanel();
   const panelRef = useRef<HTMLDivElement>(null);
   const formWrapperRef = useRef<HTMLFormElement>(null);
-  const isFullOpenRef = useRef(false);
-  const expansionRef = useRef(0);
+  const pathname = usePathname();
 
   // Map the Strapi forms to our internal activeForm state (0: projet, 1: candidature)
   const currentFormIndex = activeForm === "projet" ? 0 : 1;
@@ -45,77 +45,27 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
     }
   }, [isOpen, activeForm]);
 
-  // Animation GSAP ouvrir/fermer (remplace la transition CSS sur transform)
+  // Fermeture automatique à la navigation
+  useEffect(() => {
+    if (isOpen) closePanel();
+  }, [pathname]);
+
+  // Animation GSAP ouvrir/fermer
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
 
     if (isOpen) {
-      isFullOpenRef.current = false;
-      expansionRef.current = 0;
-      el.style.overflowY = "hidden";
-
-      const isDesktop = window.innerWidth >= 768;
-      if (isDesktop) {
-        gsap.fromTo(el, { y: "100%" }, { y: "20%", duration: 0.8, ease: "power2.out" });
-      } else {
-        isFullOpenRef.current = true;
-        el.style.overflowY = "auto";
-        gsap.fromTo(el, { y: "100%" }, { y: "0%", duration: 0.8, ease: "power2.out" });
-      }
+      el.style.overflowY = "auto";
+      gsap.fromTo(el, { y: "100%" }, { y: "0%", duration: 0.8, ease: "power2.out" });
     } else {
       gsap.to(el, {
         y: "100%",
         duration: 0.7,
         ease: "power2.in",
-        onComplete: () => {
-          isFullOpenRef.current = false;
-          expansionRef.current = 0;
-          el.style.overflowY = "hidden";
-        },
+        onComplete: () => { el.style.overflowY = "hidden"; },
       });
     }
-  }, [isOpen]);
-
-  // Wheel listener : expansion partielle → plein écran
-  useEffect(() => {
-    if (!isOpen) return;
-    const el = panelRef.current;
-    if (!el) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (isFullOpenRef.current) {
-        // Plein écran : intercepter uniquement le scroll vers le haut au sommet du contenu
-        if (e.deltaY < 0 && el.scrollTop === 0) {
-          e.preventDefault();
-          isFullOpenRef.current = false;
-          el.style.overflowY = "hidden";
-          // continue vers la logique partagée ci-dessous
-        } else {
-          return; // scroll natif dans le formulaire
-        }
-      } else {
-        e.preventDefault();
-      }
-
-      expansionRef.current = Math.min(1, Math.max(0, expansionRef.current + e.deltaY / 300));
-      const targetY = 20 * (1 - expansionRef.current); // 20% → 0%
-
-      gsap.to(el, {
-        y: `${targetY}%`,
-        duration: 0.6,
-        ease: "power3.out",
-        overwrite: true,
-      });
-
-      if (expansionRef.current >= 1) {
-        isFullOpenRef.current = true;
-        el.style.overflowY = "auto";
-      }
-    };
-
-    document.addEventListener("wheel", handleWheel, { passive: false });
-    return () => document.removeEventListener("wheel", handleWheel);
   }, [isOpen]);
 
   useEffect(() => {
@@ -435,23 +385,6 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
                   </button>
                 );
               })}
-            </div>
-            <div className={styles.scrollDownIndicator}>
-              Scroll Down{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="14"
-                height="18"
-                viewBox="0 0 14 18"
-                fill="none"
-              >
-                <path
-                  fillRule="evenodd"
-                  clip-rule="evenodd"
-                  d="M7.30035 17.2807C7.15973 17.4211 6.9691 17.5 6.77035 17.5C6.5716 17.5 6.38098 17.4211 6.24035 17.2807L0.240354 11.2807C0.166668 11.212 0.107565 11.1292 0.0665737 11.0372C0.0255819 10.9452 0.00354062 10.8459 0.00176393 10.7452C-1.27521e-05 10.6445 0.0185114 10.5444 0.0562321 10.4511C0.0939528 10.3577 0.150098 10.2728 0.221317 10.2016C0.292535 10.1304 0.37737 10.0743 0.470758 10.0365C0.564147 9.99881 0.664174 9.98029 0.764877 9.98207C0.86558 9.98384 0.964895 10.0059 1.05689 10.0469C1.14889 10.0879 1.23169 10.147 1.30036 10.2207L6.02035 14.9407L6.02036 0.750659C6.02036 0.551748 6.09937 0.36098 6.24003 0.220329C6.38068 0.079677 6.57144 0.000659333 6.77036 0.000659351C6.96927 0.000659368 7.16003 0.079677 7.30069 0.220329C7.44134 0.36098 7.52036 0.551748 7.52036 0.750659L7.52035 14.9407L12.2404 10.2207C12.309 10.147 12.3918 10.0879 12.4838 10.0469C12.5758 10.0059 12.6751 9.98384 12.7758 9.98207C12.8765 9.98029 12.9766 9.99882 13.07 10.0365C13.1633 10.0743 13.2482 10.1304 13.3194 10.2016C13.3906 10.2728 13.4468 10.3577 13.4845 10.4511C13.5222 10.5445 13.5407 10.6445 13.5389 10.7452C13.5372 10.8459 13.5151 10.9452 13.4741 11.0372C13.4331 11.1292 13.374 11.212 13.3004 11.2807L7.30035 17.2807Z"
-                  fill="#5E5E5E"
-                />
-              </svg>
             </div>
             <div className={styles.closeWrapper}>
               <button

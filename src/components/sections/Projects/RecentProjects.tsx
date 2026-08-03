@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import ProjectItem from "@/components/ui/ProjectItem/ProjectItem";
 import { fetchAPI } from "@/utils/strapi";
 import styles from "./RecentProjects.module.scss";
 import Button from "@/components/ui/Button/Button";
+import RecentProjectsGrid from "./RecentProjectsGrid";
 
 interface RecentProjectsProps {
   category?: string;
@@ -78,28 +78,7 @@ export default async function RecentProjects({
           />
         </div>
 
-        <div className={`${styles.grid} ${limit === 4 ? styles.grid4 : ""}`}>
-          {projects.map((project: any) => {
-            const attrs = project.attributes || project;
-            return (
-              <ProjectItem
-                key={project.id}
-                title={attrs.title}
-                client={
-                  attrs.client?.data?.attributes?.name ||
-                  attrs.client?.name ||
-                  ""
-                }
-                slug={attrs.slug}
-                thumbnail={attrs.thumbnail}
-                clientFavicon={
-                  attrs.client?.Favicon ||
-                  attrs.client?.data?.attributes?.Favicon
-                }
-              />
-            );
-          })}
-        </div>
+        <RecentProjectsGrid projects={projects} limit={limit} />
         <Button
           className={styles.viewAllMobile}
           label="retourner à la liste de projets"

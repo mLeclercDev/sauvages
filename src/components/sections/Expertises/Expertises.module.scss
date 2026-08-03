@@ -76,8 +76,11 @@
   display: flex;
   gap: clamp(24px, 3vw, 48px);
   &.isStatic {
-    gap: clamp(32px, 11vw, 210px);
+    gap: clamp(32px, 5vw, 210px);
     padding: 60px 0 96px;
+    .itemImage {
+      width: clamp(160px, 6vw, 226px);
+    }
     &:first-child {
       padding-top: 0;
     }
@@ -113,8 +116,7 @@
 
 
   .isStatic & {
-    width: auto;
-    flex-shrink: 1;
+    width: 320px;  
   }
 
   @include mq-max("md") {
@@ -177,7 +179,7 @@
 
 .itemBodyInner {
   display: flex;
-  gap: clamp(24px, 9vw, 180px);
+  gap: clamp(24px, 5vw, 180px);
   align-items: flex-start;
 
   @include mq-max("md") {
@@ -191,6 +193,10 @@
   width: clamp(160px, 16vw, 296px);
   flex-shrink: 0;
   aspect-ratio: 296 / 310;
+
+  @include mq-max("2xl") {
+    width: clamp(160px, 16vw, 226px);
+  }
 
   @include mq-max("md") {
     width: 100%;

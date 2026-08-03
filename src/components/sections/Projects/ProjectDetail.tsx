@@ -203,31 +203,6 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
     };
   }, [project, sections.length, expertises.length, hasDescription]);
 
-  // Parallax sur les images de la galerie droite
-  useEffect(() => {
-    if (!galleryRef.current) return;
-    const items = galleryRef.current.querySelectorAll<HTMLElement>("[data-parallax]");
-    const ctx = gsap.context(() => {
-      items.forEach((el) => {
-        gsap.fromTo(
-          el,
-          { yPercent: -8 },
-          {
-            yPercent: 8,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el.parentElement,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-              invalidateOnRefresh: true,
-            },
-          }
-        );
-      });
-    }, galleryRef);
-    return () => ctx.revert();
-  }, [sections.length]);
 
   const descriptionOffset = hasDescription ? 1 : 0;
   const expertisesIdx = sections.length + descriptionOffset;
@@ -347,53 +322,97 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           {/* ── Right Column — images & videos ── */}
           <div className={styles.rightCol}>
             <div className={styles.gallery} ref={galleryRef}>
-              {sections.length > 0 ? (
-                sections.map((section: any, idx: number) => {
-                  const raw = section.image?.data || section.image || [];
-                  const medias = Array.isArray(raw) ? raw : [raw];
-                  if (medias.length === 0) return null;
-                  const isDouble = medias.length >= 2;
-                  return (
-                    <div
-                      key={idx}
-                      className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
-                    >
-                      {medias.map((media: any, mediaIdx: number) => {
-                        const url = getStrapiMedia(media);
-                        if (!url) return null;
-                        const mime: string = media.mime || media.attributes?.mime || "";
-                        const isVideo = mime.startsWith("video/");
-                        const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
-                        return (
-                          <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
-                            {isVideo ? (
-                              <video
-                                data-parallax
-                                src={url}
-                                className={styles.image}
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                onLoadedData={() => ScrollTrigger.refresh()}
-                              />
-                            ) : (
-                              <Image
-                                data-parallax
-                                src={url}
-                                alt={`${section.title || attrs.title} — ${mediaIdx + 1}`}
-                                width={1200}
-                                height={1600}
-                                className={styles.image}
-                                onLoad={() => ScrollTrigger.refresh()}
-                              />
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })
+              {sections.length > 0 || attrs.Galerie?.length > 0 ? (
+                <>
+                  {sections.map((section: any, idx: number) => {
+                    const raw = section.image?.data || section.image || [];
+                    const medias = Array.isArray(raw) ? raw : [raw];
+                    if (medias.length === 0) return null;
+                    const isDouble = medias.length >= 2;
+                    return (
+                      <div
+                        key={idx}
+                        className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
+                      >
+                        {medias.map((media: any, mediaIdx: number) => {
+                          const url = getStrapiMedia(media);
+                          if (!url) return null;
+                          const mime: string = media.mime || media.attributes?.mime || "";
+                          const isVideo = mime.startsWith("video/");
+                          const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
+                          return (
+                            <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
+                              {isVideo ? (
+                                <video
+                                  src={url}
+                                  className={styles.image}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  onLoadedData={() => ScrollTrigger.refresh()}
+                                />
+                              ) : (
+                                <Image
+                                  src={url}
+                                  alt={`${section.title || attrs.title} — ${mediaIdx + 1}`}
+                                  width={1200}
+                                  height={1600}
+                                  className={styles.image}
+                                  onLoad={() => ScrollTrigger.refresh()}
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+
+                  {Array.isArray(attrs.Galerie) && attrs.Galerie.map((block: any, idx: number) => {
+                    const isDouble = block.Disposition === "double";
+                    const images: any[] = block.Images || [];
+                    if (images.length === 0) return null;
+                    const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
+                    return (
+                      <div
+                        key={`galerie-${idx}`}
+                        className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
+                      >
+                        {images.map((media: any, mediaIdx: number) => {
+                          const url = getStrapiMedia(media);
+                          if (!url) return null;
+                          const mime: string = media.mime || "";
+                          const isVideo = mime.startsWith("video/") || /\.(mp4|webm|ogg)$/i.test(url);
+                          return (
+                            <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
+                              {isVideo ? (
+                                <video
+                                  src={url}
+                                  className={styles.image}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  onLoadedData={() => ScrollTrigger.refresh()}
+                                />
+                              ) : (
+                                <Image
+                                  src={url}
+                                  alt={`Galerie — ${mediaIdx + 1}`}
+                                  width={1200}
+                                  height={1600}
+                                  className={styles.image}
+                                  onLoad={() => ScrollTrigger.refresh()}
+                                />
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </>
               ) : (
                 <div className={styles.placeholderGallery}>
                   <div className={styles.mockBox} />

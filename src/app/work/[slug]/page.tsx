@@ -26,6 +26,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         thumbnail: { populate: "*" },
         expertise: { populate: "*" },
         sections: { populate: "*" },
+        Galerie: { populate: { Images: true } },
       },
     });
 

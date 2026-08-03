@@ -45,6 +45,46 @@
   }
 }
 
+.gridWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.customCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background: transparent;
+  font-family: $font-monument-normal;
+  mix-blend-mode: difference;
+  font-size: 20px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.5s ease;
+
+  .cursorText {
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    line-height: 1;
+  }
+
+  &.visible {
+    opacity: 1;
+    .cursorText {
+      transform: translateY(0%);
+    }
+  }
+
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
 .grid4 {
   @include mq("sm") {
     grid-template-columns: repeat(2, 1fr);
