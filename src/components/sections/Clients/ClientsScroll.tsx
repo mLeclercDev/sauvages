@@ -13,7 +13,7 @@ export default async function ClientsScroll({ label, title }: ClientsScrollProps
   try {
     const res = await fetchAPI("/clients", {
       filters: { Afficher: { $eq: true } },
-      populate: ["Logo", "Competences"],
+      populate: ["Logo"],
       sort: ["name:asc"],
     });
 
@@ -23,7 +23,7 @@ export default async function ClientsScroll({ label, title }: ClientsScrollProps
       id: c.id,
       name: c.name || "",
       logo: c.Logo,
-      competencies: c.Competences?.map((comp: { Nom: string }) => comp.Nom) ?? [],
+      sector: c.sector || "",
     }));
   } catch (e) {
     console.error("Failed to fetch clients:", e);

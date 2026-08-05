@@ -76,7 +76,7 @@ export default async function ExpertisePage({ params }: PageProps) {
   const renderBlock = (block: any, idx: number) => {
     switch (block.__component) {
       case "global.text-reveal":
-        return <TextRevealSection key={idx} data={block} />;
+        return <TextRevealSection key={idx} data={block} pt="none" pb="none" />;
       case "global.full-width-image":
         return <FullWidthImage key={idx} data={block} />;
       case "global.titre-texte":

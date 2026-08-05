@@ -2,21 +2,19 @@
 @use "@/styles/mixins" as *;
 
 .page {
-  // 80px entre TextRevealSection (1) et FullWidthImage (2)
-  > :global(section:nth-child(1)) {
-    padding-bottom: 0;
-  }
-  > :global(section:nth-child(2)) {
-    padding-top: 80px;
-  }
+  > :global(section:first-child) {
+    padding-top: $space-64;
 
-  // 256px au-dessus de la section du milieu (TitreTexte)
-  > :global(section:nth-child(3)) {
-    padding-top: 256px;
-  }
+    @include mq-max("2xl") {
+      padding-top: $space-40;
+    }
 
-  // 256px en-dessous de la section du milieu (TexteImage)
-  > :global(section:nth-child(4)) {
-    padding-bottom: 256px;
+    @include mq-max("lg") {
+      padding-top: $space-28;
+    }
+
+    @include mq-max("md") {
+      padding-top: $space-20;
+    }
   }
 }

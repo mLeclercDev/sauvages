@@ -19,10 +19,21 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
   const imageRef = useRef<HTMLDivElement>(null);
   const { openPanel } = useContactPanel();
 
+  const hero: HeroContact | undefined = data?.HeroContact;
+
+  let calLink = "agence-sauvages/conversation-rapide";
+  let calNamespace = "conversation-rapide";
+  if (hero?.LienCalendrier) {
+    try {
+      calLink = new URL(hero.LienCalendrier).pathname.slice(1);
+      calNamespace = calLink.split("/").pop() || calNamespace;
+    } catch {}
+  }
+
   useEffect(() => {
     (async () => {
       const cal = await getCalApi({
-        namespace: "conversation-rapide",
+        namespace: calNamespace,
         embedJsUrl: "https://cal.eu/embed.js",
       });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
@@ -57,7 +68,6 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
     }
   }, []);
 
-  const hero: HeroContact | undefined = data?.HeroContact;
   const imageUrl = getStrapiMedia(hero?.Image, undefined);
   const title = hero?.Titre;
   const btn1 = hero?.TexteBouton1;
@@ -138,8 +148,8 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                   label={btn1}
                   variant="outline"
                   icon={icon1Node}
-                  data-cal-namespace="conversation-rapide"
-                  data-cal-link="agence-sauvages/conversation-rapide"
+                  data-cal-namespace={calNamespace}
+                  data-cal-link={calLink}
                   data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
                 />
               )}

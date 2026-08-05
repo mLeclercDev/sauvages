@@ -11,7 +11,7 @@ export interface ClientItem {
   id: string | number;
   name: string;
   logo?: any;
-  competencies?: string[];
+  sector?: string;
 }
 
 interface ClientsScrollClientProps {
@@ -174,7 +174,7 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
                     ref={(el) => { competenciesRefs.current[index] = el; }}
                     className={styles.competenciesItem}
                   >
-                    {client.competencies?.join(", ")}
+                    {client.sector}
                   </p>
                 </div>
               ))}

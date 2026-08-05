@@ -39,6 +39,7 @@ export interface HeroContact {
   Description?: Array<{ type: string; children: Array<{ type: string; text: string }> }>;
   TexteBouton1?: string;
   TexteBouton2?: string;
+  LienCalendrier?: string;
   Image?: StrapiMedia;
   IconBouton1?: StrapiMedia;
   IconBouton2?: StrapiMedia;

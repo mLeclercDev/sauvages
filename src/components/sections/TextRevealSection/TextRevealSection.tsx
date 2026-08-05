@@ -10,8 +10,8 @@ interface TextRevealSectionProps {
   label?: string;
   data?: any;
   showLabel?: boolean;
-  pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
-  pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+  pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "top";
+  pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "top";
 }
 
 const TextRevealSection: React.FC<TextRevealSectionProps> = ({
