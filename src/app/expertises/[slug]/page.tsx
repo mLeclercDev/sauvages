@@ -54,10 +54,10 @@ export default async function ExpertisePage({ params }: PageProps) {
   const matchedEntry = entries.find((entry: any) => {
     const attrs = entry?.attributes || entry;
     const contenu = Array.isArray(attrs?.Contenu) ? attrs.Contenu : [];
-    const heroBlock = contenu.find(
-      (block: any) => block.__component === "expertise.hero-section-single"
+    const textReveal = contenu.find(
+      (block: any) => block.__component === "global.text-reveal"
     );
-    const titleSlug = slugify(heroBlock?.Titre || "");
+    const titleSlug = slugify(textReveal?.Label || "");
 
     return entry?.documentId === slug || attrs?.documentId === slug || titleSlug === slug;
   });
@@ -68,34 +68,31 @@ export default async function ExpertisePage({ params }: PageProps) {
 
   const attrs = matchedEntry.attributes || matchedEntry;
   const contenu = Array.isArray(attrs?.Contenu) ? attrs.Contenu : [];
-  const introBlock = contenu.find(
-    (block: any) => block.__component === "homepage.intro"
-  );
-  const detailBlock = contenu.find(
-    (block: any) => block.__component === "expertise.expertise-description-single"
-  );
-  const titreTexteBlock = contenu.find(
-    (block: any) => block.__component === "global.titre-texte"
-  );
-  const texteImageBlock = contenu.find(
-    (block: any) => block.__component === "global.texte-image"
-  );
-  const fullWidthImageBlock = contenu.find(
-    (block: any) => block.__component === "global.full-width-image"
-  );
-  const textRevealBlock = contenu.find(
-    (block: any) => block.__component === "global.text-reveal"
-  );
+
   const projetsListingBlock = contenu.find(
     (block: any) => block.__component === "global.projets-listing"
   );
 
+  const renderBlock = (block: any, idx: number) => {
+    switch (block.__component) {
+      case "global.text-reveal":
+        return <TextRevealSection key={idx} data={block} />;
+      case "global.full-width-image":
+        return <FullWidthImage key={idx} data={block} />;
+      case "global.titre-texte":
+        return <TitreTexte key={idx} data={block} />;
+      case "global.texte-image":
+        return <TexteImage key={idx} data={block} />;
+      case "expertise.expertise-description-single":
+        return <ExpertiseDetailsSingle key={idx} data={block} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <main className={styles.page}>
-      <TextRevealSection data={textRevealBlock} />
-      <FullWidthImage data={fullWidthImageBlock} />
-      <TitreTexte data={titreTexteBlock} />
-      <TexteImage data={texteImageBlock} />
+      {contenu.map((block: any, idx: number) => renderBlock(block, idx))}
       <RecentProjects
         limit={4}
         title={projetsListingBlock?.Titre?.Texte}

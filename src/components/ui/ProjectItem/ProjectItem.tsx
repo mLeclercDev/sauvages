@@ -31,7 +31,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   onMouseEnter,
   onMouseLeave,
 }) => {
-  const mediaUrl = getStrapiMedia(thumbnail, "large");
+  const mediaUrl = getStrapiMedia(thumbnail);
   const faviconUrl = getStrapiMedia(clientFavicon);
   const thumbnailAttrs = thumbnail?.data?.attributes || thumbnail?.attributes || thumbnail || {};
   const isVideo = (thumbnailAttrs.mime as string || "").startsWith("video/");
@@ -87,6 +87,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                 src={mediaUrl}
                 alt={title}
                 fill
+                quality={85}
                 className="fit-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />

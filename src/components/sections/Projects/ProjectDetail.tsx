@@ -51,6 +51,15 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
     ? rawDescription.trim().length > 0
     : Array.isArray(rawDescription) && rawDescription.length > 0;
 
+  const renderInline = (c: any, i: number) => {
+    let node: React.ReactNode = c.text;
+    if (c.code) node = <code key={i}>{node}</code>;
+    if (c.bold) node = <strong key={i}>{node}</strong>;
+    if (c.italic) node = <em key={i}>{node}</em>;
+    if (c.underline) node = <u key={i}>{node}</u>;
+    return <React.Fragment key={i}>{node}</React.Fragment>;
+  };
+
   const renderDescription = (content: any) => {
     if (typeof content === "string") {
       return <div dangerouslySetInnerHTML={{ __html: content }} />;
@@ -58,7 +67,11 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
     if (Array.isArray(content)) {
       return content.map((block: any, i: number) => {
         if (block.type === "paragraph") {
-          return <p key={i}>{block.children?.map((c: any) => c.text).join("")}</p>;
+          return <p key={i}>{block.children?.map(renderInline)}</p>;
+        }
+        if (block.type === "heading") {
+          const Tag = `h${block.level}` as keyof JSX.IntrinsicElements;
+          return <Tag key={i}>{block.children?.map(renderInline)}</Tag>;
         }
         return null;
       });
