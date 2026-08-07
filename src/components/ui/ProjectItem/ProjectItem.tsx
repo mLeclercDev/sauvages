@@ -87,7 +87,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                 src={mediaUrl}
                 alt={title}
                 fill
-                quality={85}
+                unoptimized
                 className="fit-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
@@ -110,7 +110,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
             isVideo ? (
               <video src={mediaUrl} autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover" }} />
             ) : (
-              <Image src={mediaUrl} alt={title} fill className="fit-cover" sizes="80px" />
+              <Image src={mediaUrl} alt={title} fill unoptimized className="fit-cover" sizes="80px" />
             )
           ) : null}
         </div>
