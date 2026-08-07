@@ -5,6 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { marked } from "marked";
 import { getStrapiMedia } from "@/utils/strapi";
 import styles from "./ProjectDetail.module.scss";
 
@@ -64,7 +65,8 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
   const renderDescription = (content: any) => {
     if (typeof content === "string") {
-      return <div dangerouslySetInnerHTML={{ __html: content }} />;
+      const html = marked.parse(content) as string;
+      return <div className={styles.markdownContent} dangerouslySetInnerHTML={{ __html: html }} />;
     }
     if (Array.isArray(content)) {
       return content.map((block: any, i: number) => {

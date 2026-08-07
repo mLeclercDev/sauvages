@@ -104,11 +104,30 @@
   color: $color-noir-svgs;
 
   p {
-      font-size: 14px;
+    font-size: 14px;
+    margin: 0;
   }
 
   p + p {
     margin-top: $space-3;
+  }
+}
+
+.markdownContent {
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
   }
 }
 
