@@ -193,9 +193,11 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
             {normalizedProjects.map((project, index) => {
               const attrs = project.attrs || {};
               const clientName =
-                attrs.client?.data?.attributes?.name || "Client";
-              const expertiseArr = (attrs.expertise?.data || [])
-                .map((item: any) => item.attributes?.titre || item.titre)
+                attrs.client?.data?.attributes?.name ||
+                attrs.client?.name ||
+                "Client";
+              const expertiseArr = (attrs.expertise?.data || attrs.expertise || [])
+                .map((item: any) => item.attributes?.titre || item.attributes?.name || item.titre || item.name)
                 .filter(Boolean);
 
               // Only take the first one to keep the layout clean

@@ -8,11 +8,13 @@ interface ExpertiseDetailsSingleProps {
 }
 
 const renderInline = (c: any, i: number) => {
+  if (c.type === "linebreak") return <br key={i} />;
   let node: React.ReactNode = c.text;
-  if (c.code) node = <code key={i}>{node}</code>;
-  if (c.bold) node = <strong key={i}>{node}</strong>;
-  if (c.italic) node = <em key={i}>{node}</em>;
-  if (c.underline) node = <u key={i}>{node}</u>;
+  const fmt = c.format || 0;
+  if (fmt & 16 || c.code) node = <code key={i}>{node}</code>;
+  if (fmt & 1 || c.bold) node = <strong key={i}>{node}</strong>;
+  if (fmt & 2 || c.italic) node = <em key={i}>{node}</em>;
+  if (fmt & 8 || c.underline) node = <u key={i}>{node}</u>;
   return <React.Fragment key={i}>{node}</React.Fragment>;
 };
 
@@ -23,7 +25,7 @@ const renderRichText = (blocks: any[]): React.ReactNode => {
       case "paragraph":
         return <p key={i}>{block.children?.map(renderInline)}</p>;
       case "heading": {
-        const Tag = `h${block.level}` as keyof JSX.IntrinsicElements;
+        const Tag = `h${block.level}` as keyof React.JSX.IntrinsicElements;
         return <Tag key={i}>{block.children?.map(renderInline)}</Tag>;
       }
       case "list": {

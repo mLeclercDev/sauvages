@@ -355,7 +355,7 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
               )}
               <div className={styles.meta}>
                 <div className={styles.metaItem}>©Sauvages</div>
-                <div className={styles.metaItem}>{time}</div>
+                <div className={`${styles.metaItem} ${styles.metaTime}`}>{time}</div>
                 <div className={styles.metaItem}>
                   Rennes {temperature !== null ? `${temperature}°C` : "—"}
                 </div>

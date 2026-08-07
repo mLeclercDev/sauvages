@@ -98,6 +98,7 @@
   font-size: 16x;
   line-height: 1;
   mix-blend-mode: difference;
+  font-variant-numeric: tabular-nums;
   svg {
     margin-right: 2px;
   }
@@ -105,6 +106,11 @@
     font-size: 14px;
     line-height: 1;
   }
+}
+
+.metaTime {
+  min-width: 7ch;
+  white-space: nowrap;
 }
 
 .separator {
