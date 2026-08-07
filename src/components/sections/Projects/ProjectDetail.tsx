@@ -54,8 +54,22 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
   const renderInline = (c: any, i: number) => {
     if (c.type === "linebreak") return <br key={i} />;
-    let node: React.ReactNode = c.text;
+
     const fmt = c.format || 0;
+
+    // Text node without Lexical formatting but with literal markdown (e.g. **bold**)
+    if (fmt === 0 && !c.bold && !c.italic && !c.code && !c.underline) {
+      const text: string = c.text || "";
+      if (/\*/.test(text)) {
+        const normalized = text
+          .replace(/\*\*([^*\n]+?) (\*\*)/g, "**$1** ")
+          .replace(/\*([^*\n]+?) (\*)/g, "*$1* ");
+        const html = marked.parseInline(normalized) as string;
+        return <span key={i} dangerouslySetInnerHTML={{ __html: html }} />;
+      }
+    }
+
+    let node: React.ReactNode = c.text;
     if (fmt & 16 || c.code) node = <code key={i}>{node}</code>;
     if (fmt & 1 || c.bold) node = <strong key={i}>{node}</strong>;
     if (fmt & 2 || c.italic) node = <em key={i}>{node}</em>;
