@@ -65,7 +65,11 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
 
   const renderDescription = (content: any) => {
     if (typeof content === "string") {
-      const html = marked.parse(content) as string;
+      // Fix common typo: trailing space before closing ** or * makes them unrecognised by CommonMark parsers
+      const normalized = content
+        .replace(/\*\*([^*\n]+?) (\*\*)/g, "**$1** ")
+        .replace(/\*([^*\n]+?) (\*)/g, "*$1* ");
+      const html = marked.parse(normalized) as string;
       return <div className={styles.markdownContent} dangerouslySetInnerHTML={{ __html: html }} />;
     }
     if (Array.isArray(content)) {
