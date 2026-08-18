@@ -231,3 +231,14 @@
     }
   }
 }
+
+.bottomCredit {
+  color: var(--white);
+  opacity: 0.7;
+  font-size: 16px;
+  text-transform: uppercase;
+
+  @include mq-max("md") {
+    font-size: 14px;
+  }
+}

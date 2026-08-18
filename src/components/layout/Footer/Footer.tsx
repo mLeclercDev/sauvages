@@ -468,6 +468,7 @@ const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
                   {renderFooterLink("/cookies", "COOKIES")}
                 </>
               )}
+              <span className={styles.bottomCredit}>Développé par Marin Leclerc</span>
             </div>
           </div>
         </div>
