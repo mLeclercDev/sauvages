@@ -253,7 +253,7 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
               <input
                 type={field.Type === "mail" ? "email" : "text"}
                 className={styles.inputField}
-                placeholder={field.TexteReponse || ""}
+                placeholder={(field.Type === "mail" ? field.Email : field.TexteReponse) || ""}
                 value={formValues[fieldKey] || ""}
                 onChange={(e) => handleInputChange(fieldKey, e.target.value)}
               />
