@@ -18,6 +18,7 @@ import ContactFormPanel from "@/components/sections/ContactFormPanel/ContactForm
 import { getFooterData } from "@/services/footer";
 import { getHeaderData } from "@/services/header";
 import { getContactData } from "@/services/contact";
+import { fetchAPI } from "@/utils/strapi";
 
 
 export default async function RootLayout({
@@ -25,11 +26,17 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [footerData, headerData, contactData] = await Promise.all([
+  const [footerData, headerData, contactData, legalPagesData] = await Promise.all([
     getFooterData(),
     getHeaderData(),
     getContactData(),
+    fetchAPI("/pages-legales", { fields: ["slug", "Titre"] }).catch(() => null),
   ]);
+
+  const legalPages = (legalPagesData?.data || []).map((p: any) => ({
+    slug: p.slug,
+    titre: p.Titre || p.attributes?.Titre || "",
+  }));
 
   return (
     <html
@@ -47,7 +54,7 @@ export default async function RootLayout({
               <div data-page-content>
                 {children}
               </div>
-              <Footer data={footerData} />
+              <Footer data={footerData} legalPages={legalPages} />
             </SmoothScroll>
             <ContactFormPanel data={contactData} />
           </ContactPanelProvider>

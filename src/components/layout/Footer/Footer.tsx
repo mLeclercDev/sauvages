@@ -13,6 +13,7 @@ import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 
 interface FooterProps {
   data?: any;
+  legalPages?: { slug: string; titre: string }[];
 }
 
 const normalizeInternalHref = (href: string) => {
@@ -24,7 +25,7 @@ const normalizeInternalHref = (href: string) => {
 const isExternalHref = (href: string) =>
   /^https?:\/\//i.test(href) || href.startsWith("mailto:") || href.startsWith("tel:");
 
-const Footer: React.FC<FooterProps> = ({ data }) => {
+const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
   const footerContent = data?.attributes || data || {};
 
   const [time, setTime] = useState("");
@@ -451,12 +452,17 @@ const Footer: React.FC<FooterProps> = ({ data }) => {
             </div>
 
             <div className={styles.bottomLinks}>
-              {footerContent.Lien?.map((link: any) => (
-                <React.Fragment key={link.id}>
-                  {renderFooterLink(link.URL, link.Texte)}
-                </React.Fragment>
-              ))}
-              {!footerContent.Lien && (
+              {legalPages && legalPages.length > 0 ? (
+                legalPages.map((page) =>
+                  renderFooterLink(`/${page.slug}`, page.titre.toUpperCase())
+                )
+              ) : footerContent.Lien?.length > 0 ? (
+                footerContent.Lien.map((link: any) => (
+                  <React.Fragment key={link.id}>
+                    {renderFooterLink(link.URL, link.Texte)}
+                  </React.Fragment>
+                ))
+              ) : (
                 <>
                   {renderFooterLink("/mentions-legales", "MENTIONS LÉGALES")}
                   {renderFooterLink("/cookies", "COOKIES")}
