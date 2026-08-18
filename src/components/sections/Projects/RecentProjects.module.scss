@@ -21,14 +21,15 @@
 }
 
 .viewAllDesktop {
+  display: flex !important;
   @include mq-max("md") {
-    display: none;
+    display: none !important;
   }
 }
 
 .viewAllMobile {
   margin-top: $space-10;
-  display: none;
+  display: none !important;
   @include mq-max("md") {
     display: flex !important;
   }
