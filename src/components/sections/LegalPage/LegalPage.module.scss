@@ -1,0 +1,86 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.legalPage {
+  padding-top: 140px;
+  padding-bottom: $space-32;
+
+  @include mq-max("lg") {
+    padding-top: 100px;
+  }
+
+  @include mq-max("md") {
+    padding-top: 80px;
+  }
+}
+
+.title {
+  font-family: $font-monument-wide;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: $space-12;
+}
+
+.content {
+  max-width: 800px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: $color-noir-svgs;
+
+  h2,
+  h3,
+  h4 {
+    font-family: $font-monument-wide;
+    font-weight: 400;
+    margin: $space-8 0 $space-4;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin: 0 0 $space-4;
+  }
+
+  ul {
+    list-style: disc;
+    margin-left: 20px;
+    margin-bottom: $space-4;
+  }
+
+  ol {
+    list-style: decimal;
+    margin-left: 20px;
+    margin-bottom: $space-4;
+  }
+
+  li {
+    margin-bottom: $space-2;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  pre {
+    background: rgba(0, 0, 0, 0.05);
+    padding: $space-4;
+    overflow-x: auto;
+    margin-bottom: $space-4;
+
+    code {
+      font-family: monospace;
+      font-size: 14px;
+    }
+  }
+}
