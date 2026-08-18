@@ -1,0 +1,25 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.loadMore {
+  display: flex;
+  justify-content: center;
+  padding: $space-8 0 $space-12;
+}
+
+.loadMoreBtn {
+  font-family: $font-monument-normal;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: none;
+  border: 1px solid $color-noir-svgs;
+  color: $color-noir-svgs;
+  padding: 14px 32px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}

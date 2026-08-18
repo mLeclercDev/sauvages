@@ -6,6 +6,9 @@ import ProjectFilters from "./ProjectFilters";
 import WorkProjectsGrid from "./WorkProjectsGrid";
 import ProjectsTable from "./ProjectsTable";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import styles from "./ProjetsPageContent.module.scss";
+
+const BATCH = 12;
 
 export type Section = "work" | "archives" | "vus_pas_pris";
 
@@ -23,6 +26,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   const [activeFilterType, setActiveFilterType] = useState<"expertise" | "secteur">("expertise");
   const [activeExpertise, setActiveExpertise] = useState<string>("all");
   const [activeSecteur, setActiveSecteur] = useState<string>("all");
+  const [displayCount, setDisplayCount] = useState(BATCH);
 
   const handleSectionChange = (section: Section) => {
     setActiveSection(section);
@@ -78,6 +82,11 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
     return Array.from(set).sort();
   }, [sectionProjects]);
 
+  // Reset display count when filters change
+  useEffect(() => {
+    setDisplayCount(BATCH);
+  }, [activeSection, activeExpertise, activeSecteur]);
+
   // Filtering by expertise + secteur within the current section
   const filteredProjects = useMemo(() => {
     return sectionProjects.filter((project) => {
@@ -101,6 +110,12 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
     });
   }, [sectionProjects, activeExpertise, activeSecteur]);
 
+  const visibleProjects = useMemo(
+    () => filteredProjects.slice(0, displayCount),
+    [filteredProjects, displayCount]
+  );
+  const hasMore = filteredProjects.length > displayCount;
+
   useEffect(() => {
     const timer = window.setTimeout(() => {
       window.dispatchEvent(new Event("resize"));
@@ -108,7 +123,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
     }, 80);
 
     return () => window.clearTimeout(timer);
-  }, [viewMode, filteredProjects.length]);
+  }, [viewMode, visibleProjects.length]);
 
   return (
     <>
@@ -132,10 +147,20 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
       <div className="pb-bottom">
         {viewMode === "grid" ? (
           <div className="container">
-            <WorkProjectsGrid projects={filteredProjects} />
+            <WorkProjectsGrid projects={visibleProjects} />
           </div>
         ) : (
-          <ProjectsTable projects={filteredProjects} />
+          <ProjectsTable projects={visibleProjects} />
+        )}
+        {hasMore && (
+          <div className={styles.loadMore}>
+            <button
+              className={styles.loadMoreBtn}
+              onClick={() => setDisplayCount((c) => c + BATCH)}
+            >
+              Voir plus
+            </button>
+          </div>
         )}
       </div>
     </>

@@ -22,6 +22,7 @@ export default async function ProjetsPage() {
           expertise: { populate: "*" },
         },
         sort: ["rank:desc"],
+        pagination: { limit: 200 },
       }),
       fetchAPI("/work", { populate: "deep" }),
     ]);
