@@ -12,6 +12,33 @@ interface WorkProjectsGridProps {
 const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
   const [isHovered, setIsHovered] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const prevCountRef = useRef(0);
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const allCards = Array.from(gridRef.current.children) as HTMLElement[];
+    const prevCount = prevCountRef.current;
+    const newCount = allCards.length;
+
+    const targets =
+      newCount > prevCount && prevCount > 0
+        ? allCards.slice(prevCount)
+        : allCards;
+
+    if (targets.length > 0) {
+      gsap.from(targets, {
+        opacity: 0,
+        y: 20,
+        duration: 0.45,
+        stagger: 0.05,
+        ease: "power2.out",
+        clearProps: "all",
+      });
+    }
+
+    prevCountRef.current = newCount;
+  }, [projects]);
 
   useEffect(() => {
     if (!cursorRef.current) return;
@@ -55,7 +82,7 @@ const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
         Voir projet
       </div>
 
-      <div className={styles.grid}>
+      <div ref={gridRef} className={styles.grid}>
         {projects.map((project: any) => {
           const attrs = project.attributes || project;
           return (

@@ -5,6 +5,7 @@ import ProjectsHeader from "./ProjectsHeader";
 import ProjectFilters from "./ProjectFilters";
 import WorkProjectsGrid from "./WorkProjectsGrid";
 import ProjectsTable from "./ProjectsTable";
+import Button from "@/components/ui/Button/Button";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./ProjetsPageContent.module.scss";
 
@@ -154,12 +155,10 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
         )}
         {hasMore && (
           <div className={styles.loadMore}>
-            <button
-              className={styles.loadMoreBtn}
+            <Button
+              label="Voir plus"
               onClick={() => setDisplayCount((c) => c + BATCH)}
-            >
-              Voir plus
-            </button>
+            />
           </div>
         )}
       </div>
