@@ -3,6 +3,7 @@
 
 .button {
   width: fit-content;
+  min-width: max-content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -57,7 +58,7 @@
 
 .label {
   display: block;
-  line-height: 1;
+  line-height: 1.2;
   @include transition-standard;
 
   &:nth-child(2) {
