@@ -41,10 +41,10 @@ const ExpertiseHero: React.FC<ExpertiseHeroProps> = ({ data }) => {
             <div className={styles.textWrapper}>
               <div>
                 {data?.Titre && (
-                  <h1 className={`${styles.title} h2`}>{data.Titre}</h1>
+                  <h1 className={styles.title}>{data.Titre}</h1>
                 )}
                 {data?.Description && (
-                  <p className={styles.description}>{data.Description}</p>
+                  <h3 className={styles.description}>{data.Description}</h3>
                 )}
               </div>
 
