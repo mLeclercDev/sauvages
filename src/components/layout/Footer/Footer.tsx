@@ -232,45 +232,47 @@ const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
                     "On prend un <br /> café ensemble ?",
                 }}
               />
+              <Button
+                label={footerContent.Bouton?.Texte || "nous contacter"}
+                href={footerContent.Bouton?.Url || "/contact"}
+                variant="outline"
+                color="white"
+                target={footerContent.Bouton?.Blank ? "_blank" : undefined}
+                icon={
+                  footerContent.Bouton?.Icone ? (
+                    <div className={styles.buttonIcon}>
+                      <Image
+                        src={
+                          getStrapiMedia(
+                            footerContent.Bouton.Icone,
+                            undefined
+                          ) || ""
+                        }
+                        alt={footerContent.Bouton.Texte || "icon"}
+                        width={18}
+                        height={15}
+                        style={{ objectFit: "contain" }}
+                      />
+                    </div>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18"
+                      height="15"
+                      viewBox="0 0 18 15"
+                      fill="none"
+                    >
+                      <path
+                        d="M6.92191 4.06698V1.75C6.92191 1.19772 7.36962 0.75 7.92191 0.75H15.75C16.3023 0.75 16.75 1.19771 16.75 1.75V8.24395C16.75 8.5832 16.475 8.85823 16.1357 8.85823H16.0374C15.7524 8.85823 15.5214 9.08924 15.5214 9.3742C15.5214 9.84481 14.943 10.0698 14.6251 9.7228L14.2102 9.27009C14.0672 9.11409 13.8654 9.02526 13.6537 9.02526H11.0857M10.2711 5.80411V11.5437C10.2711 12.0959 9.82334 12.5437 9.27105 12.5437H4.03304C3.8003 12.5437 3.57824 12.6413 3.42097 12.8129L2.87503 13.4084C2.557 13.7554 1.97856 13.5304 1.97856 13.0597C1.97856 12.7747 1.74751 12.5437 1.4625 12.5437H1.36428C1.02502 12.5437 0.75 12.2686 0.75 11.9294V5.80411C0.75 5.25183 1.19771 4.80411 1.75 4.80411H9.27105C9.82334 4.80411 10.2711 5.25183 10.2711 5.80411Z"
+                        stroke="#F6F6F6"
+                        strokeWidth="1.5"
+                        strokeMiterlimit="10"
+                      />
+                    </svg>
+                  )
+                }
+              />
             </div>
-            <Button
-              label={footerContent.Bouton?.Texte || "nous contacter"}
-              href={footerContent.Bouton?.Url || "/contact"}
-              variant="outline"
-              color="white"
-              target={footerContent.Bouton?.Blank ? "_blank" : undefined}
-              icon={
-                footerContent.Bouton?.Icone ? (
-                  <div className={styles.buttonIcon}>
-                    <Image
-                      src={
-                        getStrapiMedia(footerContent.Bouton.Icone, undefined) ||
-                        ""
-                      }
-                      alt={footerContent.Bouton.Texte || "icon"}
-                      width={18}
-                      height={15}
-                      style={{ objectFit: "contain" }}
-                    />
-                  </div>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="15"
-                    viewBox="0 0 18 15"
-                    fill="none"
-                  >
-                    <path
-                      d="M6.92191 4.06698V1.75C6.92191 1.19772 7.36962 0.75 7.92191 0.75H15.75C16.3023 0.75 16.75 1.19771 16.75 1.75V8.24395C16.75 8.5832 16.475 8.85823 16.1357 8.85823H16.0374C15.7524 8.85823 15.5214 9.08924 15.5214 9.3742C15.5214 9.84481 14.943 10.0698 14.6251 9.7228L14.2102 9.27009C14.0672 9.11409 13.8654 9.02526 13.6537 9.02526H11.0857M10.2711 5.80411V11.5437C10.2711 12.0959 9.82334 12.5437 9.27105 12.5437H4.03304C3.8003 12.5437 3.57824 12.6413 3.42097 12.8129L2.87503 13.4084C2.557 13.7554 1.97856 13.5304 1.97856 13.0597C1.97856 12.7747 1.74751 12.5437 1.4625 12.5437H1.36428C1.02502 12.5437 0.75 12.2686 0.75 11.9294V5.80411C0.75 5.25183 1.19771 4.80411 1.75 4.80411H9.27105C9.82334 4.80411 10.2711 5.25183 10.2711 5.80411Z"
-                      stroke="#F6F6F6"
-                      strokeWidth="1.5"
-                      strokeMiterlimit="10"
-                    />
-                  </svg>
-                )
-              }
-            />
           </div>
           <div className={styles.wrapperContainer}>
             <div className={styles.top}>
@@ -356,7 +358,9 @@ const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
               )}
               <div className={styles.meta}>
                 <div className={styles.metaItem}>©Sauvages</div>
-                <div className={`${styles.metaItem} ${styles.metaTime}`}>{time}</div>
+                <div className={`${styles.metaItem} ${styles.metaTime}`}>
+                  {time}
+                </div>
                 <div className={styles.metaItem}>
                   Rennes {temperature !== null ? `${temperature}°C` : "—"}
                 </div>
@@ -468,7 +472,9 @@ const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
                   {renderFooterLink("/cookies", "COOKIES")}
                 </>
               )}
-              <span className={styles.bottomCredit}>Développé par Marin Leclerc</span>
+              <span className={styles.bottomCredit}>
+                Développé par Marin Leclerc
+              </span>
             </div>
           </div>
         </div>
