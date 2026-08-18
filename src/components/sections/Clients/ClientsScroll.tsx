@@ -14,7 +14,7 @@ export default async function ClientsScroll({ label, title }: ClientsScrollProps
     const res = await fetchAPI("/clients", {
       filters: { Afficher: { $eq: true } },
       populate: ["Logo"],
-      sort: ["name:asc"],
+      sort: ["rank:asc"],
     });
 
     const raw: any[] = res?.data || [];
