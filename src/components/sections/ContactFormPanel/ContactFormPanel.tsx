@@ -328,7 +328,12 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
                 placeholder={field.TexteReponse || ""}
                 value={formValues[fieldKey] || ""}
                 onChange={(e) => handleInputChange(fieldKey, e.target.value)}
-                rows={1}
+                rows={2}
+                onInput={(e) => {
+                  const el = e.currentTarget;
+                  el.style.height = "auto";
+                  el.style.height = el.scrollHeight + "px";
+                }}
               ></textarea>
               {hasError && (
                 <span className={styles.errorMessage}>{errors[fieldKey]}</span>

@@ -251,6 +251,7 @@
 
 .rowContent {
   width: 40%;
+  min-width: 0;
 }
 
 .rowContentFull {
@@ -312,8 +313,10 @@
 }
 
 textarea.inputField {
-  resize: vertical;
-  min-height: 40px;
+  resize: none;
+  min-height: 80px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .requiredMark {
