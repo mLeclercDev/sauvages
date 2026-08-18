@@ -203,7 +203,7 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
                 <h3>{attrs.title}</h3>
               </div>
               <div className={styles.colDate}>
-                {formatDate(attrs.publishedAt)}
+                {formatDate(attrs.DatePublication ?? attrs.createdAt)}
               </div>
               <div className={styles.colType}>
                 {attrs.type || ""}

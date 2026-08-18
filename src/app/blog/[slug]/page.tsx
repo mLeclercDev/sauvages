@@ -112,7 +112,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     <main>
       <BlogArticle
         title={attrs.Titre || attrs.title}
-        date={formatDate(attrs.publishedAt)}
+        date={formatDate(attrs.DatePublication ?? attrs.createdAt)}
         readTime={readTime}
         heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || ""}
         intro={attrs.soustitre || ""}

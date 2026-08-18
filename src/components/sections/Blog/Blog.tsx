@@ -20,7 +20,7 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
       "/articles",
       {
         populate: ["Image", "Type"],
-        sort: ["createdAt:desc"],
+        sort: ["DatePublication:desc", "createdAt:desc"],
         pagination: { limit: 3 },
         status: "published",
       },

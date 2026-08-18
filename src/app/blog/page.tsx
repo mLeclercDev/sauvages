@@ -21,7 +21,7 @@ export default async function BlogPage() {
     // 1. Récupération des articles avec le bon populate (Image avec majuscule)
     const articlesData = await fetchAPI("/articles", {
       populate: ["Image", "Type"],
-      sort: ["publishedAt:desc"],
+      sort: ["DatePublication:desc", "createdAt:desc"],
       pagination: { limit: 100 },
       status: "published",
     }, {});
