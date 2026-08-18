@@ -40,7 +40,7 @@
   display: grid;
   grid-template-columns: 40% 1fr;
   gap: $space-52;
-  align-items: flex-start;
+  align-items: stretch;
 
   @include mq-max("2xl") {
     gap: $space-20;
