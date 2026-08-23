@@ -15,7 +15,8 @@
     min-height: 60vh;
   }
   @include mq-max("md") {
-    min-height: 50vh;
+    min-height: auto;
+    gap: $space-4;
   }
 }
 
@@ -41,15 +42,25 @@
     font-size: 26px;
   }
 
+  @include mq-max("md") {
+    width: 100%;
+    padding: 0 $space-5;
+    font-size: 18px;
+  }
+
+  
   .link {
     display: inline-flex;
     align-items: stretch;
     column-gap: 15px;
     position: relative;
     text-decoration: none;
-            @include mq-max("lg") {
-    align-items: start;
-            }
+    @include mq-max("lg") {
+      align-items: start;
+    }
+    @include mq-max("md") {
+      column-gap: 5px;
+    }
 
     &:hover {
       .textInner {
@@ -135,6 +146,10 @@
         width: 26px;
         height: auto;
       }
+        @include mq-max("md") {
+          width: 18px;
+          height: auto;
+        }
     }
   }
 }

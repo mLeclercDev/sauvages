@@ -32,7 +32,11 @@ const pencilFallback = (
   </svg>
 );
 
-const AgenceCta: React.FC<AgenceCtaProps> = ({ pt = "lg", pb = "lg", data }) => {
+const AgenceCta: React.FC<AgenceCtaProps> = ({
+  pt = "lg",
+  pb = "xl",
+  data,
+}) => {
   const sectionRef = useRef<HTMLElement>(null);
 
   const texte =
@@ -55,7 +59,9 @@ const AgenceCta: React.FC<AgenceCtaProps> = ({ pt = "lg", pb = "lg", data }) => 
         backgroundColor: "#f6f6f6",
         duration: 0.6,
         ease: "power2.out",
-        onComplete: () => { gsap.set(document.body, { clearProps: "backgroundColor" }); },
+        onComplete: () => {
+          gsap.set(document.body, { clearProps: "backgroundColor" });
+        },
       });
 
     const ctx = gsap.context(() => {
@@ -64,10 +70,18 @@ const AgenceCta: React.FC<AgenceCtaProps> = ({ pt = "lg", pb = "lg", data }) => 
         start: "top 80%",
         end: "bottom 20%",
         onEnter: () =>
-          gsap.to(document.body, { backgroundColor: "#efff9b", duration: 0.6, ease: "power2.out" }),
+          gsap.to(document.body, {
+            backgroundColor: "#efff9b",
+            duration: 0.6,
+            ease: "power2.out",
+          }),
         onLeave: revert,
         onEnterBack: () =>
-          gsap.to(document.body, { backgroundColor: "#efff9b", duration: 0.6, ease: "power2.out" }),
+          gsap.to(document.body, {
+            backgroundColor: "#efff9b",
+            duration: 0.6,
+            ease: "power2.out",
+          }),
         onLeaveBack: revert,
       });
     }, sectionRef);

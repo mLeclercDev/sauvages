@@ -44,6 +44,10 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
+  const isMenuOpenRef = useRef(isMenuOpen);
+  isMenuOpenRef.current = isMenuOpen;
+  const skipCloseAnimRef = useRef(false);
+
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -53,6 +57,22 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
   }, [isMenuOpen]);
 
   useEffect(() => {
+    if (isMenuOpenRef.current) {
+      skipCloseAnimRef.current = true;
+      tlRef.current?.pause(0);
+      if (menuRef.current) {
+        gsap.set(menuRef.current, { visibility: "hidden" });
+        menuRef.current.classList.remove(styles.visible);
+      }
+      if (headerRef.current) {
+        headerRef.current.style.mixBlendMode = "difference";
+        headerRef.current.style.backgroundColor = "#000";
+        headerRef.current.style.height = "";
+      }
+      document.body.style.overflow = "";
+      setIsMenuOpen(false);
+    }
+
     const updateTime = () => {
       const now = new Date();
       setTime(
@@ -164,7 +184,11 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
     if (isMenuOpen) {
       tlRef.current?.play();
     } else {
-      tlRef.current?.reverse();
+      if (skipCloseAnimRef.current) {
+        skipCloseAnimRef.current = false;
+      } else {
+        tlRef.current?.reverse();
+      }
     }
   }, [isMenuOpen]);
 
@@ -303,12 +327,22 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
         <div ref={menuRef} className={styles.mobileMenu}>
           <nav className={styles.mobileNav}>
             <ul>
+              <li>
+                <div className={styles.itemMask}>
+                  <span
+                    ref={(el) => { itemRefs.current[0] = el; }}
+                    style={{ display: "block" }}
+                  >
+                    <TransitionLink href="/">Home</TransitionLink>
+                  </span>
+                </div>
+              </li>
               {resolvedNav.map((item, index) => (
-                <li key={item.Texte} onClick={toggleMenu}>
+                <li key={item.Texte}>
                   <div className={styles.itemMask}>
                     <span
                       ref={(el) => {
-                        itemRefs.current[index] = el;
+                        itemRefs.current[index + 1] = el;
                       }}
                       style={{ display: "block" }}
                     >

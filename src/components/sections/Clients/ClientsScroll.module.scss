@@ -28,6 +28,10 @@
     grid-template-columns: 1fr;
     gap: 48px;
   }
+  @include mq-max("md") {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
 }
 
 // ── Left column ──────────────────────────────────────────────────────────────
@@ -137,8 +141,6 @@
     display: block;
     font-size: clamp(18px, 4vw, 26px);
     color: $color-noir-svgs;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba($color-noir-svgs, 0.12);
   }
 }
 

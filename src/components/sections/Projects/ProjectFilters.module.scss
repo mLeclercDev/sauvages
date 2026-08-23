@@ -164,4 +164,69 @@
     margin-left: 1px;
     font-family: $font-monument-wide;
   }
+
+  @include mq-max("md") {
+    padding: 32px 0 0;
+
+    .topRow {
+      display: grid;
+      grid-template-columns: 60% 1fr;
+      column-gap: 16px;
+      align-items: start;
+      padding-bottom: 12px;
+    }
+
+    .bottomRow {
+      display: grid;
+      grid-template-columns: 60% 1fr;
+      column-gap: 16px;
+      align-items: start;
+    }
+
+    .navLeft {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .navRight {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .categories {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .viewToggle {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .catBtn {
+      font-size: 28px;
+    }
+
+    .navItem.active .chevron {
+      display: none;
+    }
+
+    .navItem.active::after {
+      content: " —";
+      display: inline;
+    }
+
+    .viewIcon {
+      display: none;
+    }
+
+    .toggleBtn span.viewText {
+      text-decoration: none;
+    }
+  }
 }
