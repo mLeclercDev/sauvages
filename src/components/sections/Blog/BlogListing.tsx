@@ -24,12 +24,23 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const prevIndexRef = useRef<number | null>(null);
   const zIndexCounter = useRef<number>(10);
+  const colTypeRef = useRef<HTMLDivElement>(null);
+  const colSummaryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!wrapperRef.current) return;
 
     const updateX = () => {
-      if (wrapperRef.current) {
+      if (!wrapperRef.current) return;
+      const typeEl = colTypeRef.current;
+      const summaryEl = colSummaryRef.current;
+
+      if (typeEl && summaryEl && getComputedStyle(summaryEl).display !== "none") {
+        const typeRect = typeEl.getBoundingClientRect();
+        const summaryRect = summaryEl.getBoundingClientRect();
+        const centerX = (typeRect.right + summaryRect.left) / 2 - 223 / 2;
+        gsap.set(wrapperRef.current, { x: centerX });
+      } else {
         gsap.set(wrapperRef.current, { x: window.innerWidth * 0.55 });
       }
     };
@@ -205,10 +216,16 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
               <div className={styles.colDate}>
                 {formatDate(attrs.DatePublication ?? attrs.createdAt)}
               </div>
-              <div className={styles.colType}>
+              <div
+                className={styles.colType}
+                ref={index === 0 ? colTypeRef : undefined}
+              >
                 {attrs.type || ""}
               </div>
-              <div className={styles.colSummary}>
+              <div
+                className={styles.colSummary}
+                ref={index === 0 ? colSummaryRef : undefined}
+              >
                 {attrs.resume || ""}
               </div>
               <div className={styles.colImage}>

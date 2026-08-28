@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import ProjectsHeader from "./ProjectsHeader";
 import ProjectFilters from "./ProjectFilters";
 import WorkProjectsGrid from "./WorkProjectsGrid";
 import ProjectsTable from "./ProjectsTable";
-import Button from "@/components/ui/Button/Button";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import styles from "./ProjetsPageContent.module.scss";
 
 const BATCH = 12;
 
@@ -117,6 +115,23 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   );
   const hasMore = filteredProjects.length > displayCount;
 
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore) {
+          setDisplayCount((c) => c + BATCH);
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore]);
+
   useEffect(() => {
     const timer = window.setTimeout(() => {
       window.dispatchEvent(new Event("resize"));
@@ -153,14 +168,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
         ) : (
           <ProjectsTable projects={visibleProjects} />
         )}
-        {hasMore && (
-          <div className={styles.loadMore}>
-            <Button
-              label="Voir plus"
-              onClick={() => setDisplayCount((c) => c + BATCH)}
-            />
-          </div>
-        )}
+        <div ref={sentinelRef} aria-hidden="true" />
       </div>
     </>
   );

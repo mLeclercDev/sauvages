@@ -1,8 +1,2 @@
 @use "@/styles/variables" as *;
 @use "@/styles/mixins" as *;
-
-.loadMore {
-  display: flex;
-  justify-content: center;
-  padding: $space-8 0 $space-12;
-}

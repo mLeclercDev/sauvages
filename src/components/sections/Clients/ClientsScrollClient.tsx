@@ -28,32 +28,42 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
   label,
   title,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const nameRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const imageAreaRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const competenciesRefs = useRef<(HTMLParagraphElement | null)[]>([]);
-  const prevIndexRef = useRef<number>(0);
+  const prevIndexRef = useRef<number>(-1);
+  const zIndexCounter = useRef<number>(10);
 
   const activateClient = (index: number) => {
     if (prevIndexRef.current === index) return;
+    const prev = prevIndexRef.current;
     setActiveIndex(index);
     prevIndexRef.current = index;
 
-    imageRefs.current.forEach((el, i) => {
-      if (!el) return;
+    const el = imageRefs.current[index];
+    if (el) {
       gsap.killTweensOf(el);
-      if (i === index) {
-        gsap.fromTo(el, { scale: 0 }, { scale: 1, duration: 0.6, ease: "expo.out" });
-      } else {
-        gsap.to(el, { scale: 0, duration: 0.4, ease: "power2.inOut" });
-      }
-    });
+      zIndexCounter.current += 1;
+      gsap.set(el, { zIndex: zIndexCounter.current });
+      gsap.fromTo(el, { scale: 0 }, {
+        scale: 1,
+        duration: 0.6,
+        ease: "expo.out",
+        onComplete: () => {
+          if (prev !== -1 && prev !== prevIndexRef.current) {
+            const prevEl = imageRefs.current[prev];
+            if (prevEl) gsap.set(prevEl, { scale: 0, zIndex: 1 });
+          }
+        },
+      });
+    }
 
-    competenciesRefs.current.forEach((el, i) => {
-      if (!el) return;
-      gsap.killTweensOf(el);
-      gsap.to(el, { opacity: i === index ? 1 : 0, duration: 0.4, ease: "power2.inOut" });
+    competenciesRefs.current.forEach((compEl, i) => {
+      if (!compEl) return;
+      gsap.killTweensOf(compEl);
+      gsap.to(compEl, { opacity: i === index ? 1 : 0, duration: 0.4, ease: "power2.inOut" });
     });
   };
 
@@ -66,16 +76,12 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
 
     if (!firstName || !lastName || !imageEl) return;
 
-    // Init images and competencies
-    imageRefs.current.forEach((el, i) => {
-      if (el) gsap.set(el, { scale: i === 0 ? 1 : 0 });
-    });
-    competenciesRefs.current.forEach((el, i) => {
-      if (el) gsap.set(el, { opacity: i === 0 ? 1 : 0 });
-    });
+    // Init images and competencies — all hidden until scroll activates them
+    imageRefs.current.forEach((el) => { if (el) gsap.set(el, { scale: 0, zIndex: 1 }); });
+    competenciesRefs.current.forEach((el) => { if (el) gsap.set(el, { opacity: 0 }); });
 
     // Center the image container on its anchor point so the pin lands at 55vh center
-    gsap.set(imageEl, { yPercent: -50 });
+    gsap.set(imageEl, { yPercent: -50, opacity: 0 });
 
     // Pin the image container from first client entering to last client becoming active
     const pinTrigger = ScrollTrigger.create({
@@ -96,14 +102,30 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
         onComplete: () => { gsap.set(document.body, { clearProps: "backgroundColor" }); },
       });
 
+    const showImage = () => gsap.to(imageEl, { opacity: 1, duration: 0.4, ease: "power2.inOut" });
+    const hideImage = () => {
+      gsap.to(imageEl, { opacity: 0, duration: 0.4, ease: "power2.inOut" });
+      prevIndexRef.current = -1;
+    };
+
     const bgTrigger = ScrollTrigger.create({
       trigger: firstName,
       start: "top 55%",
       endTrigger: lastName,
       end: "bottom 45%",
-      onEnter: () =>
-        gsap.to(document.body, { backgroundColor: BG_GREY, duration: 0.5, ease: "power2.inOut" }),
-      onLeaveBack: revertBg,
+      onEnter: () => {
+        gsap.to(document.body, { backgroundColor: BG_GREY, duration: 0.5, ease: "power2.inOut" });
+        showImage();
+      },
+      onLeave: hideImage,
+      onEnterBack: () => {
+        gsap.to(document.body, { backgroundColor: BG_GREY, duration: 0.5, ease: "power2.inOut" });
+        showImage();
+      },
+      onLeaveBack: () => {
+        revertBg();
+        hideImage();
+      },
     });
 
     // Scroll listener for active client detection
