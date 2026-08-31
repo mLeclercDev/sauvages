@@ -194,9 +194,35 @@ export default function Hero({ data }: HeroProps) {
       yTo(e.clientY);
     };
 
+    // Hide cursor when mouse leaves the browser window
+    const handleDocMouseLeave = (e: MouseEvent) => {
+      if (!e.relatedTarget) setIsHoveringVideo(false);
+    };
+
+    // Hide cursor when tab loses visibility
+    const handleVisibilityChange = () => {
+      if (document.hidden) setIsHoveringVideo(false);
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleDocMouseLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleDocMouseLeave);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
+
+  // Reset hover when hero is completely off-screen (scrolled above or below viewport)
+  useEffect(() => {
+    if (!heroRef.current || !isHoveringVideo) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) {
+      setIsHoveringVideo(false);
+    }
+  }, [scrollData, isHoveringVideo]);
 
   const isCursorVisible = isHoveringVideo && scrollData.progress > 0.85;
 

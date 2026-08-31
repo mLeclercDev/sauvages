@@ -23,6 +23,10 @@
 
 .leftCol {
   position: relative;
+
+  @include mq-max("lg") {
+    order: 2;
+  }
 }
 
 .leftContent {
@@ -156,6 +160,10 @@
 
 .rightCol {
   width: 100%;
+
+  @include mq-max("lg") {
+    order: 1;
+  }
 }
 
 .gallery {
@@ -164,7 +172,7 @@
   gap: $space-3;
 
   @include mq-max("lg") {
-    padding-top: $space-8;
+    padding-top: 0;
   }
 }
 

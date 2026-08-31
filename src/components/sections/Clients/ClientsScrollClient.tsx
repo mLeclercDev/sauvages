@@ -34,36 +34,22 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
   const competenciesRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const prevIndexRef = useRef<number>(-1);
-  const zIndexCounter = useRef<number>(10);
-
   const activateClient = (index: number) => {
     if (prevIndexRef.current === index) return;
     const prev = prevIndexRef.current;
     setActiveIndex(index);
     prevIndexRef.current = index;
 
-    const el = imageRefs.current[index];
-    if (el) {
-      gsap.killTweensOf(el);
-      zIndexCounter.current += 1;
-      gsap.set(el, { zIndex: zIndexCounter.current });
-      gsap.fromTo(el, { scale: 0 }, {
-        scale: 1,
-        duration: 0.6,
-        ease: "expo.out",
-        onComplete: () => {
-          if (prev !== -1 && prev !== prevIndexRef.current) {
-            const prevEl = imageRefs.current[prev];
-            if (prevEl) gsap.set(prevEl, { scale: 0, zIndex: 1 });
-          }
-        },
-      });
+    if (prev !== -1) {
+      const prevEl = imageRefs.current[prev];
+      if (prevEl) gsap.set(prevEl, { scale: 0 });
     }
 
+    const el = imageRefs.current[index];
+    if (el) gsap.set(el, { scale: 1 });
+
     competenciesRefs.current.forEach((compEl, i) => {
-      if (!compEl) return;
-      gsap.killTweensOf(compEl);
-      gsap.to(compEl, { opacity: i === index ? 1 : 0, duration: 0.4, ease: "power2.inOut" });
+      if (compEl) gsap.set(compEl, { opacity: i === index ? 1 : 0 });
     });
   };
 
@@ -77,7 +63,7 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
     if (!firstName || !lastName || !imageEl) return;
 
     // Init images and competencies — all hidden until scroll activates them
-    imageRefs.current.forEach((el) => { if (el) gsap.set(el, { scale: 0, zIndex: 1 }); });
+    imageRefs.current.forEach((el) => { if (el) gsap.set(el, { scale: 0 }); });
     competenciesRefs.current.forEach((el) => { if (el) gsap.set(el, { opacity: 0 }); });
 
     // Center the image container on its anchor point so the pin lands at 55vh center

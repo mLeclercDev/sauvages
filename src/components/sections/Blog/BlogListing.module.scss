@@ -155,3 +155,9 @@
 .reelImage {
   object-fit: cover;
 }
+
+@include mq-max("md") {
+  .tableRow {
+    grid-template-columns: 1fr 1fr;
+  }
+}

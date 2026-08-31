@@ -157,6 +157,11 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
           <div className={styles.imageReel}>
             {normalizedProjects.map((p, idx) => {
               const url = getStrapiMedia(p.attrs?.thumbnail);
+              const thumbAttrs = p.attrs?.thumbnail?.data?.attributes
+                || p.attrs?.thumbnail?.attributes
+                || p.attrs?.thumbnail
+                || {};
+              const isVideo = (thumbAttrs.mime as string || "").startsWith("video/");
               return (
                 <div
                   key={p.id}
@@ -166,12 +171,24 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                   className={styles.reelItem}
                 >
                   {url && (
-                    <Image
-                      src={url}
-                      alt={p.attrs?.title || "Projet"}
-                      fill
-                      className={styles.reelImage}
-                    />
+                    isVideo ? (
+                      <video
+                        src={url}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="metadata"
+                        className={styles.reelVideo}
+                      />
+                    ) : (
+                      <Image
+                        src={url}
+                        alt={p.attrs?.title || "Projet"}
+                        fill
+                        className={styles.reelImage}
+                      />
+                    )
                   )}
                 </div>
               );
