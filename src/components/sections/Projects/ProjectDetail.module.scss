@@ -5,6 +5,10 @@
   position: relative;
   padding-top: $space-64;
   padding-bottom: $space-32;
+
+  @include mq-max("lg") {
+    padding-top: $space-16;
+  }
 }
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
@@ -25,12 +29,16 @@
   position: relative;
 
   @include mq-max("lg") {
-    order: 2;
+    display: contents;
   }
 }
 
 .leftContent {
   padding-bottom: $space-24;
+
+  @include mq-max("lg") {
+    display: contents;
+  }
 }
 
 // ─── Left: header info ────────────────────────────────────────────────────────
@@ -59,6 +67,10 @@
 
 .accordions {
   margin-bottom: $space-8;
+
+  @include mq-max("lg") {
+    order: 3;
+  }
 }
 
 
@@ -158,11 +170,17 @@
 
 // ─── Right: gallery ───────────────────────────────────────────────────────────
 
+.projectHeader {
+  @include mq-max("lg") {
+    order: 1;
+  }
+}
+
 .rightCol {
   width: 100%;
 
   @include mq-max("lg") {
-    order: 1;
+    order: 2;
   }
 }
 

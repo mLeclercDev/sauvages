@@ -114,9 +114,12 @@
     width: 320px;
   }
 
-
   .isStatic & {
-    width: 320px;  
+    width: 320px;
+  }
+
+  @include mq-max("lg") {
+    cursor: pointer;
   }
 
   @include mq-max("md") {
@@ -168,6 +171,10 @@
   overflow: hidden;
   height: 0;
   opacity: 0;
+
+  @include mq-max("lg") {
+    flex: none;
+  }
 }
 
 .itemContent {
@@ -227,19 +234,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-content: start;
-  gap: 0;
   width: 100%;
 
   li {
     font-family: $font-monument-normal;
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 400;
     line-height: normal;
-    text-transform: uppercase;
-    opacity: 0.6;
+    text-transform: none;
+    color: #060606;
+    border-bottom: 1px solid $color-noir-svgs;
+    padding: 10px 0;
   }
 }
 

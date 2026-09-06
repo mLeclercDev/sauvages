@@ -255,11 +255,13 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
           <div className={styles.leftCol}>
             <div className={styles.leftContent} ref={leftContentRef}>
 
-              <div className={`${styles.clientLabel} label`}>{clientName}</div>
-              <h1 className={styles.title}>{attrs.title}</h1>
-              {attrs.sector && (
-                <div className={`${styles.sector} label`}>{attrs.sector}</div>
-              )}
+              <div className={styles.projectHeader}>
+                <div className={`${styles.clientLabel} label`}>{clientName}</div>
+                <h1 className={styles.title}>{attrs.title}</h1>
+                {attrs.sector && (
+                  <div className={`${styles.sector} label`}>{attrs.sector}</div>
+                )}
+              </div>
 
               {(sections.length > 0 || expertises.length > 0 || hasDescription) && (
                 <div className={styles.accordions}>

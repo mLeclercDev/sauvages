@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -41,6 +41,25 @@ const Expertises: React.FC<ExpertisesProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const itemBodyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileOpenIndexRef = useRef<number | null>(null);
+  const isMobileRef = useRef(false);
+
+  const toggleMobileItem = useCallback((index: number) => {
+    if (!isMobileRef.current) return;
+    const bodies = itemBodyRefs.current;
+    const current = mobileOpenIndexRef.current;
+
+    if (current === index) {
+      if (bodies[index]) gsap.to(bodies[index], { height: 0, opacity: 0, duration: 0.4, ease: "power2.inOut" });
+      mobileOpenIndexRef.current = null;
+    } else {
+      if (current !== null && bodies[current]) {
+        gsap.to(bodies[current], { height: 0, opacity: 0, duration: 0.4, ease: "power2.inOut" });
+      }
+      if (bodies[index]) gsap.to(bodies[index], { height: "auto", opacity: 1, duration: 0.4, ease: "power2.inOut" });
+      mobileOpenIndexRef.current = index;
+    }
+  }, []);
   const getButtonHref = (button: any) => button?.URL || button?.Url || button?.url;
   const getButtonTarget = (button: any) => (button?.Blank ? "_blank" : undefined);
 
@@ -117,10 +136,15 @@ const Expertises: React.FC<ExpertisesProps> = ({
             },
           });
         } else {
-          // Mobile / tablette : tous les items ouverts, pas de pin
-          bodies.forEach((body) => {
-            gsap.set(body, { height: "auto", opacity: 1, y: 0 });
-          });
+          // Mobile : items fermés par défaut, toggle au clic
+          isMobileRef.current = true;
+          mobileOpenIndexRef.current = null;
+          bodies.forEach((body) => gsap.set(body, { height: 0, opacity: 0, y: 0 }));
+
+          return () => {
+            isMobileRef.current = false;
+            mobileOpenIndexRef.current = null;
+          };
         }
       }
     );
@@ -188,7 +212,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
                 !isScrollAnimated ? styles.isStatic : ""
               }`}
             >
-              <div className={styles.itemHeader}>
+              <div className={styles.itemHeader} onClick={() => toggleMobileItem(index)}>
                 <div className={styles.itemMeta}>
                   <span className={styles.itemIndex}>{index + 1}</span>
                   <h3 className={styles.itemTitle}>{item.title}</h3>
