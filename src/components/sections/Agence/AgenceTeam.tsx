@@ -94,6 +94,55 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
           st.kill();
         };
       });
+
+      mm.add("(max-width: 1023px)", () => {
+        // Images : état initial via CSS :first-child (opacity 1), reste à 0
+        gsap.set(bodies[0], { height: "auto", opacity: 1 });
+        for (let i = 1; i < bodies.length; i++) {
+          gsap.set(bodies[i], { height: 0, opacity: 0 });
+        }
+
+        const tl = gsap.timeline({ paused: true });
+
+        for (let i = 0; i < bodies.length - 1; i++) {
+          const startTime = i * 2;
+          tl.to(bodies[i], { height: 0, opacity: 0, duration: 1, ease: "power1.inOut" }, startTime + 0.5);
+          tl.to(bodies[i + 1], { height: "auto", opacity: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
+          tl.to(images[i], { opacity: 0, duration: 0.7, ease: "power1.inOut" }, startTime + 0.6);
+          tl.to(images[i + 1], { opacity: 1, duration: 0.7, ease: "power1.inOut" }, startTime + 0.6);
+        }
+
+        const st = ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: () => {
+            const sectionRect = sectionRef.current!.getBoundingClientRect();
+            const listRect = listRef.current!.getBoundingClientRect();
+            const offset = listRect.top - sectionRect.top;
+            const headerH =
+              document.querySelector("header")?.getBoundingClientRect().height ?? 60;
+            return `top+=${offset} top+=${headerH}`;
+          },
+          end: () => `+=${window.innerHeight * (bodies.length - 1)}`,
+          pin: true,
+          pinSpacing: true,
+          scrub: 1,
+          onUpdate: (self) => {
+            tl.progress(self.progress);
+            const activeIndex = Math.min(
+              bodies.length - 1,
+              Math.round(self.progress * (bodies.length - 1))
+            );
+            itemEls.forEach((el, idx) => {
+              el.classList.toggle(styles.itemActive, idx === activeIndex);
+            });
+          },
+        });
+
+        return () => {
+          tl.kill();
+          st.kill();
+        };
+      });
     });
 
     return () => ctx.revert();
