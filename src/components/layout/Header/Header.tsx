@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { usePathname } from "next/navigation";
 import styles from "./Header.module.scss";
 import Button from "@/components/ui/Button/Button";
+import { useHeaderScrollReveal } from "@/hooks/useHeaderScrollReveal";
 
 interface HeaderProps {
   data?: any;
@@ -40,6 +41,8 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
   const bgRef = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  // Groupes révélés en stagger à la réapparition : logo / nav / CTA / bouton menu
+  const revealGroupRefs = useRef<(HTMLElement | null)[]>([]);
   const pathname = usePathname();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -47,6 +50,11 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
   const isMenuOpenRef = useRef(isMenuOpen);
   isMenuOpenRef.current = isMenuOpen;
   const skipCloseAnimRef = useRef(false);
+
+  useHeaderScrollReveal(headerRef, revealGroupRefs, {
+    enabled: !isMenuOpen,
+    resetKey: pathname,
+  });
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -88,11 +96,17 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
     const interval = setInterval(updateTime, 1000 * 60);
 
     // Fix bug disparition : reset au changement de page
-    if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
+    const resetHeader = () => {
+      if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
+      const groups = revealGroupRefs.current.filter(Boolean) as HTMLElement[];
+      if (groups.length) gsap.set(groups, { y: 0, opacity: 1 });
+    };
+
+    resetHeader();
 
     return () => {
       clearInterval(interval);
-      if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
+      resetHeader();
       document.body.style.overflow = "";
     };
   }, [pathname]);
@@ -200,7 +214,10 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
       <div ref={bgRef} className={styles.menuBackground} />
       <div className="container">
         <div className={styles.wrapper}>
-          <div className={styles.logo}>
+          <div
+            className={styles.logo}
+            ref={(el) => { revealGroupRefs.current[0] = el; }}
+          >
             <TransitionLink href="/">
               <svg
                 className={styles.logoDesktop}
@@ -271,7 +288,10 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
             </TransitionLink>
           </div>
           <div className={styles.desktopMenu}>
-            <nav className={styles.desktopNav}>
+            <nav
+              className={styles.desktopNav}
+              ref={(el) => { revealGroupRefs.current[1] = el; }}
+            >
               <ul>
                 {resolvedNav.map((item) => (
                   <li key={item.Texte}>
@@ -286,7 +306,11 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
               </ul>
             </nav>
 
-            <button className={styles.menuButton} onClick={toggleMenu}>
+            <button
+              className={styles.menuButton}
+              onClick={toggleMenu}
+              ref={(el) => { revealGroupRefs.current[2] = el; }}
+            >
               <div className={styles.menuButtonWrapper}>
                 <span ref={menuLabelRef}>MENU</span>
                 <span ref={fermerLabelRef}>FERMER</span>
@@ -296,6 +320,7 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
             <div
               className={`${styles.desktopButton}`}
               data-preload="header-cta"
+              ref={(el) => { revealGroupRefs.current[3] = el; }}
             >
               <Button
                 label={bouton?.Texte || "contact"}

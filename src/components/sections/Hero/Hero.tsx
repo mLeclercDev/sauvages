@@ -252,7 +252,7 @@ export default function Hero({ data }: HeroProps) {
   } as React.CSSProperties;
 
   return (
-    <section className={styles.hero} ref={heroRef} style={inlineStyles}>
+    <section className={styles.hero} ref={heroRef} style={inlineStyles} data-hero>
       <div
         ref={cursorRef}
         className={`${styles.customCursor} ${isCursorVisible ? styles.visible : ""}`}
