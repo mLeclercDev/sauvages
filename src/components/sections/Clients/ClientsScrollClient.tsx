@@ -144,25 +144,29 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
             {title && <h2 className={styles.sectionTitle}>{title}</h2>}
           </div>
 
-          <div ref={imageAreaRef} className={styles.imageArea}>
-            {clients.map((client, index) => {
-              const url = getStrapiMedia(client.logo, undefined);
-              return (
-                <div
-                  key={client.id}
-                  ref={(el) => { imageRefs.current[index] = el; }}
-                  className={styles.imageItem}
-                >
-                  {url ? (
-                    <Image src={url} alt={client.name} fill className="fit-cover" unoptimized />
-                  ) : (
-                    <div className={styles.logoPlaceholder}>
-                      <span>{client.name.slice(0, 2).toUpperCase()}</span>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+          {/* Wrapper non pinné : porte le placement en grille, que le
+              pin-spacer de ScrollTrigger ne transmettrait pas de façon fiable */}
+          <div className={styles.imageCol}>
+            <div ref={imageAreaRef} className={styles.imageArea}>
+              {clients.map((client, index) => {
+                const url = getStrapiMedia(client.logo, undefined);
+                return (
+                  <div
+                    key={client.id}
+                    ref={(el) => { imageRefs.current[index] = el; }}
+                    className={styles.imageItem}
+                  >
+                    {url ? (
+                      <Image src={url} alt={client.name} fill className="fit-cover" unoptimized />
+                    ) : (
+                      <div className={styles.logoPlaceholder}>
+                        <span>{client.name.slice(0, 2).toUpperCase()}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           <div className={styles.right}>

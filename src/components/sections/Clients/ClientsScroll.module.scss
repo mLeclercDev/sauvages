@@ -19,6 +19,16 @@
   gap: 60px;
   align-items: start;
 
+  // Au-delà de 2xl, on reprend la grille de BlogListing (la table d'articles
+  // juste au-dessus sur la home) pour aligner logo et liste sur ses colonnes.
+  // minmax(0, …) empêche une colonne de s'élargir sous la pression de son
+  // contenu, ce qui décalerait l'alignement.
+  @include mq("2xl") {
+    grid-template-columns:
+      minmax(0, 3fr) minmax(0, 1fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 4fr);
+    gap: 20px;
+  }
+
   @include mq-max("2xl") {
     grid-template-columns: 1fr 160px 1fr;
     gap: 48px;
@@ -43,6 +53,10 @@
   flex-direction: column;
   gap: 16px;
 
+  @include mq("2xl") {
+    grid-column: 1 / 4;
+  }
+
   @include mq-max("lg") {
     position: relative;
     top: auto;
@@ -56,7 +70,20 @@
   margin: 0;
 }
 
-// ── Image column — pinned by ScrollTrigger, yPercent: -50 applied via GSAP ───
+// ── Image column ─────────────────────────────────────────────────────────────
+// Wrapper non pinné : porte le placement en grille, le pin-spacer inséré par
+// ScrollTrigger autour de .imageArea ne le transmettrait pas de façon fiable.
+.imageCol {
+  @include mq("2xl") {
+    grid-column: 4;
+  }
+
+  @include mq-max("lg") {
+    display: none;
+  }
+}
+
+// ── Image area — pinned by ScrollTrigger, yPercent: -50 applied via GSAP ─────
 .imageArea {
   position: relative;
   width: 200px;
@@ -99,6 +126,13 @@
   width: fit-content;
   margin-left: auto;
 
+  // Aligné sur le bord gauche de la colonne « Résumé » de la table
+  @include mq("2xl") {
+    grid-column: 5;
+    width: 100%;
+    margin-left: 0;
+  }
+
   @include mq-max("lg") {
     width: 100%;
     margin-left: 0;
@@ -111,6 +145,12 @@
   grid-template-columns: max-content 1fr;
   column-gap: 40px;
   width: 100%;
+
+  // Colonne 5 plus étroite que l'ancienne mise en page : on récupère
+  // la marge sur l'écart nom / secteur.
+  @include mq("2xl") {
+    column-gap: 24px;
+  }
 
   @include mq-max("lg") {
     display: flex;
