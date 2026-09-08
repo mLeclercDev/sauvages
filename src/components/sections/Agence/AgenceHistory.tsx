@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./AgenceHistory.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks, renderStrapiInline } from "@/utils/strapiRichText";
 
 interface AgenceHistoryProps {
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
@@ -79,9 +80,7 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
             )}
 
             <div className={styles.historyContent}>
-              {data?.Description?.map((p: any, idx: number) => (
-                <p key={idx}>{p.children?.map((c: any) => c.text).join("")}</p>
-              ))}
+              {renderStrapiBlocks(data?.Description)}
             </div>
           </div>
         </div>
@@ -105,7 +104,11 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
         </div>
         <div className={`${styles.recruitmentHeading} h3`}>
           <span>
-            {data?.Description2?.map((p: any) => p.children?.map((c: any) => c.text).join("")).join("")}
+            {data?.Description2?.map((block: any, i: number) => (
+              <React.Fragment key={i}>
+                {block.children?.map((c: any, j: number) => renderStrapiInline(c, j))}
+              </React.Fragment>
+            ))}
             {" "}
             <Link href="/candidature-spontanee" className={styles.link}>
               <span

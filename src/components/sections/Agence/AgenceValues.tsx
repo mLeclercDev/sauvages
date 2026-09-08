@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import styles from "./AgenceValues.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 interface AgenceValuesProps {
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
@@ -34,11 +35,7 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
                     <h3 className={styles.itemTitle}>{item.Titre}</h3>
                   </div>
                   <div className={styles.itemDescription}>
-                    {item.Description?.map((p: any, pIndex: number) => (
-                      <p key={pIndex}>
-                        {p.children?.map((c: any) => c.text).join("")}
-                      </p>
-                    ))}
+                    {renderStrapiBlocks(item.Description)}
                   </div>
                 </div>
               ))}

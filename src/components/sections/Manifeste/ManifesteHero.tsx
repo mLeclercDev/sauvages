@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./ManifesteHero.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 interface ManifesteHeroProps {
   data?: any;
@@ -107,9 +108,7 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
                   />
                 </div>
                 <div className={styles.itemContent}>
-                  {val.Description?.map((p: any, pIdx: number) => (
-                    <p key={pIdx}>{p.children?.map((c: any) => c.text).join("")}</p>
-                  ))}
+                  {renderStrapiBlocks(val.Description)}
                 </div>
               </div>
             ))}

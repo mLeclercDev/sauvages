@@ -322,10 +322,9 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
                         ref={(el) => { accordionBodyRefs.current[refIdx] = el; }}
                       >
                         {section.description && (
-                          <div
-                            className={styles.accordionContent}
-                            dangerouslySetInnerHTML={{ __html: section.description }}
-                          />
+                          <div className={styles.accordionContent}>
+                            {renderDescription(section.description)}
+                          </div>
                         )}
                       </div>
                     </div>

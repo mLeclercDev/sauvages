@@ -6,6 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./AgenceTeam.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,12 +15,6 @@ interface AgenceTeamProps {
   pb?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
   data?: any;
 }
-
-const renderDescription = (blocks?: any[]) => {
-  return blocks?.map((block: any, index: number) => (
-    <p key={index}>{block.children?.map((c: any) => c.text).join("")}</p>
-  ));
-};
 
 const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) => {
   const TitleTag = (data?.Titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
@@ -204,7 +199,7 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
                   >
                     <div className={styles.itemBodyInner}>
                       <div className={styles.itemDescription}>
-                        {renderDescription(item.Description)}
+                        {renderStrapiBlocks(item.Description)}
                       </div>
                     </div>
                   </div>

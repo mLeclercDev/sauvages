@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import styles from "./TitreTexte.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 interface TitreTexteProps {
   data?: any;
@@ -18,16 +19,6 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
   if (!titre?.Texte && texte.length === 0) return null;
 
   const Tag = (titre?.HN || "h2") as keyof React.JSX.IntrinsicElements;
-
-  const renderBlock = (block: any, i: number) => {
-    if (!block.children?.length) return null;
-    const content = block.children.map((child: any, j: number) => {
-      if (!child.text) return null;
-      if (child.bold) return <strong key={j}>{child.text}</strong>;
-      return child.text;
-    });
-    return <p key={i}>{content}</p>;
-  };
 
   const image = data.Image || null;
   const imageUrl = getStrapiMedia(image);
@@ -53,7 +44,7 @@ export default function TitreTexte({ data, pt = "lg", pb = "lg" }: TitreTextePro
           )}
           {texte.length > 0 && (
             <div className={styles.body}>
-              {texte.map((block, i) => renderBlock(block, i))}
+              {renderStrapiBlocks(texte)}
             </div>
           )}
         </div>

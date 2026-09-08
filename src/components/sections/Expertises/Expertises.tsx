@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./Expertises.module.scss";
 import Button from "@/components/ui/Button/Button";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks, renderStrapiInline } from "@/utils/strapiRichText";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,14 +67,8 @@ const Expertises: React.FC<ExpertisesProps> = ({
   const expertiseItems = data?.Item?.map((item: any) => ({
     title: item.Name,
     image: item.Image || null,
-    description:
-      item.Description?.map((block: any) =>
-        block.children?.map((c: any) => c.text).join("")
-      ).join("\n") || "",
-    subItems:
-      item.Listes?.map((block: any) =>
-        block.children?.map((c: any) => c.text).join("")
-      ) || [],
+    description: item.Description || [],
+    subItems: item.Listes || [],
     hasButton: item.PresenceBouton,
     button: item.Bouton,
   })) || [];
@@ -175,15 +170,7 @@ const Expertises: React.FC<ExpertisesProps> = ({
             <div className={styles.headerContent}>
               {Array.isArray(data?.Description) && data.Description.length > 0 && (
                 <div className={styles.headerDescription}>
-                  {data.Description.map((block: any, i: number) => {
-                    if (!block.children?.length) return null;
-                    const content = block.children.map((child: any, j: number) => {
-                      if (!child.text) return null;
-                      if (child.bold) return <strong key={j}>{child.text}</strong>;
-                      return child.text;
-                    });
-                    return <p key={i}>{content}</p>;
-                  })}
+                  {renderStrapiBlocks(data.Description)}
                 </div>
               )}
               {data?.Bouton?.Texte && (
@@ -241,16 +228,12 @@ const Expertises: React.FC<ExpertisesProps> = ({
                   <div className={styles.itemContent}>
                     <div className={styles.description}>
                       <div className={styles.descriptionContent}>
-                        {item.description
-                          .split("\n")
-                          .map((p: string, i: number) => (
-                            <p key={i}>{p}</p>
-                          ))}
+                        {renderStrapiBlocks(item.description)}
                       </div>
                     </div>
                     <ul className={styles.subItems}>
-                      {item.subItems.map((sub: string, i: number) => (
-                        <li key={i}>{sub}</li>
+                      {item.subItems.map((block: any, i: number) => (
+                        <li key={i}>{block.children?.map((c: any, j: number) => renderStrapiInline(c, j))}</li>
                       ))}
                     </ul>
                     {item.hasButton && (

@@ -10,6 +10,7 @@ import { getStrapiMedia } from "@/utils/strapi";
 import Button from "@/components/ui/Button/Button";
 import { useContactPanel } from "@/context/ContactPanelContext";
 import { ContactData, HeroContact } from "@/services/contact";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 interface ContactProps {
   data?: ContactData | null;
@@ -135,11 +136,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
             {title && <h1 className={`${styles.title}`}>{title}</h1>}
             {hero?.Description && hero.Description.length > 0 && (
               <div className={styles.description}>
-                {hero.Description.map((block, i) => {
-                  if (block.type !== "paragraph") return null;
-                  const text = block.children.map((c) => c.text).join("");
-                  return text ? <p key={i}>{text}</p> : null;
-                })}
+                {renderStrapiBlocks(hero.Description)}
               </div>
             )}
             <div className={styles.buttonGroup}>

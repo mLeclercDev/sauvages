@@ -2,6 +2,7 @@
 
 import React from "react";
 import styles from "./AgenceIdentite.module.scss";
+import { renderStrapiInline } from "@/utils/strapiRichText";
 
 interface AgenceIdentiteProps {
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
@@ -12,7 +13,7 @@ interface AgenceIdentiteProps {
 const renderTexte = (blocks?: any[], definition = false) => {
   return blocks?.map((block: any, index: number) => (
     <p key={index} className={definition ? "label sm" : undefined}>
-      {block.children?.map((c: any) => c.text).join("")}
+      {block.children?.map((c: any, j: number) => renderStrapiInline(c, j))}
     </p>
   ));
 };

@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./ManifesteCommitments.module.scss";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 
 // On conserve les icônes hardcodées pour les engagements du bas en fallback
 const hardcodedIcons = [
@@ -200,11 +201,7 @@ const ManifesteCommitments: React.FC<ManifesteCommitmentsProps> = ({
                 <h3 className={styles.itemTitle}>{val.Titre}</h3>
               </div>
               <div className={styles.itemContent}>
-                {val.Description?.map((p: any, pIdx: number) => (
-                  <p key={pIdx}>
-                    {p.children?.map((c: any) => c.text).join("")}
-                  </p>
-                ))}
+                {renderStrapiBlocks(val.Description)}
               </div>
             </div>
           ))}
