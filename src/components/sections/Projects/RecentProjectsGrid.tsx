@@ -46,6 +46,7 @@ const RecentProjectsGrid: React.FC<RecentProjectsGridProps> = ({ projects, limit
               }
               slug={attrs.slug}
               thumbnail={attrs.thumbnail}
+              thumbnailFallback={attrs.thumbnailFallback}
               clientFavicon={
                 attrs.client?.Favicon ||
                 attrs.client?.data?.attributes?.Favicon

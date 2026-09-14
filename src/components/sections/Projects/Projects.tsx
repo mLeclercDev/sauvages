@@ -11,6 +11,7 @@ const Projects: React.FC = async () => {
     const projectsData = await fetchAPI("/projets", {
       populate: {
         thumbnail: true,
+        thumbnailFallback: true,
         client: { populate: { Favicon: true } },
       },
       sort: ["rank:desc"],

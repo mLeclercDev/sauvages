@@ -82,6 +82,11 @@
     display: block;
     width: 140px;
     height: auto;
+    // Caché tant que Hero.tsx n'a pas mesuré/appliqué sa vraie position de
+    // convergence (desktop uniquement) — évite le flash "petit logo header
+    // qui saute soudainement en grand" avant que le JS n'ait tourné.
+    opacity: 0;
+
     @include mq-max("lg") {
       display: none;
     }

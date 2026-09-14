@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { usePathname } from "next/navigation";
 import styles from "./ContactFormPanel.module.scss";
-import { useContactPanel } from "@/context/ContactPanelContext";
+import { useContactPanel, isContactRoute } from "@/context/ContactPanelContext";
 import Button from "@/components/ui/Button/Button";
 import { ContactData, StrapiForm, StrapiField } from "@/services/contact";
 import { getStrapiMedia } from "@/utils/strapi";
@@ -34,21 +34,36 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
   const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
-    // Reset validation and status when switching forms or opening
+    // Reset validation, status and values when switching forms or opening/closing
     setErrors({});
     setSubmitStatus("idle");
-    
-    // Reset values when switching forms or when panel is closed
-    if (!isOpen || activeForm) {
-      setFormValues({});
-      setSelectedChips([]);
-    }
+    setFormValues({});
+    setSelectedChips([]);
   }, [isOpen, activeForm]);
 
-  // Fermeture automatique à la navigation
+  // Fermeture automatique à la navigation (hors changements d'URL internes
+  // au panel lui-même, ex: /contact <-> /contact/j-ai-un-projet)
   useEffect(() => {
-    if (isOpen) closePanel();
+    if (isOpen && !isContactRoute(pathname)) closePanel();
   }, [pathname]);
+
+  // Coupe la transition de background-color le temps de l'ouverture, pour
+  // ne jamais voir de fondu de couleur pendant le slide (seule la bascule
+  // manuelle entre formulaires, panel déjà ouvert, doit être animée).
+  const wasOpenRef = useRef(false);
+  useLayoutEffect(() => {
+    const el = panelRef.current;
+    if (el && isOpen && !wasOpenRef.current) {
+      el.style.transition = "none";
+      void el.offsetHeight; // flush avant de réactiver la transition
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (el) el.style.transition = "";
+        });
+      });
+    }
+    wasOpenRef.current = isOpen;
+  }, [isOpen, activeForm]);
 
   // Animation GSAP ouvrir/fermer
   useEffect(() => {

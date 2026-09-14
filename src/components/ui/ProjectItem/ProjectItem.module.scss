@@ -9,7 +9,7 @@
 
   @include mq("lg") {
     &:hover {
-      cursor: none;
+      cursor: pointer;
     }
   }
   .imageWrapper {

@@ -7,13 +7,34 @@ export const revalidate = 60;
 import ProjectDetail from "@/components/sections/Projects/ProjectDetail";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import { notFound } from "next/navigation";
+import { getProjectsPageData } from "../getProjectsPageData";
+import ProjetsPageContent, { type Section } from "@/components/sections/Projects/ProjetsPageContent";
+import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
+import TexteImage from "@/components/sections/TexteImage/TexteImage";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+const SLUG_TO_SECTION: Record<string, Section> = {
+  "vus-pas-pris": "vus_pas_pris",
+  archives: "archives",
+};
+
 export default async function ProjetDetailPage({ params }: PageProps) {
   const { slug } = await params;
+
+  const filterSection = SLUG_TO_SECTION[slug];
+  if (filterSection) {
+    const { projects, titreTexteData, texteImageData, pageTitle } = await getProjectsPageData();
+    return (
+      <main>
+        <TitreTexte data={titreTexteData} />
+        <TexteImage data={texteImageData} />
+        <ProjetsPageContent projects={projects} title={pageTitle} initialSection={filterSection} />
+      </main>
+    );
+  }
 
   let project = null;
   let otherProjects = [];
@@ -42,6 +63,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
       pagination: { limit: 3 },
       populate: {
         thumbnail: { populate: "*" },
+        thumbnailFallback: { populate: "*" },
         client: { populate: "*" },
       },
       sort: ["rank:desc"],

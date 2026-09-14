@@ -35,6 +35,7 @@ export default async function RecentProjects({
       pagination: { limit },
       populate: {
         thumbnail: true,
+        thumbnailFallback: true,
         client: { populate: { Favicon: true } },
       },
       status: "published",

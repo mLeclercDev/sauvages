@@ -11,17 +11,27 @@ const BATCH = 12;
 
 export type Section = "work" | "archives" | "vus_pas_pris";
 
+const SECTION_TO_PATH: Record<Section, string> = {
+  work: "/work",
+  vus_pas_pris: "/work/vus-pas-pris",
+  archives: "/work/archives",
+};
+
 interface ProjetsPageContentProps {
   projects: any[];
   title?: string | null;
+  initialSection?: Section;
 }
 
 const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
   projects,
   title,
+  initialSection = "work",
 }) => {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [activeSection, setActiveSection] = useState<Section>("work");
+  const [viewMode, setViewMode] = useState<"grid" | "list">(
+    initialSection === "archives" ? "list" : "grid"
+  );
+  const [activeSection, setActiveSection] = useState<Section>(initialSection);
   const [activeFilterType, setActiveFilterType] = useState<"expertise" | "secteur">("expertise");
   const [activeExpertise, setActiveExpertise] = useState<string>("all");
   const [activeSecteur, setActiveSecteur] = useState<string>("all");
@@ -32,6 +42,7 @@ const ProjetsPageContent: React.FC<ProjetsPageContentProps> = ({
     setViewMode(section === "archives" ? "list" : "grid");
     setActiveExpertise("all");
     setActiveSecteur("all");
+    window.history.replaceState(null, "", SECTION_TO_PATH[section]);
   };
 
   // Projects filtered by Statut (section)

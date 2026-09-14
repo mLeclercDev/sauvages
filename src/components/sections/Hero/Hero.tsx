@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import Link from "next/link";
 import Image from "next/image";
@@ -36,7 +36,7 @@ export default function Hero({ data }: HeroProps) {
     safeArea: 44,
   });
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setIsClient(true);
     const mm = gsap.matchMedia();
 
@@ -133,6 +133,9 @@ export default function Hero({ data }: HeroProps) {
             (headerLogo as HTMLElement).style.transformOrigin = "top left";
             (headerLogo as HTMLElement).style.transform =
               `translateY(${lTranslation}px) scale(${scale})`;
+            // Révélé seulement une fois la vraie position calculée — voir
+            // l'opacity:0 par défaut sur .logoDesktop dans Header.module.scss.
+            (headerLogo as HTMLElement).style.opacity = "1";
           }
 
           setScrollData({
@@ -159,6 +162,7 @@ export default function Hero({ data }: HeroProps) {
           if (headerLogo) {
             (headerLogo as HTMLElement).style.transform = "";
             (headerLogo as HTMLElement).style.transformOrigin = "";
+            (headerLogo as HTMLElement).style.opacity = "";
           }
         };
       }

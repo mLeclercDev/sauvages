@@ -55,6 +55,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
         }
         slug={attrs.slug}
         thumbnail={attrs.thumbnail}
+        thumbnailFallback={attrs.thumbnailFallback}
         clientFavicon={
           attrs.client?.Favicon ||
           attrs.client?.data?.attributes?.Favicon

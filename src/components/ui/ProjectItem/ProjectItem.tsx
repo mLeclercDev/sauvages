@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import TransitionLink from "@/components/ui/TransitionLink/TransitionLink";
 import gsap from "gsap";
@@ -13,6 +13,7 @@ interface ProjectItemProps {
   client: string;
   slug: string;
   thumbnail: any;
+  thumbnailFallback?: any;
   clientFavicon?: any;
   className?: string;
   imageAspectRatio?: string;
@@ -25,6 +26,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   client,
   slug,
   thumbnail,
+  thumbnailFallback,
   clientFavicon,
   className = "",
   imageAspectRatio,
@@ -32,6 +34,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   onMouseLeave,
 }) => {
   const mediaUrl = getStrapiMedia(thumbnail);
+  const fallbackUrl = getStrapiMedia(thumbnailFallback);
   const faviconUrl = getStrapiMedia(clientFavicon);
   const thumbnailAttrs = thumbnail?.data?.attributes || thumbnail?.attributes || thumbnail || {};
   const mime = (thumbnailAttrs.mime as string) || "";
@@ -39,6 +42,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const mainVideoRef = useRef<HTMLVideoElement>(null);
+  const [hasVideoError, setHasVideoError] = useState(false);
 
   React.useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -96,20 +100,22 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
       >
         <div ref={imageRef} className={styles.imageWrapperInner}>
           {mediaUrl ? (
-            isVideo ? (
+            isVideo && !(hasVideoError && fallbackUrl) ? (
               <video
                 ref={mainVideoRef}
                 muted
                 loop
                 playsInline
                 preload="none"
+                poster={fallbackUrl || undefined}
+                onError={() => setHasVideoError(true)}
                 className={styles.video}
               >
                 <source src={mediaUrl} type={mime || "video/mp4"} />
               </video>
             ) : (
               <Image
-                src={mediaUrl}
+                src={isVideo ? fallbackUrl! : mediaUrl}
                 alt={title}
                 fill
                 unoptimized
@@ -132,12 +138,20 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           ) : mediaUrl ? (
-            isVideo ? (
-              <video muted loop playsInline preload="none" style={{ width: "100%", height: "100%", objectFit: "cover" }}>
+            isVideo && !(hasVideoError && fallbackUrl) ? (
+              <video
+                muted
+                loop
+                playsInline
+                preload="none"
+                poster={fallbackUrl || undefined}
+                onError={() => setHasVideoError(true)}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              >
                 <source src={mediaUrl} type={mime || "video/mp4"} />
               </video>
             ) : (
-              <Image src={mediaUrl} alt={title} fill unoptimized className="fit-cover" sizes="80px" />
+              <Image src={isVideo ? fallbackUrl! : mediaUrl} alt={title} fill unoptimized className="fit-cover" sizes="80px" />
             )
           ) : null}
         </div>

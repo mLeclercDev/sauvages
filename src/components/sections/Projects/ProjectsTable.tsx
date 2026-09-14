@@ -13,6 +13,7 @@ interface Project {
     title: string;
     slug: string;
     thumbnail?: any;
+    thumbnailFallback?: any;
     client?: { data: { attributes: { name: string } } };
     expertise?: { data: any[] };
     sector?: string;
@@ -27,6 +28,7 @@ interface ProjectsTableProps {
 const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [videoErrorIds, setVideoErrorIds] = useState<Set<number>>(new Set());
   const wrapperRef = useRef<HTMLDivElement>(null);
   const wrapperYTo = useRef<gsap.QuickToFunc | null>(null);
   // One ref per image item
@@ -157,11 +159,13 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
           <div className={styles.imageReel}>
             {normalizedProjects.map((p, idx) => {
               const url = getStrapiMedia(p.attrs?.thumbnail);
+              const fallbackUrl = getStrapiMedia(p.attrs?.thumbnailFallback);
               const thumbAttrs = p.attrs?.thumbnail?.data?.attributes
                 || p.attrs?.thumbnail?.attributes
                 || p.attrs?.thumbnail
                 || {};
               const isVideo = (thumbAttrs.mime as string || "").startsWith("video/");
+              const hasVideoError = videoErrorIds.has(p.id);
               return (
                 <div
                   key={p.id}
@@ -171,7 +175,7 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                   className={styles.reelItem}
                 >
                   {url && (
-                    isVideo ? (
+                    isVideo && !(hasVideoError && fallbackUrl) ? (
                       <video
                         src={url}
                         autoPlay
@@ -179,11 +183,15 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                         loop
                         playsInline
                         preload="metadata"
+                        poster={fallbackUrl || undefined}
+                        onError={() =>
+                          setVideoErrorIds((prev) => new Set(prev).add(p.id))
+                        }
                         className={styles.reelVideo}
                       />
                     ) : (
                       <Image
-                        src={url}
+                        src={isVideo ? fallbackUrl! : url}
                         alt={p.attrs?.title || "Projet"}
                         fill
                         className={styles.reelImage}
