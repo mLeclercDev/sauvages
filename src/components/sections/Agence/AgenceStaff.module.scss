@@ -51,7 +51,7 @@
         pointer-events: none;
       }
 
-      &:hover {
+      &.hasVideo:hover {
         img {
           opacity: 0;
         }

@@ -63,6 +63,16 @@ html.is-first-visit header {
 
   svg path {
     fill: #000 !important;
+    stroke: #000 !important;
+  }
+
+  nav a,
+  button {
+    color: #000 !important;
+  }
+
+  [class*="outline"][class*="white"] {
+    --btn-color: #000 !important;
   }
 }
 
