@@ -14,6 +14,7 @@ export default async function ExpertisesPage() {
   let titreTexteData = null;
   let texteImageData = null;
   let clientsScrollData = null;
+  let projetsListingData = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let contenu: any[] = [];
 
@@ -36,6 +37,7 @@ export default async function ExpertisesPage() {
               },
               "global.titre-texte": { populate: "*" },
               "global.clients-scroll": { populate: "*" },
+              "global.projets-listing": { populate: { Titre: true, Bouton: { populate: "*" } } },
             },
           },
         },
@@ -62,6 +64,8 @@ export default async function ExpertisesPage() {
     texteImageData = contenu.find((m: any) => m.__component === "global.texte-image") ?? null;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     clientsScrollData = contenu.find((m: any) => m.__component === "global.clients-scroll") ?? null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    projetsListingData = contenu.find((m: any) => m.__component === "global.projets-listing") ?? null;
   } catch (error) {
     console.error("Failed to fetch expertise data:", error);
   }
@@ -78,7 +82,13 @@ export default async function ExpertisesPage() {
         showHeader={hasHeader}
         isScrollAnimated={hasHeader}
       />
-      <RecentProjects limit={4} title="Nos réalisations" />
+      <RecentProjects
+        limit={4}
+        title={projetsListingData?.Titre?.Texte}
+        buttonLabel={projetsListingData?.Bouton?.Texte}
+        buttonHref={projetsListingData?.Bouton?.Url}
+        buttonBlank={projetsListingData?.Bouton?.Blank}
+      />
       <ClientsScroll
         label={clientsScrollData?.Label}
         title={clientsScrollData?.Titre?.Texte}

@@ -91,6 +91,7 @@
   @include mq-max("md") {
     grid-area: image;
     aspect-ratio: 160 / 93;
+    height: auto;
     border-radius: $rounded;
     overflow: hidden;
   }

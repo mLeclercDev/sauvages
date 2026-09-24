@@ -176,6 +176,21 @@ h4,
   }
 }
 
+// Liens à l'intérieur du richtext Strapi. Classe globale (non hashée) car elle
+// est posée par src/utils/strapiRichText.tsx, qui alimente à la fois le rendu
+// JSX et le rendu en chaîne HTML — aucun module CSS ne peut les couvrir tous.
+// Nécessaire car le reset impose text-decoration: none sur tous les <a>.
+.richtext-link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  @include transition-standard;
+
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

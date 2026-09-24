@@ -1,9 +1,11 @@
 import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
 import { strapiBlocksToHtml } from "@/utils/strapiRichText";
+import { SITE_URL } from "@/utils/site";
 
 export const revalidate = 60;
 
 import BlogArticle from "@/components/sections/Blog/BlogArticle";
+import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -30,9 +32,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const attrs = articleWrap.attributes || articleWrap;
 
-  const contentHtml = strapiBlocksToHtml(attrs.Contenu, (image) =>
-    getStrapiMedia(image, undefined)
-  );
+  const contentHtml = strapiBlocksToHtml(attrs.Contenu);
 
   // Calcul du temps de lecture (200 mots/min, minimum 1 minute)
   const countWords = (text: string) => text.trim().split(/\s+/).filter(Boolean).length;
@@ -63,15 +63,33 @@ export default async function BlogPostPage({ params }: PageProps) {
     });
   };
 
+  const publishedRaw = attrs.DatePublication ?? attrs.createdAt;
+  const updatedDate =
+    attrs.updatedAt &&
+    new Date(attrs.updatedAt).toDateString() !== new Date(publishedRaw).toDateString()
+      ? formatDate(attrs.updatedAt)
+      : undefined;
+  const shareUrl = `${SITE_URL}/blog/${slug}`;
+
   return (
     <main>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/blog" },
+          { label: attrs.Titre || attrs.title },
+        ]}
+      />
       <BlogArticle
         title={attrs.Titre || attrs.title}
-        date={formatDate(attrs.DatePublication ?? attrs.createdAt)}
+        date={formatDate(publishedRaw)}
+        updatedDate={updatedDate}
+        author={attrs.Auteur || undefined}
         readTime={readTime}
         heroImage={getStrapiMedia(attrs.Image || attrs.image, undefined) || ""}
         intro={attrs.soustitre || ""}
         contentHtml={contentHtml}
+        shareUrl={shareUrl}
       />
     </main>
   );

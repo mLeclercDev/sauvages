@@ -1,4 +1,4 @@
-import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
+import { fetchAPI } from "@/utils/strapi";
 import { strapiBlocksToHtml } from "@/utils/strapiRichText";
 import { notFound } from "next/navigation";
 import LegalPage from "@/components/sections/LegalPage/LegalPage";
@@ -30,9 +30,7 @@ export default async function LegalPageRoute({ params }: PageProps) {
 
   const attrs = page.attributes || page;
 
-  const contentHtml = strapiBlocksToHtml(attrs.Contenu, (image) =>
-    getStrapiMedia(image, undefined)
-  );
+  const contentHtml = strapiBlocksToHtml(attrs.Contenu);
 
   return <LegalPage titre={attrs.Titre || ""} contentHtml={contentHtml} />;
 }

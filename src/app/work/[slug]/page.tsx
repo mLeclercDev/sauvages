@@ -6,6 +6,7 @@ export const revalidate = 60;
 
 import ProjectDetail from "@/components/sections/Projects/ProjectDetail";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
+import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
 import { notFound } from "next/navigation";
 import { getProjectsPageData } from "../getProjectsPageData";
 import ProjetsPageContent, { type Section } from "@/components/sections/Projects/ProjetsPageContent";
@@ -74,8 +75,17 @@ export default async function ProjetDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const projectAttrs = project.attributes || project;
+
   return (
     <main className={styles.page}>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Work", href: "/work" },
+          { label: projectAttrs.title },
+        ]}
+      />
       <ProjectDetail project={project} otherProjects={otherProjects} />
       <RecentProjects limit={4} title="Plus de projets" />
     </main>

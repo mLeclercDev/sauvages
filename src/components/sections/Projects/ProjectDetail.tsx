@@ -5,8 +5,8 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { marked } from "marked";
 import { getStrapiMedia } from "@/utils/strapi";
+import { renderStrapiBlocks } from "@/utils/strapiRichText";
 import styles from "./ProjectDetail.module.scss";
 
 interface ProjectDetailProps {
@@ -52,32 +52,10 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
     ? rawDescription.trim().length > 0
     : Array.isArray(rawDescription) && rawDescription.length > 0;
 
-  const renderInline = (c: any, i: number) => {
-    if (c.type === "linebreak") return <br key={i} />;
-
-    const fmt = c.format || 0;
-
-    // Text node without Lexical formatting but with literal markdown (e.g. **bold**)
-    if (fmt === 0 && !c.bold && !c.italic && !c.code && !c.underline) {
-      const text: string = c.text || "";
-      if (/\*/.test(text)) {
-        const normalized = text
-          .replace(/\*\*([^*\n]+?) (\*\*)/g, "**$1** ")
-          .replace(/\*([^*\n]+?) (\*)/g, "*$1* ");
-        const html = marked.parseInline(normalized) as string;
-        return <span key={i} dangerouslySetInnerHTML={{ __html: html }} />;
-      }
-    }
-
-    let node: React.ReactNode = c.text;
-    if (fmt & 16 || c.code) node = <code key={i}>{node}</code>;
-    if (fmt & 1 || c.bold) node = <strong key={i}>{node}</strong>;
-    if (fmt & 2 || c.italic) node = <em key={i}>{node}</em>;
-    if (fmt & 8 || c.underline) node = <u key={i}>{node}</u>;
-    return <React.Fragment key={i}>{node}</React.Fragment>;
-  };
-
   const renderDescription = (content: any) => {
+    // Cas chaîne : HTML déjà rendu contenant du markdown résiduel. Les regex
+    // sont bornées par [^*<>] pour ne pas casser les balises existantes —
+    // marked.parseInline (utilisé par l'utilitaire partagé) ne convient pas ici.
     if (typeof content === "string") {
       const processed = content
         // Fix trailing space before closing delimiter (common CMS typo)
@@ -88,21 +66,7 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
         .replace(/\*([^*<>]+?)\*/g, "<em>$1</em>");
       return <div className={styles.markdownContent} dangerouslySetInnerHTML={{ __html: processed }} />;
     }
-    if (Array.isArray(content)) {
-      return content.map((block: any, i: number) => {
-        if (block.type === "paragraph") {
-          const isEmpty = !block.children?.some((c: any) => c.text || c.type === "linebreak");
-          if (isEmpty) return <br key={i} />;
-          return <p key={i}>{block.children?.map(renderInline)}</p>;
-        }
-        if (block.type === "heading") {
-          const Tag = `h${block.level}` as keyof React.JSX.IntrinsicElements;
-          return <Tag key={i}>{block.children?.map(renderInline)}</Tag>;
-        }
-        return null;
-      });
-    }
-    return null;
+    return renderStrapiBlocks(content);
   };
 
   const handleAccordionClick = useCallback((idx: number) => {

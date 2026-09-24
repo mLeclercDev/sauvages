@@ -21,7 +21,8 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
   useEffect(() => {
     if (!cursorRef.current) return;
 
-    gsap.set(cursorRef.current, { xPercent: -50, yPercent: -50 });
+    // Ancré en bas à droite de la souris (offset fixe), jamais centré dessus
+    gsap.set(cursorRef.current, { xPercent: 0, yPercent: 0 });
 
     const xTo = gsap.quickTo(cursorRef.current, "x", {
       duration: 0.6,
@@ -33,8 +34,8 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ projects }) => {
     });
 
     const handleMouseMove = (e: MouseEvent) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
+      xTo(e.clientX + 24);
+      yTo(e.clientY + 24);
     };
 
     window.addEventListener("mousemove", handleMouseMove);

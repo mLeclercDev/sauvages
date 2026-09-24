@@ -181,8 +181,8 @@ export default function Hero({ data }: HeroProps) {
   useEffect(() => {
     if (!cursorRef.current) return;
 
-    // We must tell GSAP to offset the element by -50% -50% to stay centered on mouse.
-    gsap.set(cursorRef.current, { xPercent: -50, yPercent: -50 });
+    // Ancré en bas à droite de la souris (offset fixe), jamais centré dessus
+    gsap.set(cursorRef.current, { xPercent: 0, yPercent: 0 });
 
     const xTo = gsap.quickTo(cursorRef.current, "x", {
       duration: 0.1,
@@ -194,8 +194,8 @@ export default function Hero({ data }: HeroProps) {
     });
 
     const handleMouseMove = (e: MouseEvent) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
+      xTo(e.clientX + 24);
+      yTo(e.clientY + 24);
     };
 
     // Hide cursor when mouse leaves the browser window

@@ -7,7 +7,6 @@ import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import TexteImage from "@/components/sections/TexteImage/TexteImage";
 import ManifesteHero from "@/components/sections/Manifeste/ManifesteHero";
 import ManifesteCommitments from "@/components/sections/Manifeste/ManifesteCommitments";
-import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import AgenceCta from "@/components/sections/Agence/AgenceCta";
 import { fetchAPI } from "@/utils/strapi";
 

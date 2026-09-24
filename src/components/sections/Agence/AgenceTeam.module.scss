@@ -36,7 +36,8 @@
   @include mq-max("lg") {
     grid-template-columns: 1fr 42%;
     grid-template-rows: auto auto;
-    gap: $space-3;
+    column-gap: $space-3;
+    row-gap: $space-8;
     align-items: start;
   }
 }
@@ -126,6 +127,7 @@
 
   @include mq-max("lg") {
     opacity: 1;
+    gap: $space-2;
   }
 }
 
@@ -144,9 +146,13 @@
   align-items: center;
   border-radius: 50%;
   width: 18.737px;
+  min-width: 18.737px;
   height: 18.737px;
   border: 1.615px solid #000;
   margin-top: 3px;
+  @include mq-max("lg") {
+    margin-top: 0;    
+  }
 }
 
 .itemTitle {

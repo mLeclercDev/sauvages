@@ -4,8 +4,7 @@ import { fetchAPI } from "@/utils/strapi";
 export const revalidate = 60;
 
 import BlogHero from "@/components/sections/Blog/BlogHero";
-import BlogListing from "@/components/sections/Blog/BlogListing";
-import styles from "./page.module.scss";
+import BlogPageContent from "@/components/sections/Blog/BlogPageContent";
 
 export const metadata = {
   title: "Blog | Sauvages",
@@ -59,11 +58,7 @@ export default async function BlogPage() {
     <main>
       <BlogHero title={title} description={description} />
 
-      <section className={styles.blogList}>
-        <div className="container">
-          <BlogListing articles={articles} />
-        </div>
-      </section>
+      <BlogPageContent articles={articles} />
     </main>
   );
 }

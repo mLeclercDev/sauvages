@@ -1,0 +1,126 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.filtersBar {
+  padding: 60px 0 0;
+  margin-bottom: 40px;
+
+  // ─── Top Row ─────────────────────────────────────────────────────────────
+  .topRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+
+  .navLeft {
+    display: flex;
+    gap: 20px;
+  }
+
+  .navItem {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: none;
+    border: none;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    color: $color-noir-svgs;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+
+    &.active {
+      opacity: 1;
+    }
+
+    // Toujours visible mais totalement inerte : pas de champ secteur côté
+    // Article aujourd'hui, prêt à s'activer le jour où il existera.
+    &.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+
+      &:hover {
+        opacity: 0.3;
+      }
+    }
+  }
+
+  // Chevron icon
+  .chevron {
+    flex-shrink: 0;
+  }
+
+  // ─── Bottom Row ───────────────────────────────────────────────────────────
+  .bottomRow {
+    display: flex;
+    align-items: flex-start;
+    padding: 0 0 20px 0;
+  }
+
+  .categories {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .catBtn {
+    background: none;
+    border: none;
+    font-family: $font-monument-wide;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.35; /* 32.4px */
+    text-transform: none;
+    padding: 0;
+    color: $color-noir-svgs;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .count {
+    font-size: 0.42em;
+    vertical-align: super;
+    line-height: 0;
+    margin-left: 1px;
+    font-family: $font-monument-wide;
+  }
+
+  @include mq-max("md") {
+    padding: 32px 0 0;
+
+    .topRow {
+      padding-bottom: 12px;
+    }
+
+    .navLeft {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .categories {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .catBtn {
+      font-size: 16px;
+    }
+  }
+}

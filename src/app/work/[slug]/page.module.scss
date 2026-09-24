@@ -2,7 +2,9 @@
 @use "@/styles/mixins" as *;
 
 .page {
-  > :global(section) {
+  // Le Breadcrumb (premier enfant une fois ajouté) porte sa propre clearance
+  // de header et ne doit pas recevoir ce padding générique de section.
+  > :global(section):not(:first-child) {
     padding: $space-32 0 $space-64;
   }
 }

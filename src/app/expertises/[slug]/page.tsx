@@ -1,9 +1,9 @@
 import { fetchAPI } from "@/utils/strapi";
-import styles from "./page.module.scss";
 
 export const revalidate = 60;
 
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
 import Intro from "@/components/sections/Intro/Intro";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
@@ -41,7 +41,7 @@ export default async function ExpertisePage({ params }: PageProps) {
             "global.texte-image": { populate: { Titre: true, Image: true, Options: true } },
             "global.text-reveal": { fields: ["Texte", "Label"] },
             "global.full-width-image": { populate: { Image: true } },
-            "global.projets-listing": { populate: { Titre: true } },
+            "global.projets-listing": { populate: { Titre: true, Bouton: { populate: "*" } } },
           },
         },
       },
@@ -91,11 +91,21 @@ export default async function ExpertisePage({ params }: PageProps) {
   };
 
   return (
-    <main className={styles.page}>
+    <main>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Expertises", href: "/expertises" },
+          { label: attrs.name },
+        ]}
+      />
       {contenu.map((block: any, idx: number) => renderBlock(block, idx))}
       <RecentProjects
         limit={4}
         title={projetsListingBlock?.Titre?.Texte}
+        buttonLabel={projetsListingBlock?.Bouton?.Texte}
+        buttonHref={projetsListingBlock?.Bouton?.Url}
+        buttonBlank={projetsListingBlock?.Bouton?.Blank}
       />
     </main>
   );

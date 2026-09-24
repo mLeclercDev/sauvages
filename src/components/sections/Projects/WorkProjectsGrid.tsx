@@ -43,14 +43,15 @@ const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
   useEffect(() => {
     if (!cursorRef.current) return;
 
-    gsap.set(cursorRef.current, { xPercent: -50, yPercent: -50 });
+    // Ancré en bas à droite de la souris (offset fixe), jamais centré dessus
+    gsap.set(cursorRef.current, { xPercent: 0, yPercent: 0 });
 
     const xTo = gsap.quickTo(cursorRef.current, "x", { duration: 0.6, ease: "power3.out" });
     const yTo = gsap.quickTo(cursorRef.current, "y", { duration: 0.6, ease: "power3.out" });
 
     const handleMouseMove = (e: MouseEvent) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
+      xTo(e.clientX + 24);
+      yTo(e.clientY + 24);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
