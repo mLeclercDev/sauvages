@@ -66,6 +66,30 @@
     }
   }
 
+  &.navPreloadMask {
+    // Opacity entièrement pilotée par GSAP (Preloader.tsx) : pas de règle
+    // is-first-visit ici, sinon le décoy "pop" instantanément au lieu de
+    // faire le fondu d'entrée normalement dévolu à la nav.
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1001; // au-dessus du vrai header (1000)
+    background-color: transparent;
+    mix-blend-mode: normal;
+
+    .wrapper {
+      justify-content: flex-end; // pas de .logo dans le décoy
+    }
+
+    .menuButton {
+      color: #000;
+    }
+
+    svg path {
+      fill: none;
+      stroke: #000;
+    }
+  }
+
   .logo {
     position: relative;
     z-index: 1111;
@@ -82,14 +106,20 @@
     display: block;
     width: 140px;
     height: auto;
-    // Caché tant que Hero.tsx n'a pas mesuré/appliqué sa vraie position de
-    // convergence (desktop uniquement) — évite le flash "petit logo header
-    // qui saute soudainement en grand" avant que le JS n'ait tourné.
-    opacity: 0;
 
     @include mq-max("lg") {
       display: none;
     }
+  }
+
+  // Appliquée uniquement sur la home (voir Header.tsx) : le logo y démarre
+  // caché tant que Hero.tsx n'a pas mesuré/appliqué sa position de convergence
+  // — évite le flash "petit logo qui saute en grand" avant que le JS ait tourné.
+  // Sur les autres pages, cette classe n'est jamais posée : le logo reste
+  // visible en permanence, sans dépendre du cycle de vie de Hero.tsx (qui ne
+  // se monte que sur la home) — sinon il disparaît pour de bon en naviguant.
+  .logoPendingConvergence {
+    opacity: 0;
   }
   .wrapper {
     display: flex;
@@ -200,6 +230,14 @@
         }
       }
     }
+  }
+
+  .navMaskLabel {
+    display: block;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 1.2em;
+    color: #000;
   }
 
   .mobileMenu {

@@ -25,8 +25,13 @@ export default function Preloader() {
 
     document.body.style.overflow = "hidden";
 
-    // Cibler les paths du logo SAUVAGES dans le header
-    const logoPaths = document.querySelectorAll("header svg path");
+    // Cibler les paths du logo SAUVAGES dans le header (pas l'icône du CTA,
+    // qui doit apparaître avec le reste du CTA, pas avec le logo). ".logo"
+    // est une classe CSS Modules (hashée) : on ne peut pas la cibler en
+    // querySelector littéral, d'où l'attribut data-preload dédié.
+    const logoPaths = document.querySelectorAll(
+      'header [data-preload="header-logo"] svg path'
+    );
     if (logoPaths.length > 0) {
       gsap.fromTo(
         logoPaths,
@@ -45,9 +50,10 @@ export default function Preloader() {
     // Sélecteurs pour le contenu à révéler
     const heroVideoEl = document.querySelector("[data-preload='hero-video']");
     const heroTitleEl = document.querySelector("[data-preload='hero-title']");
-    const headerNavItems = document.querySelectorAll(
-      "header nav, header button, header [data-preload='header-cta']"
-    );
+    // Calque décoy de la nav droite : c'est LUI qui fait le fondu d'entrée
+    // pendant le preloader (la vraie nav reste cachée dessous jusqu'à la fin,
+    // pour éviter que les deux ne soient visibles/interactives en même temps).
+    const navMaskEl = document.querySelector('[data-preload="header-nav-mask"]');
 
     const tl = gsap.timeline({
       delay: 2.0,
@@ -61,6 +67,15 @@ export default function Preloader() {
         document.documentElement.classList.remove("is-first-visit");
         document.documentElement.classList.remove("preloader-animating");
         sessionStorage.setItem("visited_home", "true");
+
+        // La classe retirée ci-dessus fait basculer la vraie nav en un seul
+        // instant (couleur + mix-blend-mode), mais elle est encore entièrement
+        // recouverte par le calque décoy (encore à opacity 1) : rien n'est
+        // visible. On révèle la vraie nav en fondu en faisant disparaître le
+        // décoy par-dessus elle.
+        if (navMaskEl) {
+          gsap.to(navMaskEl, { opacity: 0, duration: 0.4, ease: "power2.out" });
+        }
       },
     });
 
@@ -73,8 +88,10 @@ export default function Preloader() {
       });
     }
 
-    tl.to(headerNavItems, { opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.6")
-      .to([heroVideoEl, heroTitleEl], { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.8");
+    if (navMaskEl) {
+      tl.to(navMaskEl, { opacity: 1, duration: 0.8, ease: "power2.out" }, "-=0.6");
+    }
+    tl.to([heroVideoEl, heroTitleEl], { opacity: 1, duration: 1, ease: "power2.out" }, "-=0.8");
   }, []);
 
   return (

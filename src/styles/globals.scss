@@ -66,6 +66,12 @@ html.is-first-visit header {
     stroke: #000 !important;
   }
 
+  // L'icône du CTA est un contour (pas de fill) : la règle svg path
+  // ci-dessus est nécessaire pour le logo mais ne doit pas la remplir.
+  [data-preload="header-cta"] svg path {
+    fill: none !important;
+  }
+
   nav a,
   button {
     color: #000 !important;

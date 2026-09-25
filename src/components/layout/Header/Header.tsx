@@ -98,6 +98,10 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
     // Fix bug disparition : reset au changement de page
     const resetHeader = () => {
       if (headerRef.current) gsap.set(headerRef.current, { yPercent: 0, opacity: 1 });
+      // Pendant le preloader (première visite), c'est lui qui pilote l'opacity
+      // de ces groupes (logo / nav / CTA) via le décoy + les tweens dédiés :
+      // ne pas l'écraser ici, sinon la nav apparaît d'un coup sans fondu.
+      if (document.documentElement.classList.contains("is-first-visit")) return;
       const groups = revealGroupRefs.current.filter(Boolean) as HTMLElement[];
       if (groups.length) gsap.set(groups, { y: 0, opacity: 1 });
     };
@@ -207,6 +211,7 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
   }, [isMenuOpen]);
 
   return (
+    <>
     <header
       ref={headerRef}
       className={`${styles.header} ${isMenuOpen ? styles.isMenuOpen : ""}`}
@@ -216,11 +221,14 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
         <div className={styles.wrapper}>
           <div
             className={styles.logo}
+            data-preload="header-logo"
             ref={(el) => { revealGroupRefs.current[0] = el; }}
           >
             <TransitionLink href="/">
               <svg
-                className={styles.logoDesktop}
+                className={`${styles.logoDesktop}${
+                  pathname === "/" ? ` ${styles.logoPendingConvergence}` : ""
+                }`}
                 xmlns="http://www.w3.org/2000/svg"
                 width="229"
                 height="27"
@@ -413,6 +421,60 @@ const Header: React.FC<HeaderProps> = ({ data }) => {
         </div>
       </div>
     </header>
+
+    <div
+      className={`${styles.header} ${styles.navPreloadMask}`}
+      data-preload="header-nav-mask"
+      aria-hidden="true"
+    >
+      <div className="container">
+        <div className={styles.wrapper}>
+          <div className={styles.desktopMenu}>
+            <nav className={styles.desktopNav}>
+              <ul>
+                {resolvedNav.map((item) => (
+                  <li key={item.Texte}>
+                    <span className={styles.navMaskLabel}>{item.Texte}</span>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className={styles.menuButton}>
+              <div className={styles.menuButtonWrapper}>
+                <span>MENU</span>
+              </div>
+            </div>
+
+            <div className={styles.desktopButton}>
+              <Button
+                label={bouton?.Texte || "contact"}
+                variant="outline"
+                color="black"
+                tabIndex={-1}
+                icon={
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="15"
+                    viewBox="0 0 18 15"
+                    fill="none"
+                  >
+                    <path
+                      d="M6.92191 4.06698V1.75C6.92191 1.19772 7.36962 0.75 7.92191 0.75H15.75C16.3023 0.75 16.75 1.19771 16.75 1.75V8.24395C16.75 8.5832 16.475 8.85823 16.1357 8.85823H16.0374C15.7524 8.85823 15.5214 9.08924 15.5214 9.3742C15.5214 9.84481 14.943 10.0698 14.6251 9.7228L14.2102 9.27009C14.0672 9.11409 13.8654 9.02526 13.6537 9.02526H11.0857M10.2711 5.80411V11.5437C10.2711 12.0959 9.82334 12.5437 9.27105 12.5437H4.03304C3.8003 12.5437 3.57824 12.6413 3.42097 12.8129L2.87503 13.4084C2.557 13.7554 1.97856 13.5304 1.97856 13.0597C1.97856 12.7747 1.74751 12.5437 1.4625 12.5437H1.36428C1.02502 12.5437 0.75 12.2686 0.75 11.9294V5.80411C0.75 5.25183 1.19771 4.80411 1.75 4.80411H9.27105C9.82334 4.80411 10.2711 5.25183 10.2711 5.80411Z"
+                      stroke="#000"
+                      strokeWidth="1.5"
+                      strokeMiterlimit="10"
+                    />
+                  </svg>
+                }
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </>
   );
 };
 
