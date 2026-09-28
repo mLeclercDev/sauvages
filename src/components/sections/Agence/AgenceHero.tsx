@@ -118,7 +118,7 @@ const AgenceHero: React.FC<AgenceHeroProps> = ({ data }) => {
               alt={data?.Image?.alternativeText || ""}
               fill
               priority
-              unoptimized={true}
+              sizes="100vw"
               className="fit-cover"
             />
           </div>

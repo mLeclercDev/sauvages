@@ -67,7 +67,6 @@ const AgenceHistory: React.FC<AgenceHistoryProps> = ({
                   alt={img.alternativeText || ""}
                   width={250 - (index * 30)}
                   height={250 - (index * 30)}
-                  unoptimized={true}
                   className="fit-cover"
                 />
               </div>

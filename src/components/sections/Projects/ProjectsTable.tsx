@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { getStrapiMedia } from "@/utils/strapi";
+import { parseVimeoField } from "@/utils/vimeo";
+import VimeoEmbed from "@/components/ui/VimeoEmbed/VimeoEmbed";
 import styles from "./ProjectsTable.module.scss";
 
 interface Project {
@@ -14,6 +16,7 @@ interface Project {
     slug: string;
     thumbnail?: any;
     thumbnailFallback?: any;
+    thumbnailVimeoUrl?: string | null;
     client?: { data: { attributes: { name: string } } };
     expertise?: { data: any[] };
     sector?: string;
@@ -164,7 +167,13 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                 || p.attrs?.thumbnail?.attributes
                 || p.attrs?.thumbnail
                 || {};
-              const isVideo = (thumbAttrs.mime as string || "").startsWith("video/");
+              const vimeo = parseVimeoField(p.attrs?.thumbnailVimeoUrl);
+              const isThumbnailVideoFile = (thumbAttrs.mime as string || "").startsWith("video/");
+              // Legacy fallback: mime-sniffed native video, used until `thumbnailVimeoUrl` is populated.
+              const isLegacyVideo = !vimeo && isThumbnailVideoFile;
+              const isVideo = !!vimeo || isLegacyVideo;
+              // Never pass a video file URL to next/image — only a real poster/fallback qualifies.
+              const vimeoFallbackImageUrl = fallbackUrl || (isThumbnailVideoFile ? undefined : url);
               const hasVideoError = videoErrorIds.has(p.id);
               return (
                 <div
@@ -174,8 +183,17 @@ const ProjectsTable: React.FC<ProjectsTableProps> = ({ projects }) => {
                   }}
                   className={styles.reelItem}
                 >
-                  {url && (
-                    isVideo && !(hasVideoError && fallbackUrl) ? (
+                  {vimeo ? (
+                    <VimeoEmbed
+                      vimeoId={vimeo.id}
+                      vimeoHash={vimeo.hash}
+                      mode="background"
+                      fallbackImageUrl={vimeoFallbackImageUrl}
+                      alt={p.attrs?.title || "Projet"}
+                      className={styles.reelVideo}
+                    />
+                  ) : url && (
+                    isLegacyVideo && !(hasVideoError && fallbackUrl) ? (
                       <video
                         src={url}
                         autoPlay

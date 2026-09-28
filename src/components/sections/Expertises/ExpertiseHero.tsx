@@ -31,7 +31,7 @@ const ExpertiseHero: React.FC<ExpertiseHeroProps> = ({ data }) => {
                   fill
                   className="fit-cover"
                   priority
-                  unoptimized={true}
+                  sizes="(max-width: 768px) 100vw, 40vw"
                 />
               </div>
             )}

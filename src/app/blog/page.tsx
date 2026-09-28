@@ -7,7 +7,7 @@ import BlogHero from "@/components/sections/Blog/BlogHero";
 import BlogPageContent from "@/components/sections/Blog/BlogPageContent";
 
 export const metadata = {
-  title: "Blog | Sauvages",
+  title: "Blog",
   description:
     "L’espace où nous partageons des idées, des explorations au-delà du design, de la technologie et du business.",
 };

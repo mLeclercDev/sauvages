@@ -172,7 +172,6 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
                     fill
                     className={styles.reelImage}
                     sizes="500px"
-                    unoptimized={true}
                   />
                 )}
               </div>
@@ -236,7 +235,6 @@ const BlogListing: React.FC<BlogListingProps> = ({ articles }) => {
                     fill
                     className="fit-cover"
                     sizes="400px"
-                    unoptimized={true}
                   />
                 )}
               </div>

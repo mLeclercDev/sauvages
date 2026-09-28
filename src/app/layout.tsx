@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { monumentNormal, monumentWide, monumentBlack } from "./fonts";
+import { SITE_URL } from "@/utils/site";
 import "../styles/globals.scss";
 
 export const metadata: Metadata = {
-  title: "Sauvages",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Sauvages",
+    template: "%s | Sauvages",
+  },
   description: "Agence créative Sauvages",
 };
 
@@ -30,7 +35,9 @@ export default async function RootLayout({
     getFooterData(),
     getHeaderData(),
     getContactData(),
-    fetchAPI("/pages-legales", { fields: ["slug", "Titre"] }).catch(() => null),
+    fetchAPI("/pages-legales", { fields: ["slug", "Titre"] }, { next: { revalidate: 60 } }).catch(
+      () => null
+    ),
   ]);
 
   const legalPages = (legalPagesData?.data || []).map((p: any) => ({

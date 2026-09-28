@@ -90,7 +90,6 @@ export default function TexteImage({
                 fill
                 className="fit-cover"
                 sizes="(max-width: 768px) 100vw, 45vw"
-                unoptimized={true}
               />
             </div>
           )}

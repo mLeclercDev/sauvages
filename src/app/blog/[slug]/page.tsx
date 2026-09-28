@@ -1,5 +1,5 @@
 import { fetchAPI, getStrapiMedia } from "@/utils/strapi";
-import { strapiBlocksToHtml } from "@/utils/strapiRichText";
+import { strapiBlocksToHtml, strapiBlocksToPlainText } from "@/utils/strapiRichText";
 import { SITE_URL } from "@/utils/site";
 
 export const revalidate = 60;
@@ -12,20 +12,39 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function getArticle(slug: string) {
+  const response = await fetchAPI(
+    "/articles",
+    { filters: { documentId: slug }, populate: "*" },
+    {}
+  );
+  return response?.data?.[0] || null;
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+  const articleWrap = await getArticle(slug);
+  if (!articleWrap) return { title: "Article" };
+
+  const attrs = articleWrap.attributes || articleWrap;
+  const title = attrs.Titre || attrs.title;
+  const description =
+    attrs.soustitre || strapiBlocksToPlainText(attrs.Contenu) || undefined;
+  const image = getStrapiMedia(attrs.Image || attrs.image, undefined);
+
+  return {
+    title,
+    description,
+    openGraph: image ? { images: [{ url: image }] } : undefined,
+  };
+}
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
   // Récupération de l'article par son documentId (puisqu'on l'utilise comme slug dans le listing)
-  // On tente de filtrer par slug d'abord, puis par documentId si rien n'est trouvé
-  const response = await fetchAPI("/articles", {
-    filters: {
-      documentId: slug,
-    },
-    populate: "*",
-  }, {});
+  const articleWrap = await getArticle(slug);
 
-  const articleWrap = response?.data?.[0];
-  
   if (!articleWrap) {
     notFound();
   }

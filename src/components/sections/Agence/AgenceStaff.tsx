@@ -51,7 +51,7 @@ const StaffCard = ({
             alt={member.name}
             fill
             className="fit-cover"
-            unoptimized={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
           />
         )}
         {showVideo && (

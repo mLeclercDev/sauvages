@@ -85,7 +85,7 @@
       padding-top: 0;
     }
     @include mq-max("lg") {
-      padding: 40px 0 60px;
+      padding: 40px 0 60px; 
     }
     @include mq-max("md") {
       padding: 28px 0 36px;
@@ -101,7 +101,7 @@
   @include mq-max("md") {
     flex-direction: column;
     padding: 32px 0;
-    gap: 24px;
+    gap: 0;
   }
 }
 
@@ -192,6 +192,7 @@
   @include mq-max("md") {
     //padding-top: 20px;
     flex-direction: column;
+    margin-top: 24px;
   }
 }
 

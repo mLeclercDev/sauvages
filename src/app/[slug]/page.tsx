@@ -1,5 +1,5 @@
 import { fetchAPI } from "@/utils/strapi";
-import { strapiBlocksToHtml } from "@/utils/strapiRichText";
+import { strapiBlocksToHtml, strapiBlocksToPlainText } from "@/utils/strapiRichText";
 import { notFound } from "next/navigation";
 import LegalPage from "@/components/sections/LegalPage/LegalPage";
 
@@ -14,15 +14,30 @@ export async function generateStaticParams() {
   return (res?.data || []).map((p: any) => ({ slug: p.slug }));
 }
 
-export default async function LegalPageRoute({ params }: PageProps) {
-  const { slug } = await params;
-
+async function getLegalPage(slug: string) {
   const response = await fetchAPI("/pages-legales", {
     filters: { slug: { $eq: slug } },
     populate: "*",
   });
+  return response?.data?.[0] || null;
+}
 
-  const page = response?.data?.[0];
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+  const page = await getLegalPage(slug);
+  if (!page) return {};
+
+  const attrs = page.attributes || page;
+  return {
+    title: attrs.Titre || "",
+    description: strapiBlocksToPlainText(attrs.Contenu) || undefined,
+  };
+}
+
+export default async function LegalPageRoute({ params }: PageProps) {
+  const { slug } = await params;
+
+  const page = await getLegalPage(slug);
 
   if (!page) {
     notFound();

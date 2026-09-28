@@ -15,7 +15,6 @@ interface RandomGridMaskProps {
   scrub?: number | boolean;
   priority?: boolean;
   disableScrollReveal?: boolean;
-  unoptimized?: boolean;
 }
 
 type Cell = {

@@ -67,7 +67,6 @@ const FullWidthImage: React.FC<FullWidthImageProps> = ({
             alt={alt}
             fill
             priority={priority}
-            unoptimized={true}
             className="fit-cover"
             sizes="100vw"
           />

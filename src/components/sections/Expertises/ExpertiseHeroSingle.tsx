@@ -102,7 +102,7 @@ const ExpertiseHeroSingle: React.FC<ExpertiseHeroSingleProps> = ({ data }) => {
               fill
               className="fit-cover"
               priority
-              unoptimized={true}
+              sizes="100vw"
             />
           </div>
         )}

@@ -457,9 +457,11 @@ const Footer: React.FC<FooterProps> = ({ data, legalPages }) => {
 
             <div className={styles.bottomLinks}>
               {legalPages && legalPages.length > 0 ? (
-                legalPages.map((page) =>
-                  renderFooterLink(`/${page.slug}`, page.titre.toUpperCase())
-                )
+                legalPages.map((page) => (
+                  <React.Fragment key={page.slug}>
+                    {renderFooterLink(`/${page.slug}`, page.titre.toUpperCase())}
+                  </React.Fragment>
+                ))
               ) : footerContent.Lien?.length > 0 ? (
                 footerContent.Lien.map((link: any) => (
                   <React.Fragment key={link.id}>

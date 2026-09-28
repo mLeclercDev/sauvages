@@ -6,9 +6,12 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./Hero.module.scss";
 import { getStrapiMedia } from "@/utils/strapi";
+import { parseVimeoField } from "@/utils/vimeo";
+import VimeoEmbed from "@/components/ui/VimeoEmbed/VimeoEmbed";
 
 const DEFAULT_TITLE =
   "Agence créative, unie pour créer de l’émotion depuis 20ans. De la stratégie à la création.";
+// Fallback used only while `data.VideoVimeo` hasn't been set in Strapi yet.
 const DEFAULT_VIDEO_SRC =
   "https://api.agence-sauvages.com/uploads/SAUVAGES_REEL_SITE_c3eb582103.mp4";
 
@@ -234,6 +237,8 @@ export default function Hero({ data }: HeroProps) {
   const mediaAttrs = data?.Video?.data?.attributes || data?.Video?.attributes || data?.Video;
   const mediaUrl = getStrapiMedia(data?.Video, undefined) || DEFAULT_VIDEO_SRC;
   const isImageMedia = !!mediaAttrs?.mime?.startsWith("image");
+  // TEMP TEST — remove after Vimeo review, forces the hero to render the test video.
+  const vimeo = parseVimeoField(data?.VideoVimeo) || parseVimeoField("1230199873");
 
   const inlineStyles = {
     "--progress": scrollData.progress,
@@ -282,13 +287,22 @@ export default function Hero({ data }: HeroProps) {
           >
             <div className={styles.videoPlayer}>
               <div className={styles.videoPlayerVideo}>
-                {isImageMedia ? (
+                {vimeo ? (
+                  <VimeoEmbed
+                    vimeoId={vimeo.id}
+                    vimeoHash={vimeo.hash}
+                    mode="background"
+                    fallbackImageUrl={!isImageMedia ? undefined : mediaUrl}
+                    alt={title}
+                    priority
+                  />
+                ) : isImageMedia ? (
                   <Image
                     src={mediaUrl}
                     alt={title}
                     fill
                     priority
-                    unoptimized
+                    sizes="100vw"
                     className="fit-cover"
                   />
                 ) : (

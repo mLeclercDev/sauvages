@@ -5,7 +5,7 @@ import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./LogoSlider.module.scss";
-import { getStrapiMedia } from "@/utils/strapi";
+import { getStrapiMedia, isSvgSrc } from "@/utils/strapi";
 
 interface LogoSliderClientProps {
   pt?: string;
@@ -141,7 +141,7 @@ const LogoSliderClient: React.FC<LogoSliderClientProps> = ({
                     width={150} 
                     height={60} 
                     className={styles.imageLogo}
-                    unoptimized={true}
+                    unoptimized={isSvgSrc(logo.url)}
                   />
                 ) : (
                   logo.content

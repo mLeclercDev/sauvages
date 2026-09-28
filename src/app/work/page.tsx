@@ -2,6 +2,11 @@ import React from "react";
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: "Work",
+  description: "Les projets réalisés par Sauvages pour ses clients.",
+};
+
 import { getProjectsPageData } from "./getProjectsPageData";
 import ProjetsPageContent from "@/components/sections/Projects/ProjetsPageContent";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";

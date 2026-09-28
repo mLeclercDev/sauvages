@@ -1,4 +1,5 @@
 import { fetchAPI } from "@/utils/strapi";
+import { strapiBlocksToPlainText } from "@/utils/strapiRichText";
 
 export const revalidate = 60;
 
@@ -25,9 +26,7 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
-export default async function ExpertisePage({ params }: PageProps) {
-  const { slug } = await params;
-
+async function findExpertiseEntry(slug: string) {
   const response = await fetchAPI(
     "/expertises",
     {
@@ -51,7 +50,7 @@ export default async function ExpertisePage({ params }: PageProps) {
 
   const entries = Array.isArray(response?.data) ? response.data : [];
 
-  const matchedEntry = entries.find((entry: any) => {
+  return entries.find((entry: any) => {
     const attrs = entry?.attributes || entry;
     const contenu = Array.isArray(attrs?.Contenu) ? attrs.Contenu : [];
     const textReveal = contenu.find(
@@ -61,6 +60,30 @@ export default async function ExpertisePage({ params }: PageProps) {
 
     return entry?.documentId === slug || attrs?.documentId === slug || titleSlug === slug;
   });
+}
+
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+  const matchedEntry = await findExpertiseEntry(slug);
+  if (!matchedEntry) return { title: "Expertise" };
+
+  const attrs = matchedEntry.attributes || matchedEntry;
+  const contenu = Array.isArray(attrs?.Contenu) ? attrs.Contenu : [];
+  const textReveal = contenu.find(
+    (block: any) => block.__component === "global.text-reveal"
+  );
+  const description =
+    (typeof textReveal?.Texte === "string" ? textReveal.Texte : undefined) ||
+    strapiBlocksToPlainText(textReveal?.Texte) ||
+    `Découvrez l'expertise ${attrs.name} de l'agence Sauvages.`;
+
+  return { title: attrs.name, description };
+}
+
+export default async function ExpertisePage({ params }: PageProps) {
+  const { slug } = await params;
+
+  const matchedEntry = await findExpertiseEntry(slug);
 
   if (!matchedEntry) {
     notFound();

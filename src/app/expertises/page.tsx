@@ -8,6 +8,14 @@ import ExpertiseHero from "@/components/sections/Expertises/ExpertiseHero";
 import ClientsScroll from "@/components/sections/Clients/ClientsScroll";
 import { fetchAPI } from "@/utils/strapi";
 
+export const revalidate = 60;
+
+export const metadata = {
+  title: "Expertises",
+  description:
+    "Nos expertises : stratégie, design, technologie et contenu au service de vos projets.",
+};
+
 export default async function ExpertisesPage() {
   let heroData = null;
   let listingData = null;

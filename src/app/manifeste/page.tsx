@@ -3,6 +3,11 @@ import styles from "./page.module.scss";
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: "Manifeste",
+  description: "Le manifeste de Sauvages : nos engagements et notre vision.",
+};
+
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import TexteImage from "@/components/sections/TexteImage/TexteImage";
 import ManifesteHero from "@/components/sections/Manifeste/ManifesteHero";

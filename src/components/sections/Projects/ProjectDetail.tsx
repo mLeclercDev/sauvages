@@ -6,8 +6,15 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { getStrapiMedia } from "@/utils/strapi";
+import { parseVimeoField } from "@/utils/vimeo";
 import { renderStrapiBlocks } from "@/utils/strapiRichText";
+import VimeoEmbed from "@/components/ui/VimeoEmbed/VimeoEmbed";
 import styles from "./ProjectDetail.module.scss";
+
+interface MediaItem {
+  media: any | null;
+  vimeoUrl: string | null;
+}
 
 interface ProjectDetailProps {
   project: any;
@@ -207,6 +214,62 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
   }, [project, sections.length, expertises.length, hasDescription]);
 
 
+  // Nouveaux items { media, vimeoUrl } d'abord, puis l'ancien champ (média nu) en parallèle.
+  const toMediaItems = (newItems: any, legacy: any): MediaItem[] => {
+    const items: MediaItem[] = (Array.isArray(newItems) ? newItems : []).map((it: any) => ({
+      media: it?.media?.data || it?.media || null,
+      vimeoUrl: it?.vimeoUrl || null,
+    }));
+    const raw = legacy?.data || legacy || [];
+    (Array.isArray(raw) ? raw : [raw]).forEach((m: any) => {
+      if (m) items.push({ media: m, vimeoUrl: null });
+    });
+    return items.filter((it) => it.vimeoUrl || it.media);
+  };
+
+  const renderMediaItem = (item: MediaItem, key: number, alt: string, itemClass: string) => {
+    const url = getStrapiMedia(item.media);
+    // vimeoUrl est prioritaire ; `media` sert de poster pendant le chargement de l'embed.
+    const vimeo = parseVimeoField(item.vimeoUrl);
+    if (!vimeo && !url) return null;
+    const mime: string = item.media?.mime || item.media?.attributes?.mime || "";
+    const isVideo = mime.startsWith("video/") || /\.(mp4|webm|ogg|mov)$/i.test(url || "");
+    return (
+      <div key={key} className={`${styles.galleryItem} ${itemClass}`}>
+        {vimeo ? (
+          <VimeoEmbed
+            vimeoId={vimeo.id}
+            vimeoHash={vimeo.hash}
+            mode="background"
+            fallbackImageUrl={url && !isVideo ? url : undefined}
+            alt={alt}
+            className={styles.image}
+            onReady={() => ScrollTrigger.refresh()}
+          />
+        ) : isVideo ? (
+          <video
+            src={url!}
+            className={styles.image}
+            autoPlay
+            muted
+            loop
+            playsInline
+            onLoadedData={() => ScrollTrigger.refresh()}
+          />
+        ) : (
+          <Image
+            src={url!}
+            alt={alt}
+            width={1200}
+            height={1600}
+            className={styles.image}
+            onLoad={() => ScrollTrigger.refresh()}
+          />
+        )}
+      </div>
+    );
+  };
+
   const descriptionOffset = hasDescription ? 1 : 0;
   const expertisesIdx = sections.length + descriptionOffset;
 
@@ -329,90 +392,35 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
               {sections.length > 0 || attrs.Galerie?.length > 0 ? (
                 <>
                   {sections.map((section: any, idx: number) => {
-                    const raw = section.image?.data || section.image || [];
-                    const medias = Array.isArray(raw) ? raw : [raw];
-                    if (medias.length === 0) return null;
-                    const isDouble = medias.length >= 2;
+                    const items = toMediaItems(section.medias, section.image);
+                    if (items.length === 0) return null;
+                    const isDouble = items.length >= 2;
+                    const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
                     return (
                       <div
                         key={idx}
                         className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
                       >
-                        {medias.map((media: any, mediaIdx: number) => {
-                          const url = getStrapiMedia(media);
-                          if (!url) return null;
-                          const mime: string = media.mime || media.attributes?.mime || "";
-                          const isVideo = mime.startsWith("video/");
-                          const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
-                          return (
-                            <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
-                              {isVideo ? (
-                                <video
-                                  src={url}
-                                  className={styles.image}
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                  onLoadedData={() => ScrollTrigger.refresh()}
-                                />
-                              ) : (
-                                <Image
-                                  src={url}
-                                  alt={`${section.title || attrs.title} — ${mediaIdx + 1}`}
-                                  width={1200}
-                                  height={1600}
-                                  className={styles.image}
-                                  onLoad={() => ScrollTrigger.refresh()}
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                        {items.map((item, mediaIdx) =>
+                          renderMediaItem(item, mediaIdx, `${section.title || attrs.title} — ${mediaIdx + 1}`, itemClass)
+                        )}
                       </div>
                     );
                   })}
 
                   {Array.isArray(attrs.Galerie) && attrs.Galerie.map((block: any, idx: number) => {
                     const isDouble = block.Disposition === "double";
-                    const images: any[] = block.Images || [];
-                    if (images.length === 0) return null;
+                    const items = toMediaItems(block.Medias, block.Images);
+                    if (items.length === 0) return null;
                     const itemClass = isDouble ? styles.galleryItemDouble : styles.galleryItemSingle;
                     return (
                       <div
                         key={`galerie-${idx}`}
                         className={`${styles.sectionImages} ${isDouble ? styles.sectionImagesDouble : ""}`}
                       >
-                        {images.map((media: any, mediaIdx: number) => {
-                          const url = getStrapiMedia(media);
-                          if (!url) return null;
-                          const mime: string = media.mime || "";
-                          const isVideo = mime.startsWith("video/") || /\.(mp4|webm|ogg)$/i.test(url);
-                          return (
-                            <div key={mediaIdx} className={`${styles.galleryItem} ${itemClass}`}>
-                              {isVideo ? (
-                                <video
-                                  src={url}
-                                  className={styles.image}
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                  onLoadedData={() => ScrollTrigger.refresh()}
-                                />
-                              ) : (
-                                <Image
-                                  src={url}
-                                  alt={`Galerie — ${mediaIdx + 1}`}
-                                  width={1200}
-                                  height={1600}
-                                  className={styles.image}
-                                  onLoad={() => ScrollTrigger.refresh()}
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                        {items.map((item, mediaIdx) =>
+                          renderMediaItem(item, mediaIdx, `Galerie — ${mediaIdx + 1}`, itemClass)
+                        )}
                       </div>
                     );
                   })}

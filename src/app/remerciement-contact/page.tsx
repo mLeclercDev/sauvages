@@ -1,3 +1,8 @@
+export const metadata = {
+  title: "Merci",
+  robots: { index: false, follow: true },
+};
+
 export default function RemerciementContactPage() {
   return (
     <main>

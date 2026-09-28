@@ -18,7 +18,10 @@ export async function getProjectsPageData() {
         sort: ["rank:desc"],
         pagination: { limit: 200 },
       }),
-      fetchAPI("/work", { populate: "deep" }),
+      // "deep" n'est pas une valeur valide pour `populate` côté Strapi (l'API
+      // répond 400, silencieusement avalé par le catch ci-dessous) : "*"
+      // peuple le premier niveau de la zone dynamique `Contenu`.
+      fetchAPI("/work", { populate: "*" }),
     ]);
 
     projects = projectsData?.data || [];

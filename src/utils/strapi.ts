@@ -115,3 +115,13 @@ export function getStrapiMedia(
 
   return `${getStrapiURL("", activeSource)}${url}`;
 }
+
+/**
+ * L'optimiseur `next/image` refuse de servir du SVG par défaut (pas de
+ * `dangerouslyAllowSVG` en config — voir next.config.ts). Certains champs
+ * "Icone" de la médiathèque Strapi sont des SVG : ce garde permet de leur
+ * appliquer `unoptimized` au cas par cas plutôt que sur toutes les images.
+ */
+export function isSvgSrc(url?: string | null): boolean {
+  return !!url && /\.svg(\?|$)/i.test(url);
+}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./AgenceCta.module.scss";
-import { getStrapiMedia } from "@/utils/strapi";
+import { getStrapiMedia, isSvgSrc } from "@/utils/strapi";
 
 interface AgenceCtaProps {
   pt?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
@@ -135,7 +135,7 @@ const AgenceCta: React.FC<AgenceCtaProps> = ({
                   alt=""
                   width={33}
                   height={36}
-                  unoptimized
+                  unoptimized={isSvgSrc(iconUrl)}
                   className={styles.pencilIcon}
                 />
               ) : (

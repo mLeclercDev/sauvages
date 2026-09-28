@@ -166,7 +166,6 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
                     fill
                     className="fit-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
-                    unoptimized={true}
                   />
                 )}
               </div>

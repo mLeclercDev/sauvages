@@ -50,7 +50,6 @@ const AgenceValues: React.FC<AgenceValuesProps> = ({
                 fill
                 className="fit-cover"
                 sizes="(max-width: 768px) 100vw, 50vw"
-                unoptimized={true}
               />
             </div>
           )}

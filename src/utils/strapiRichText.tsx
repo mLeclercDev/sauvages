@@ -282,3 +282,34 @@ export const strapiBlocksToHtml = (blocks?: StrapiBlock[]): string => {
     })
     .join("");
 };
+
+/**
+ * Extrait le texte brut (sans balises) d'un tableau de blocs Strapi, pour
+ * construire une meta description ou un extrait. Concatène récursivement
+ * tous les noeuds `text`, y compris ceux imbriqués dans des listes/liens.
+ */
+const collectPlainText = (nodes?: Array<{ text?: string; children?: unknown[] }>): string =>
+  (nodes || [])
+    .map((node) =>
+      node.text ??
+      collectPlainText(node.children as Array<{ text?: string; children?: unknown[] }>)
+    )
+    .filter(Boolean)
+    .join(" ");
+
+export const strapiBlocksToPlainText = (
+  blocks?: StrapiBlock[],
+  maxLength = 160
+): string => {
+  if (!Array.isArray(blocks)) return "";
+
+  const text = blocks
+    .map((block) => collectPlainText(block.children as Array<{ text?: string; children?: unknown[] }>))
+    .filter(Boolean)
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 1).trimEnd()}…`;
+};

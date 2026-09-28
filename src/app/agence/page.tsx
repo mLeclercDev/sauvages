@@ -2,6 +2,12 @@ import { fetchAPI } from "@/utils/strapi";
 
 export const revalidate = 60;
 
+export const metadata = {
+  title: "L'agence",
+  description:
+    "Découvrez Sauvages : notre équipe, notre histoire et nos valeurs.",
+};
+
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
 import AgenceHero from "@/components/sections/Agence/AgenceHero";
 import AgenceValues from "@/components/sections/Agence/AgenceValues";

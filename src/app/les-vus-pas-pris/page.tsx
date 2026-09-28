@@ -1,3 +1,7 @@
+export const metadata = {
+  title: "Les vus pas pris",
+};
+
 export default function LesVusPasPrisPage() {
   return (
     <main>

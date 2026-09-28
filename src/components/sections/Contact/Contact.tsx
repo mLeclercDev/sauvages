@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getCalApi } from "@calcom/embed-react";
 import styles from "./Contact.module.scss";
-import { getStrapiMedia } from "@/utils/strapi";
+import { getStrapiMedia, isSvgSrc } from "@/utils/strapi";
 import Button from "@/components/ui/Button/Button";
 import { useContactPanel } from "@/context/ContactPanelContext";
 import { ContactData, HeroContact } from "@/services/contact";
@@ -76,7 +76,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon1Url = getStrapiMedia(hero?.IconBouton1, undefined);
   const icon1Node = icon1Url ? (
-    <Image src={icon1Url} alt="" width={hero?.IconBouton1?.width ?? 18} height={hero?.IconBouton1?.height ?? 18} unoptimized />
+    <Image src={icon1Url} alt="" width={hero?.IconBouton1?.width ?? 18} height={hero?.IconBouton1?.height ?? 18} unoptimized={isSvgSrc(icon1Url)} />
   ) : (
     <svg
       width="14"
@@ -97,7 +97,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
 
   const icon2Url = getStrapiMedia(hero?.IconBouton2, undefined);
   const icon2Node = icon2Url ? (
-    <Image src={icon2Url} alt="" width={hero?.IconBouton2?.width ?? 18} height={hero?.IconBouton2?.height ?? 18} unoptimized />
+    <Image src={icon2Url} alt="" width={hero?.IconBouton2?.width ?? 18} height={hero?.IconBouton2?.height ?? 18} unoptimized={isSvgSrc(icon2Url)} />
   ) : (
     <svg
       width="14"
@@ -126,7 +126,7 @@ const Contact: React.FC<ContactProps> = ({ data }) => {
                   alt={hero?.Image?.alternativeText || ""}
                   fill
                   className="fit-cover"
-                  unoptimized={true}
+                  sizes="(max-width: 768px) 100vw, 40vw"
                 />
               )}
             </div>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { getStrapiMedia } from "@/utils/strapi";
+import { getStrapiMedia, isSvgSrc } from "@/utils/strapi";
 import styles from "./ClientsScroll.module.scss";
 
 export interface ClientItem {
@@ -157,7 +157,14 @@ const ClientsScrollClient: React.FC<ClientsScrollClientProps> = ({
                     className={styles.imageItem}
                   >
                     {url ? (
-                      <Image src={url} alt={client.name} fill className="fit-cover" unoptimized />
+                      <Image
+                        src={url}
+                        alt={client.name}
+                        fill
+                        className="fit-cover"
+                        sizes="(min-width: 1536px) 200px, 160px"
+                        unoptimized={isSvgSrc(url)}
+                      />
                     ) : (
                       <div className={styles.logoPlaceholder}>
                         <span>{client.name.slice(0, 2).toUpperCase()}</span>

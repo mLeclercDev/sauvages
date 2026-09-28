@@ -123,7 +123,6 @@ const ManifesteHero: React.FC<ManifesteHeroProps> = ({ data }) => {
                     alt={data?.Image?.alternativeText || ""}
                     fill
                     priority
-                    unoptimized={true}
                     className="fit-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
