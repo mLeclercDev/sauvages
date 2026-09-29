@@ -31,4 +31,11 @@
   &.ready {
     opacity: 1;
   }
+
+  // Background mode has no interactive controls — this keeps it from
+  // swallowing clicks/hover meant for the card (e.g. a link) beneath it.
+  // Not applied in "content" mode, where the player's controls must work.
+  &.noPointerEvents {
+    pointer-events: none;
+  }
 }

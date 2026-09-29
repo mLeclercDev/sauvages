@@ -21,6 +21,8 @@ interface ProjectItemProps {
   clientFavicon?: any;
   className?: string;
   imageAspectRatio?: string;
+  /** Only applies to the legacy native <video> path — VimeoEmbed crops internally. */
+  videoObjectPosition?: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }
@@ -35,6 +37,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
   clientFavicon,
   className = "",
   imageAspectRatio,
+  videoObjectPosition = "center",
   onMouseEnter,
   onMouseLeave,
 }) => {
@@ -130,6 +133,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                 poster={fallbackUrl || undefined}
                 onError={() => setHasVideoError(true)}
                 className={styles.video}
+                style={{ objectPosition: videoObjectPosition }}
               >
                 <source src={mediaUrl} type={mime || "video/mp4"} />
               </video>
@@ -173,7 +177,7 @@ const ProjectItem: React.FC<ProjectItemProps> = ({
                 preload="none"
                 poster={fallbackUrl || undefined}
                 onError={() => setHasVideoError(true)}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: videoObjectPosition }}
               >
                 <source src={mediaUrl} type={mime || "video/mp4"} />
               </video>

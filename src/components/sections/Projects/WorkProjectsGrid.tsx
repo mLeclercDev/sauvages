@@ -99,6 +99,7 @@ const WorkProjectsGrid: React.FC<WorkProjectsGridProps> = ({ projects }) => {
               thumbnail={attrs.thumbnail}
               thumbnailFallback={attrs.thumbnailFallback}
               thumbnailVimeo={attrs.thumbnailVimeoUrl}
+              videoObjectPosition={attrs.thumbnailObjectPosition}
               clientFavicon={
                 attrs.client?.Favicon ||
                 attrs.client?.data?.attributes?.Favicon

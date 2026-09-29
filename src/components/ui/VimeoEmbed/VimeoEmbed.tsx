@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useVimeoCoverSize } from "@/hooks/useVimeoCoverSize";
 import styles from "./VimeoEmbed.module.scss";
 
 interface VimeoEmbedProps {
@@ -60,8 +61,15 @@ export default function VimeoEmbed({
   priority = false,
 }: VimeoEmbedProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const [isInView, setIsInView] = useState(priority || !pauseWhenOffscreen);
   const [isReady, setIsReady] = useState(false);
+  // Vimeo's background mode letterboxes instead of cropping when the iframe's
+  // box doesn't match the video's own ratio — this computes a cover-fit size.
+  const coverSize = useVimeoCoverSize(wrapperRef, iframeRef, mode === "background" && isReady);
+  // In background mode, stay hidden behind the fallback until the cover size
+  // is known — otherwise the letterboxed iframe flashes before it snaps to size.
+  const visuallyReady = mode === "background" ? isReady && coverSize !== null : isReady;
 
   useEffect(() => {
     if (priority || !pauseWhenOffscreen) return;
@@ -89,14 +97,29 @@ export default function VimeoEmbed({
           alt={alt}
           fill
           sizes="100vw"
-          className={`${styles.fallback} ${isReady ? styles.hidden : ""}`}
+          className={`${styles.fallback} ${visuallyReady ? styles.hidden : ""}`}
         />
       )}
       {src && (
         <iframe
           key={src}
+          ref={iframeRef}
           src={src}
-          className={`${styles.iframe} ${isReady ? styles.ready : ""}`}
+          className={`${styles.iframe} ${visuallyReady ? styles.ready : ""} ${mode === "background" ? styles.noPointerEvents : ""}`}
+          style={
+            mode === "background" && coverSize
+              ? {
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  right: "auto",
+                  bottom: "auto",
+                  width: coverSize.width,
+                  height: coverSize.height,
+                  transform: "translate(-50%, -50%)",
+                }
+              : undefined
+          }
           loading={priority ? undefined : "lazy"}
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
