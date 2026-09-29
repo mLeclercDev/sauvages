@@ -8,7 +8,7 @@ export const revalidate = 60;
 import ProjectDetail from "@/components/sections/Projects/ProjectDetail";
 import RecentProjects from "@/components/sections/Projects/RecentProjects";
 import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
-import { notFound } from "next/navigation";
+import { redirectToNotFound } from "@/utils/notFound";
 import { getProjectsPageData } from "../getProjectsPageData";
 import ProjetsPageContent, { type Section } from "@/components/sections/Projects/ProjetsPageContent";
 import TitreTexte from "@/components/sections/TitreTexte/TitreTexte";
@@ -103,7 +103,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
     project = projectsData?.data?.[0] || null;
 
     if (!project) {
-      notFound();
+      redirectToNotFound();
     }
 
     // Fetch other projects for the bottom section
@@ -120,7 +120,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
     otherProjects = otherProjectsData?.data || [];
   } catch (error) {
     console.error("Failed to fetch project detail:", error);
-    notFound();
+    redirectToNotFound();
   }
 
   const projectAttrs = project.attributes || project;

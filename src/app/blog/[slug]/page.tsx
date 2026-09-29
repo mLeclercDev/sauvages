@@ -6,7 +6,7 @@ export const revalidate = 60;
 
 import BlogArticle from "@/components/sections/Blog/BlogArticle";
 import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
-import { notFound } from "next/navigation";
+import { redirectToNotFound } from "@/utils/notFound";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -46,7 +46,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const articleWrap = await getArticle(slug);
 
   if (!articleWrap) {
-    notFound();
+    redirectToNotFound();
   }
 
   const attrs = articleWrap.attributes || articleWrap;

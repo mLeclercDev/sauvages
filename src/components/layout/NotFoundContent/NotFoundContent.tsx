@@ -1,22 +1,36 @@
-import Link from "next/link";
+import Button from "@/components/ui/Button/Button";
 
-// Contenu partagé par not-found.tsx (notFound() dans un segment résolu,
-// ex. /blog/[slug]) et global-not-found.tsx (URL qui ne correspond à aucune
-// route). Style inline volontairement : les pages not-found de l'App Router
-// ne chargent jamais réellement les CSS Modules/globals.scss (elles restent
-// bloquées en <link rel="preload">, bug Next.js connu) — seul le style
-// inline s'affiche de façon fiable ici.
+// Contenu partagé par not-found.tsx (filet de sécurité, ne devrait plus être
+// atteint : les pages avec slug redirigent désormais vers global-not-found.tsx
+// via @/utils/notFound au lieu d'appeler notFound(), voir ce fichier pour le
+// détail du bug Next.js contourné) et global-not-found.tsx (URL réellement
+// inconnue, chemin nominal). Style inline volontairement : sur le rendu de
+// not-found.tsx imbriqué dans le layout, le CSS Modules/globals.scss reste
+// bloqué en <link rel="preload"> et ne s'applique jamais (vérifié en dev et en
+// build de prod, Next.js 16.2) — seul le style inline s'affiche de façon
+// fiable dans ce cas précis.
 export default function NotFoundContent() {
   return (
     <main
       style={{
-        minHeight: "70vh",
+        minHeight: "100vh",
         display: "flex",
+        justifyContent: "center",
         alignItems: "center",
         padding: "140px 20px 80px",
       }}
     >
-      <div style={{ maxWidth: 720, margin: "0 auto", width: "100%" }}>
+      <div
+        style={{
+          maxWidth: 720,
+          margin: "0 auto",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+        }}
+      >
         <p
           style={{
             color: "#5e5e5e",
@@ -53,24 +67,7 @@ export default function NotFoundContent() {
         >
           La page que vous cherchez n&apos;existe pas ou plus.
         </p>
-        <Link
-          href="/"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            padding: "16px 28px",
-            borderRadius: 9999,
-            border: "1px solid #060606",
-            color: "#060606",
-            fontFamily: "var(--font-monument-normal), sans-serif",
-            fontSize: 14,
-            textTransform: "uppercase",
-            textDecoration: "none",
-          }}
-        >
-          Retour à l&apos;accueil
-        </Link>
+        <Button href="/" label="Retour à l'accueil" variant="outline" color="black" />
       </div>
     </main>
   );

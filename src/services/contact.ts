@@ -1,4 +1,4 @@
-import { fetchAPI } from "@/utils/strapi";
+import { fetchAPI, StrapiSource } from "@/utils/strapi";
 
 export interface StrapiOption {
   id: number;
@@ -52,7 +52,38 @@ export interface ContactData {
   Formulaires: StrapiForm[];
 }
 
-export async function getContactData(): Promise<ContactData | null> {
+export interface MessageReponse {
+  label: string;
+  type: string;
+  value: string;
+}
+
+export interface SubmitContactPayload {
+  formulaire: "projet" | "candidature";
+  reponses: MessageReponse[];
+  chips: string[];
+  acceptTerms: boolean;
+  acceptCommunications: boolean;
+}
+
+export async function submitContact(
+  payload: SubmitContactPayload,
+  source?: StrapiSource
+): Promise<boolean> {
+  const response = await fetchAPI(
+    "/messages",
+    {},
+    {
+      method: "POST",
+      body: JSON.stringify({ data: payload }),
+    },
+    source
+  );
+
+  return response !== null;
+}
+
+export async function getContactData(source?: StrapiSource): Promise<ContactData | null> {
   try {
     const response = await fetchAPI(
       "/contact",
@@ -70,7 +101,8 @@ export async function getContactData(): Promise<ContactData | null> {
           },
         },
       },
-      { next: { revalidate: 60 } }
+      { next: { revalidate: 60 } },
+      source
     );
 
     return response?.data || null;

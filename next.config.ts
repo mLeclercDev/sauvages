@@ -3,9 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   reactCompiler: true,
-  // Bypass complet du rendu normal (layout.tsx) pour /not-found : évite le
-  // bug Next.js où les CSS Modules du Header/Footer ne s'appliquent jamais
-  // sur les pages not-found (voir commentaire dans global-not-found.tsx).
+  // Bypass complet du rendu normal (layout.tsx) pour les URLs réellement
+  // inconnues : évite le bug Next.js où les CSS Modules du Header/Footer ne
+  // s'appliquent jamais sur les pages not-found imbriquées dans le layout
+  // (voir @/utils/notFound et le commentaire dans global-not-found.tsx).
   experimental: {
     globalNotFound: true,
   },

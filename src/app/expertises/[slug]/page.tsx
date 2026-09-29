@@ -3,7 +3,7 @@ import { strapiBlocksToPlainText } from "@/utils/strapiRichText";
 
 export const revalidate = 60;
 
-import { notFound } from "next/navigation";
+import { redirectToNotFound } from "@/utils/notFound";
 import Breadcrumb from "@/components/sections/Breadcrumb/Breadcrumb";
 import Intro from "@/components/sections/Intro/Intro";
 import ExpertiseDetailsSingle from "@/components/sections/Expertises/ExpertiseDetailsSingle";
@@ -86,7 +86,7 @@ export default async function ExpertisePage({ params }: PageProps) {
   const matchedEntry = await findExpertiseEntry(slug);
 
   if (!matchedEntry) {
-    notFound();
+    redirectToNotFound();
   }
 
   const attrs = matchedEntry.attributes || matchedEntry;

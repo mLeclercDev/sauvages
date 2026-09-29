@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { redirectToNotFound } from "@/utils/notFound";
 import { getContactData } from "@/services/contact";
 import Contact from "@/components/sections/Contact/Contact";
 
@@ -34,7 +34,7 @@ export default async function ContactFormSlugPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  if (!KNOWN_SLUGS.includes(slug)) notFound();
+  if (!KNOWN_SLUGS.includes(slug)) redirectToNotFound();
 
   const contactData = await getContactData();
 

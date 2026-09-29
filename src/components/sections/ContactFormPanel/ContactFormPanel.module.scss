@@ -339,11 +339,23 @@ textarea.inputField {
   margin-top: 20px;
 }
 
-.successMessage {
+.successState {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: $space-24 0;
+}
+
+.successTitle {
   font-family: $font-monument-wide;
-  font-size: 16px;
-  color: #28a745;
-  margin-top: 20px;
+  font-size: clamp(28px, 4vw, 40px);
+  margin-bottom: $space-5;
+}
+
+.successText {
+  font-family: $font-monument-normal;
+  font-size: 18px;
+  max-width: 480px;
 }
 
 .chips {

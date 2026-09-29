@@ -198,6 +198,9 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
         setSubmitStatus("error");
       } else {
         setSubmitStatus("success");
+        setFormValues({});
+        setSelectedChips([]);
+        setHoneypot("");
       }
     } catch {
       setSubmitStatus("error");
@@ -458,89 +461,113 @@ const ContactFormPanel: React.FC<ContactFormPanelProps> = ({ data }) => {
             onSubmit={handleSubmit}
             noValidate
           >
-            {/* Honeypot — invisible pour les humains, les bots le remplissent */}
-            <div style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">
-              <input
-                type="text"
-                name="website"
-                value={honeypot}
-                onChange={(e) => setHoneypot(e.target.value)}
-                tabIndex={-1}
-                autoComplete="off"
-              />
-            </div>
-
-            {currentStrapiForm?.Champs?.map((field, idx) =>
-              renderField(field, idx)
-            )}
-
-            <div className={styles.footerActions}>
-              <label
-                className={`${styles.checkboxRow} ${errors.acceptTerms ? styles.hasError : ""}`}
-              >
-                <input
-                  type="checkbox"
-                  checked={!!formValues.acceptTerms}
-                  onChange={(e) =>
-                    handleInputChange(
-                      "acceptTerms",
-                      e.target.checked ? "true" : ""
-                    )
-                  }
-                />
-                <span>
-                  J'ai lu et j'accepte les <a href="#">conditions</a> ainsi que
-                  la <a href="#">politique de confidentialité</a>.
-                </span>
-                {errors.acceptTerms && (
-                  <span className={styles.errorMessage}>
-                    {errors.acceptTerms}
-                  </span>
-                )}
-              </label>
-              <label className={styles.checkboxRow}>
-                <input type="checkbox" />
-                <span>
-                  J'accepte de recevoir des communications commerciales.
-                </span>
-              </label>
-
-              <div style={{ marginTop: "30px" }}>
-                <Button
-                  label={isSubmitting ? "ENVOI EN COURS..." : "ENVOYER"}
-                  type="submit"
-                  variant="outline"
-                  icon={
-                    !isSubmitting && (
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                      >
-                        <path
-                          d="M7.5 12.5H8.5M5.5 1.5H10.5C10.7652 1.5 11.0196 1.60536 11.2071 1.79289C11.3946 1.98043 11.5 2.23478 11.5 2.5V13.5C11.5 13.7652 11.3946 14.0196 11.2071 14.2071C11.0196 14.3946 10.7652 14.5 10.5 14.5H5.5C5.23478 14.5 4.98043 14.3946 4.79289 14.2071C4.60536 14.0196 4.5 13.7652 4.5 13.5V2.5C4.5 2.23478 4.60536 1.98043 4.79289 1.79289C4.98043 1.60536 5.23478 1.5 5.5 1.5Z"
-                          stroke="#F6F6F6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    )
-                  }
-                />
+            {submitStatus === "success" ? (
+              <div className={styles.successState}>
+                <h2 className={styles.successTitle}>Message envoyé !</h2>
+                <p className={styles.successText}>
+                  Merci, nous avons bien reçu votre message. Notre équipe vous
+                  recontactera très prochainement.
+                </p>
+                <div style={{ marginTop: "30px" }}>
+                  <Button
+                    label="FERMER"
+                    type="button"
+                    variant="outline"
+                    onClick={closePanel}
+                  />
+                </div>
               </div>
+            ) : (
+              <>
+                {/* Honeypot — invisible pour les humains, les bots le remplissent */}
+                <div style={{ position: "absolute", left: "-9999px", opacity: 0, pointerEvents: "none" }} aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
 
-              {submitStatus === "success" && (
-                <p className={styles.successMessage}>
-                  Votre message a été envoyé avec succès !
-                </p>
-              )}
-              {submitStatus === "error" && (
-                <p className={styles.errorMessageGlobal}>
-                  {submitError || "Une erreur est survenue lors de l'envoi. Veuillez réessayer."}
-                </p>
-              )}
-            </div>
+                {currentStrapiForm?.Champs?.map((field, idx) =>
+                  renderField(field, idx)
+                )}
+
+                <div className={styles.footerActions}>
+                  <label
+                    className={`${styles.checkboxRow} ${errors.acceptTerms ? styles.hasError : ""}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={!!formValues.acceptTerms}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "acceptTerms",
+                          e.target.checked ? "true" : ""
+                        )
+                      }
+                    />
+                    <span>
+                      J'ai lu et j'accepte les <a href="#">conditions</a> ainsi que
+                      la <a href="#">politique de confidentialité</a>.
+                    </span>
+                    {errors.acceptTerms && (
+                      <span className={styles.errorMessage}>
+                        {errors.acceptTerms}
+                      </span>
+                    )}
+                  </label>
+                  <label className={styles.checkboxRow}>
+                    <input
+                      type="checkbox"
+                      checked={!!formValues.acceptCommunications}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "acceptCommunications",
+                          e.target.checked ? "true" : ""
+                        )
+                      }
+                    />
+                    <span>
+                      J'accepte de recevoir des communications commerciales.
+                    </span>
+                  </label>
+
+                  <div style={{ marginTop: "30px" }}>
+                    <Button
+                      label={isSubmitting ? "ENVOI EN COURS..." : "ENVOYER"}
+                      type="submit"
+                      variant="outline"
+                      icon={
+                        !isSubmitting && (
+                          <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                          >
+                            <path
+                              d="M7.5 12.5H8.5M5.5 1.5H10.5C10.7652 1.5 11.0196 1.60536 11.2071 1.79289C11.3946 1.98043 11.5 2.23478 11.5 2.5V13.5C11.5 13.7652 11.3946 14.0196 11.2071 14.2071C11.0196 14.3946 10.7652 14.5 10.5 14.5H5.5C5.23478 14.5 4.98043 14.3946 4.79289 14.2071C4.60536 14.0196 4.5 13.7652 4.5 13.5V2.5C4.5 2.23478 4.60536 1.98043 4.79289 1.79289C4.98043 1.60536 5.23478 1.5 5.5 1.5Z"
+                              stroke="#F6F6F6"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )
+                      }
+                    />
+                  </div>
+
+                  {submitStatus === "error" && (
+                    <p className={styles.errorMessageGlobal}>
+                      {submitError || "Une erreur est survenue lors de l'envoi. Veuillez réessayer."}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
           </form>
         </div>
       </div>

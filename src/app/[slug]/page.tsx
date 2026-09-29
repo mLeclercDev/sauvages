@@ -1,6 +1,6 @@
 import { fetchAPI } from "@/utils/strapi";
 import { strapiBlocksToHtml, strapiBlocksToPlainText } from "@/utils/strapiRichText";
-import { notFound } from "next/navigation";
+import { redirectToNotFound } from "@/utils/notFound";
 import LegalPage from "@/components/sections/LegalPage/LegalPage";
 
 export const revalidate = 60;
@@ -40,7 +40,7 @@ export default async function LegalPageRoute({ params }: PageProps) {
   const page = await getLegalPage(slug);
 
   if (!page) {
-    notFound();
+    redirectToNotFound();
   }
 
   const attrs = page.attributes || page;
