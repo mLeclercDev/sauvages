@@ -42,22 +42,38 @@ const Expertises: React.FC<ExpertisesProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const itemBodyRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const plusRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const mobileOpenIndexRef = useRef<number | null>(null);
   const isMobileRef = useRef(false);
 
   const toggleMobileItem = useCallback((index: number) => {
     if (!isMobileRef.current) return;
     const bodies = itemBodyRefs.current;
+    const pluses = plusRefs.current;
     const current = mobileOpenIndexRef.current;
 
     if (current === index) {
-      if (bodies[index]) gsap.to(bodies[index], { height: 0, opacity: 0, duration: 0.4, ease: "power2.inOut" });
+      if (bodies[index]) {
+        gsap.to(bodies[index], { height: 0, duration: 0.55, ease: "power2.inOut" });
+        gsap.to(bodies[index], { opacity: 0, duration: 0.3, ease: "power1.in" });
+      }
+      if (pluses[index]) gsap.to(pluses[index], { rotate: 0, duration: 0.5, ease: "back.out(2.5)" });
       mobileOpenIndexRef.current = null;
     } else {
       if (current !== null && bodies[current]) {
-        gsap.to(bodies[current], { height: 0, opacity: 0, duration: 0.4, ease: "power2.inOut" });
+        gsap.to(bodies[current], { height: 0, duration: 0.55, ease: "power2.inOut" });
+        gsap.to(bodies[current], { opacity: 0, duration: 0.3, ease: "power1.in" });
+        if (pluses[current]) gsap.to(pluses[current], { rotate: 0, duration: 0.5, ease: "back.out(2.5)" });
       }
-      if (bodies[index]) gsap.to(bodies[index], { height: "auto", opacity: 1, duration: 0.4, ease: "power2.inOut" });
+      if (bodies[index]) {
+        gsap.to(bodies[index], { height: "auto", duration: 0.65, ease: "power2.inOut" });
+        gsap.fromTo(
+          bodies[index],
+          { opacity: 0 },
+          { opacity: 1, duration: 0.45, delay: 0.15, ease: "power2.out" }
+        );
+      }
+      if (pluses[index]) gsap.to(pluses[index], { rotate: 45, duration: 0.5, ease: "back.out(2.5)" });
       mobileOpenIndexRef.current = index;
     }
   }, []);
@@ -204,6 +220,15 @@ const Expertises: React.FC<ExpertisesProps> = ({
                   <span className={styles.itemIndex}>{index + 1}</span>
                   <h3 className={styles.itemTitle}>{item.title}</h3>
                 </div>
+                <span
+                  className={styles.itemToggle}
+                  ref={(el) => {
+                    plusRefs.current[index] = el;
+                  }}
+                  aria-hidden="true"
+                >
+                  +
+                </span>
               </div>
 
               <div

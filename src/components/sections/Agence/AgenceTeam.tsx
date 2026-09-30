@@ -24,10 +24,12 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
   const sectionRef = useRef<HTMLElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const imageInnerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const bodyRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const images = imageRefs.current.filter(Boolean) as HTMLDivElement[];
+    const innerImages = imageInnerRefs.current.filter(Boolean) as HTMLDivElement[];
     const bodies = bodyRefs.current.filter(Boolean) as HTMLDivElement[];
 
     if (!sectionRef.current || !listRef.current || images.length < 2 || bodies.length < 2) {
@@ -40,9 +42,11 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 1024px)", () => {
-        gsap.set(images[0], { scale: 1, zIndex: 1 });
+        gsap.set(images[0], { clipPath: "inset(0% 0 0 0)", zIndex: 1 });
+        gsap.set(innerImages[0], { scale: 1 });
         for (let i = 1; i < images.length; i++) {
-          gsap.set(images[i], { scale: 0, zIndex: i + 1 });
+          gsap.set(images[i], { clipPath: "inset(100% 0 0 0)", zIndex: i + 1 });
+          gsap.set(innerImages[i], { scale: 1.15 });
         }
 
         gsap.set(bodies[0], { height: "auto", opacity: 1 });
@@ -58,9 +62,13 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
           // Corps ferme i
           tl.to(bodies[i], { height: 0, opacity: 0, duration: 1, ease: "power1.inOut" }, startTime + 0.5);
 
-          // Corps ouvre i+1 + image i+1 scale en même temps — les images ne redescendent jamais en avançant
+          // Corps ouvre i+1 + rideau clip-path de l'image i+1 en même temps — les images ne redescendent jamais en avançant
           tl.to(bodies[i + 1], { height: "auto", opacity: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
-          tl.to(images[i + 1], { scale: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
+          tl.to(images[i + 1], { clipPath: "inset(0% 0 0 0)", duration: 1, ease: "power1.inOut" }, startTime + 0.7);
+
+          // Zoom : l'image sortante (dessous) continue de zoomer légèrement, l'image arrivante dézoome vers son échelle normale
+          tl.to(innerImages[i], { scale: 1.08, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
+          tl.to(innerImages[i + 1], { scale: 1, duration: 1, ease: "power1.inOut" }, startTime + 0.7);
         }
 
         const st = ScrollTrigger.create({
@@ -159,15 +167,22 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
                 }}
                 className={styles.imageItem}
               >
-                {getStrapiMedia(item?.Image, undefined) && (
-                  <Image
-                    src={getStrapiMedia(item?.Image, undefined)!}
-                    alt={item?.Image?.alternativeText || item?.Nom || ""}
-                    fill
-                    className="fit-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                )}
+                <div
+                  ref={(el) => {
+                    imageInnerRefs.current[index] = el;
+                  }}
+                  className={styles.imageInner}
+                >
+                  {getStrapiMedia(item?.Image, undefined) && (
+                    <Image
+                      src={getStrapiMedia(item?.Image, undefined)!}
+                      alt={item?.Image?.alternativeText || item?.Nom || ""}
+                      fill
+                      className="fit-cover"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                  )}
+                </div>
               </div>
             ))}
           </div>
