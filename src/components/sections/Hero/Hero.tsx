@@ -11,12 +11,16 @@ import VimeoEmbed from "@/components/ui/VimeoEmbed/VimeoEmbed";
 
 const DEFAULT_TITLE =
   "Agence créative, unie pour créer de l’émotion depuis 20ans. De la stratégie à la création.";
-// Fallback used only while `data.VideoVimeo` hasn't been set in Strapi yet.
+// Fallback si ni VideoVimeo ni Video ne sont renseignés dans Strapi.
 const DEFAULT_VIDEO_SRC =
   "https://api.agence-sauvages.com/uploads/SAUVAGES_REEL_SITE_c3eb582103.mp4";
 
 interface HeroProps {
-  data?: any;
+  data?: {
+    Titre?: string;
+    Video?: any;
+    VideoVimeo?: string | null;
+  };
 }
 
 export default function Hero({ data }: HeroProps) {
@@ -237,8 +241,7 @@ export default function Hero({ data }: HeroProps) {
   const mediaAttrs = data?.Video?.data?.attributes || data?.Video?.attributes || data?.Video;
   const mediaUrl = getStrapiMedia(data?.Video, undefined) || DEFAULT_VIDEO_SRC;
   const isImageMedia = !!mediaAttrs?.mime?.startsWith("image");
-  // TEMP TEST — remove after Vimeo review, forces the hero to render the test video.
-  const vimeo = parseVimeoField(data?.VideoVimeo) || parseVimeoField("1230199873");
+  const vimeo = parseVimeoField(data?.VideoVimeo);
 
   const inlineStyles = {
     "--progress": scrollData.progress,
@@ -307,7 +310,7 @@ export default function Hero({ data }: HeroProps) {
                   />
                 ) : (
                   <video loop muted autoPlay playsInline src={mediaUrl}>
-                    Tu navigateur no soporta la reproducción de vídeo.
+                    Votre navigateur ne supporte pas la lecture de cette vidéo.
                   </video>
                 )}
               </div>
