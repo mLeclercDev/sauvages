@@ -95,6 +95,13 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         thumbnail: { populate: "*" },
         thumbnailFallback: { populate: "*" },
         expertise: { populate: "*" },
+        autreProjet: {
+          populate: {
+            thumbnail: true,
+            thumbnailFallback: true,
+            client: { populate: { Favicon: true } },
+          },
+        },
         sections: { populate: { image: true, medias: { populate: { media: true } } } },
         Galerie: { populate: { Images: true, Medias: { populate: { media: true } } } },
       },
@@ -124,6 +131,8 @@ export default async function ProjetDetailPage({ params }: PageProps) {
   }
 
   const projectAttrs = project.attributes || project;
+  const rawSelected = projectAttrs.autreProjet?.data || projectAttrs.autreProjet || [];
+  const selectedProjects = Array.isArray(rawSelected) ? rawSelected : [rawSelected];
 
   return (
     <main className={styles.page}>
@@ -135,7 +144,12 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         ]}
       />
       <ProjectDetail project={project} otherProjects={otherProjects} />
-      <RecentProjects limit={4} title="Plus de projets" />
+      <RecentProjects
+        limit={4}
+        title="Plus de projets"
+        selectedProjects={selectedProjects}
+        excludeSlug={slug}
+      />
     </main>
   );
 }

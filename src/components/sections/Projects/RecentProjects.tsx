@@ -12,6 +12,10 @@ interface RecentProjectsProps {
   buttonLabel?: string;
   buttonHref?: string;
   buttonBlank?: boolean;
+  /** Projets choisis dans le CMS, affichés en premier */
+  selectedProjects?: any[];
+  /** Slug du projet courant, jamais proposé */
+  excludeSlug?: string;
 }
 
 const arrowIcon = (
@@ -38,6 +42,8 @@ export default async function RecentProjects({
   buttonLabel = "retourner à la liste de projets",
   buttonHref = "/work",
   buttonBlank = false,
+  selectedProjects = [],
+  excludeSlug,
 }: RecentProjectsProps) {
   let projects = [];
 
@@ -53,9 +59,23 @@ export default async function RecentProjects({
       };
     }
 
+    const selected = selectedProjects
+      .filter((p: any) => p && (p.attributes || p).slug !== excludeSlug)
+      .slice(0, limit);
+
+    if (excludeSlug) {
+      filters = { ...filters, slug: { $ne: excludeSlug } };
+    }
+    if (selected.length > 0) {
+      filters = {
+        ...filters,
+        documentId: { $notIn: selected.map((p: any) => p.documentId).filter(Boolean) },
+      };
+    }
+
     const projectsData = await fetchAPI("/projets", {
       sort: ["rank:desc"],
-      pagination: { limit },
+      pagination: { limit: limit - selected.length },
       populate: {
         thumbnail: true,
         thumbnailFallback: true,
@@ -65,7 +85,7 @@ export default async function RecentProjects({
       filters,
     });
 
-    projects = projectsData?.data || [];
+    projects = [...selected, ...(projectsData?.data || [])].slice(0, limit);
   } catch (error) {
     console.error("Failed to fetch recent projects:", error);
   }
