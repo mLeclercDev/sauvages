@@ -135,8 +135,12 @@
 
 .itemMeta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
+
+  @include mq-max("md") {
+    align-items: center;
+  }
 }
 
 .itemIndex {

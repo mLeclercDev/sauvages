@@ -220,15 +220,17 @@ const Expertises: React.FC<ExpertisesProps> = ({
                   <span className={styles.itemIndex}>{index + 1}</span>
                   <h3 className={styles.itemTitle}>{item.title}</h3>
                 </div>
-                <span
-                  className={styles.itemToggle}
-                  ref={(el) => {
-                    plusRefs.current[index] = el;
-                  }}
-                  aria-hidden="true"
-                >
-                  +
-                </span>
+                {isScrollAnimated && (
+                  <span
+                    className={styles.itemToggle}
+                    ref={(el) => {
+                      plusRefs.current[index] = el;
+                    }}
+                    aria-hidden="true"
+                  >
+                    +
+                  </span>
+                )}
               </div>
 
               <div
