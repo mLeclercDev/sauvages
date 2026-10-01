@@ -127,7 +127,7 @@
   }
 
   @include mq-max("md") {
-    width: auto;
+    width: auto !important;
     flex-shrink: 1;
   }
 }
@@ -179,7 +179,7 @@
   flex-shrink: 0;
   user-select: none;
 
-  @include mq-max("lg") {
+  @include mq-max("md") {
     display: block;
   }
 }
