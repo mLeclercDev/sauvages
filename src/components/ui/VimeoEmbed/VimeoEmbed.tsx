@@ -115,8 +115,24 @@ export default function VimeoEmbed({
     let cancelled = false;
     let player: import("@vimeo/player").default | null = null;
 
+    // L'événement "play" peut partir avant que l'écouteur soit branché :
+    // on interroge donc l'état réel du lecteur plutôt que de s'y fier.
     const timer = setTimeout(() => {
-      if (!cancelled && !isPlaying) setAutoplayFailed(true);
+      if (cancelled || isPlaying) return;
+      if (!player) {
+        setAutoplayFailed(true);
+        return;
+      }
+      player
+        .getPaused()
+        .then((paused) => {
+          if (cancelled) return;
+          if (paused) setAutoplayFailed(true);
+          else setIsPlaying(true);
+        })
+        .catch(() => {
+          if (!cancelled) setAutoplayFailed(true);
+        });
     }, 1800);
 
     import("@vimeo/player").then(({ default: Player }) => {

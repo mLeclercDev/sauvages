@@ -84,6 +84,14 @@
           height: 100%;
           overflow: hidden;
 
+          // L'override mobile plus haut perd face à cette règle (même
+          // spécificité, déclarée après) : sans ça, le conteneur s'écrase à
+          // 0px dès que le média n'a pas de taille propre (iframe Vimeo).
+          @include mq-max("lg") {
+            height: auto;
+            aspect-ratio: 16 / 9;
+          }
+
           video {
             width: 100%;
             height: 100%;
