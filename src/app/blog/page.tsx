@@ -26,20 +26,22 @@ export default async function BlogPage() {
     }, {});
     
     // Normalisation des articles pour le composant BlogListing
-    articles = (articlesData?.data || []).map((article: any) => {
-      const attrs = article.attributes || article;
-      return {
-        ...article,
-        attributes: {
-          ...attrs,
-          title: attrs.Titre || attrs.title,
-          image: attrs.Image || attrs.image,
-          slug: attrs.slug || article.documentId || article.id.toString(),
-          resume: attrs.Resume,
-          type: attrs.Type?.Nom,
-        }
-      };
-    });
+    articles = (articlesData?.data || [])
+      .filter((article: any) => (article.attributes || article).Slug)
+      .map((article: any) => {
+        const attrs = article.attributes || article;
+        return {
+          ...article,
+          attributes: {
+            ...attrs,
+            title: attrs.Titre || attrs.title,
+            image: attrs.Image || attrs.image,
+            slug: attrs.Slug,
+            resume: attrs.Resume,
+            type: attrs.Type?.Nom,
+          }
+        };
+      });
 
     // 2. Récupération des infos générales du blog
     const blogResponse = await fetchAPI("/blog", { populate: "*" }, {});

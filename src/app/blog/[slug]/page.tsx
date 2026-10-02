@@ -15,7 +15,7 @@ interface PageProps {
 async function getArticle(slug: string) {
   const response = await fetchAPI(
     "/articles",
-    { filters: { documentId: slug }, populate: "*" },
+    { filters: { Slug: { $eq: slug } }, populate: "*" },
     {}
   );
   return response?.data?.[0] || null;
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // Récupération de l'article par son documentId (puisqu'on l'utilise comme slug dans le listing)
+  // Récupération de l'article par son slug
   const articleWrap = await getArticle(slug);
 
   if (!articleWrap) {

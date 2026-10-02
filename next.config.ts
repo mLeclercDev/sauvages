@@ -41,6 +41,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/expertises/strategie', destination: '/expertises/conseil', statusCode: 301 },
+      { source: '/expertises/creation', destination: '/expertises/design', statusCode: 301 },
+      { source: '/projets/la_francaise', destination: '/work/la-francaise-credit-mutuel-alliance-federale', statusCode: 301 },
+      { source: '/projets/la-beaute-de-ton-job-commence-ici', destination: '/work/archives', statusCode: 301 },
+      { source: '/projets', destination: '/work', statusCode: 301 },
+      { source: '/projets/:slug', destination: '/work/:slug', statusCode: 301 },
+      { source: '/les-vus-pas-pris', destination: '/work/vus-pas-pris', statusCode: 301 },
+      { source: '/les-vus-pas-pris/:slug', destination: '/work/vus-pas-pris', statusCode: 301 },
+      { source: '/blog/l-essor-du-marche-de-la-seconde-main-vers-un-marche-hybride', destination: '/blog', statusCode: 301 },
+      { source: '/work/colombia-ici-on-marche-en-coeur', destination: '/work/la-colombia-ici-on-marche-en-coeur', statusCode: 301 },
+    ];
+  },
 };
 
 export default nextConfig;

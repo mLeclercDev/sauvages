@@ -46,11 +46,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       { fields: ["slug", "updatedAt"], pagination: { limit: 200 } },
       { next: { revalidate: 3600 } }
     ).catch(() => null),
-    // Pas de champ `slug` sur ce content-type Strapi : les URLs de blog sont
-    // construites à partir du `documentId` (cf. src/app/blog/page.tsx).
     fetchAPI(
       "/articles",
-      { fields: ["updatedAt"], pagination: { limit: 200 }, status: "published" },
+      { fields: ["Slug", "updatedAt"], pagination: { limit: 200 }, status: "published" },
       { next: { revalidate: 3600 } }
     ).catch(() => null),
     fetchAPI(
@@ -84,7 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articleRoutes: MetadataRoute.Sitemap = (articlesRes?.data || [])
     .map((entry: Entry) => {
       const attrs = entry.attributes || entry;
-      const slug = attrs.slug || entry.documentId;
+      const slug = attrs.Slug;
       if (!slug) return null;
       return {
         url: `${SITE_URL}/blog/${slug}`,

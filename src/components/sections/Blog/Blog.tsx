@@ -27,20 +27,22 @@ const Blog: React.FC<BlogProps> = async ({ data, pt = "lg", pb = "lg" }) => {
       {}
     );
 
-    articles = (articlesData?.data || []).map((article: any) => {
-      const attrs = article.attributes || article;
-      return {
-        ...article,
-        attributes: {
-          ...attrs,
-          title: attrs.Titre || attrs.title,
-          image: attrs.Image || attrs.image,
-          slug: attrs.slug || article.documentId || article.id?.toString(),
-          resume: attrs.Resume,
-          type: attrs.Type?.Nom,
-        },
-      };
-    });
+    articles = (articlesData?.data || [])
+      .filter((article: any) => (article.attributes || article).Slug)
+      .map((article: any) => {
+        const attrs = article.attributes || article;
+        return {
+          ...article,
+          attributes: {
+            ...attrs,
+            title: attrs.Titre || attrs.title,
+            image: attrs.Image || attrs.image,
+            slug: attrs.Slug,
+            resume: attrs.Resume,
+            type: attrs.Type?.Nom,
+          },
+        };
+      });
   } catch (error) {
     console.error("Failed to fetch blog articles:", error);
   }
