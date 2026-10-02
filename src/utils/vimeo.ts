@@ -26,3 +26,27 @@ export function parseVimeoField(raw?: string | null): VimeoField | null {
 
   return null;
 }
+
+/**
+ * Récupère la miniature générée par Vimeo via leur API oEmbed publique
+ * (pas de clé requise). Sert de fallback automatique quand aucune image
+ * n'est fournie manuellement dans Strapi.
+ */
+export async function getVimeoThumbnail(
+  vimeoId: string,
+  vimeoHash?: string
+): Promise<string | null> {
+  try {
+    const videoUrl = vimeoHash
+      ? `https://vimeo.com/${vimeoId}/${vimeoHash}`
+      : `https://vimeo.com/${vimeoId}`;
+    const res = await fetch(
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(videoUrl)}`
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.thumbnail_url || null;
+  } catch {
+    return null;
+  }
+}

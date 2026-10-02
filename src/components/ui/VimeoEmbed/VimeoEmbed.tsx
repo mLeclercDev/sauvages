@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useVimeoCoverSize } from "@/hooks/useVimeoCoverSize";
+import { getVimeoThumbnail } from "@/utils/vimeo";
 import styles from "./VimeoEmbed.module.scss";
 
 interface VimeoEmbedProps {
@@ -71,6 +72,10 @@ export default function VimeoEmbed({
   // is known — otherwise the letterboxed iframe flashes before it snaps to size.
   const visuallyReady = mode === "background" ? isReady && coverSize !== null : isReady;
 
+  // Miniature Vimeo auto-récupérée (API oEmbed), utilisée seulement si aucune
+  // image n'est fournie manuellement via `fallbackImageUrl` (ex: champ Strapi).
+  const [autoThumbnail, setAutoThumbnail] = useState<string | null>(null);
+
   useEffect(() => {
     if (priority || !pauseWhenOffscreen) return;
     const el = wrapperRef.current;
@@ -87,13 +92,72 @@ export default function VimeoEmbed({
     return () => observer.disconnect();
   }, [priority, pauseWhenOffscreen]);
 
+  useEffect(() => {
+    if (fallbackImageUrl) return;
+    let cancelled = false;
+    getVimeoThumbnail(vimeoId, vimeoHash).then((url) => {
+      if (!cancelled) setAutoThumbnail(url);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [vimeoId, vimeoHash, fallbackImageUrl]);
+  const effectiveFallbackUrl = fallbackImageUrl || autoThumbnail;
+
+  // Certains appareils (mode économie d'énergie/données, bloqueurs de
+  // tracking) empêchent l'autoplay même muet. On détecte l'échec et on
+  // affiche un bouton play visible plutôt qu'un fond vide/figé.
+  const [autoplayFailed, setAutoplayFailed] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    if (mode !== "background" || !isReady || !iframeRef.current) return;
+    let cancelled = false;
+    let player: import("@vimeo/player").default | null = null;
+
+    const timer = setTimeout(() => {
+      if (!cancelled && !isPlaying) setAutoplayFailed(true);
+    }, 1800);
+
+    import("@vimeo/player").then(({ default: Player }) => {
+      if (cancelled || !iframeRef.current) return;
+      player = new Player(iframeRef.current);
+      player.on("play", () => {
+        if (cancelled) return;
+        setIsPlaying(true);
+        setAutoplayFailed(false);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      player?.off("play");
+    };
+  }, [mode, isReady, isPlaying]);
+
+  const handleManualPlay = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!iframeRef.current) return;
+    const { default: Player } = await import("@vimeo/player");
+    const player = new Player(iframeRef.current);
+    try {
+      await player.play();
+      setIsPlaying(true);
+      setAutoplayFailed(false);
+    } catch {
+      // Toujours bloqué malgré le geste utilisateur — on laisse le bouton visible.
+    }
+  };
+
   const src = isInView ? buildVimeoUrl(vimeoId, vimeoHash, mode) : undefined;
 
   return (
     <div ref={wrapperRef} className={`${styles.wrapper} ${className || ""}`}>
-      {fallbackImageUrl && (
+      {effectiveFallbackUrl && (
         <Image
-          src={fallbackImageUrl}
+          src={effectiveFallbackUrl}
           alt={alt}
           fill
           sizes="100vw"
@@ -129,6 +193,19 @@ export default function VimeoEmbed({
             onReady?.();
           }}
         />
+      )}
+      {mode === "background" && autoplayFailed && !isPlaying && (
+        <button
+          type="button"
+          className={styles.playButton}
+          onClick={handleManualPlay}
+          aria-label="Lancer la vidéo"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.5)" />
+            <path d="M9.5 7.5v9l7-4.5-7-4.5z" fill="#fff" />
+          </svg>
+        </button>
       )}
     </div>
   );
