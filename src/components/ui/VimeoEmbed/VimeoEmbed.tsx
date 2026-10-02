@@ -152,6 +152,31 @@ export default function VimeoEmbed({
     };
   }, [mode, isReady, isPlaying]);
 
+  // Autoplay bloqué (ex : mode économie d'énergie) : on retente au premier
+  // toucher n'importe où sur la page, pas seulement sur le bouton play.
+  useEffect(() => {
+    if (mode !== "background" || !autoplayFailed || isPlaying) return;
+    const onInteraction = () => {
+      if (!iframeRef.current) return;
+      import("@vimeo/player").then(({ default: Player }) => {
+        if (!iframeRef.current) return;
+        new Player(iframeRef.current)
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            setAutoplayFailed(false);
+          })
+          .catch(() => {});
+      });
+    };
+    document.addEventListener("touchend", onInteraction, { passive: true });
+    document.addEventListener("click", onInteraction);
+    return () => {
+      document.removeEventListener("touchend", onInteraction);
+      document.removeEventListener("click", onInteraction);
+    };
+  }, [mode, autoplayFailed, isPlaying]);
+
   const handleManualPlay = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
