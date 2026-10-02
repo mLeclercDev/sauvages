@@ -68,9 +68,6 @@ export default function VimeoEmbed({
   // Vimeo's background mode letterboxes instead of cropping when the iframe's
   // box doesn't match the video's own ratio — this computes a cover-fit size.
   const coverSize = useVimeoCoverSize(wrapperRef, iframeRef, mode === "background" && isReady);
-  // In background mode, stay hidden behind the fallback until the cover size
-  // is known — otherwise the letterboxed iframe flashes before it snaps to size.
-  const visuallyReady = mode === "background" ? isReady && coverSize !== null : isReady;
 
   // Miniature Vimeo auto-récupérée (API oEmbed), utilisée seulement si aucune
   // image n'est fournie manuellement via `fallbackImageUrl` (ex: champ Strapi).
@@ -84,7 +81,10 @@ export default function VimeoEmbed({
     const observer = new IntersectionObserver(
       ([entry]) => {
         setIsInView(entry.isIntersecting);
-        if (!entry.isIntersecting) setIsReady(false);
+        if (!entry.isIntersecting) {
+          setIsReady(false);
+          setIsPlaying(false);
+        }
       },
       { rootMargin: "200px" }
     );
@@ -109,6 +109,12 @@ export default function VimeoEmbed({
   // affiche un bouton play visible plutôt qu'un fond vide/figé.
   const [autoplayFailed, setAutoplayFailed] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // En mode fond, on reste derrière l'image d'attente tant que la vidéo ne
+  // joue pas réellement : l'iframe chargée affiche d'abord un cadre vide,
+  // d'où un flash. La taille de recadrage doit aussi être connue.
+  const visuallyReady =
+    mode === "background" ? isReady && coverSize !== null && isPlaying : isReady;
 
   useEffect(() => {
     if (mode !== "background" || !isReady || !iframeRef.current) return;
