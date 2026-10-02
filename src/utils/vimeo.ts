@@ -27,6 +27,25 @@ export function parseVimeoField(raw?: string | null): VimeoField | null {
   return null;
 }
 
+export interface VimeoFileLink {
+  id: string;
+  src: string;
+}
+
+/**
+ * Lien permanent "Video file links → Play the video" copié depuis Vimeo
+ * (player.vimeo.com/progressive_redirect/playback/<id>/…). Lu directement
+ * dans une <video> native, sans iframe ni token.
+ */
+export function parseVimeoFileLink(raw?: string | null): VimeoFileLink | null {
+  const trimmed = raw?.trim();
+  if (!trimmed) return null;
+  const match = trimmed.match(
+    /^https:\/\/player\.vimeo\.com\/progressive_redirect\/playback\/(\d+)\//
+  );
+  return match ? { id: match[1], src: trimmed } : null;
+}
+
 /**
  * Récupère la miniature générée par Vimeo via leur API oEmbed publique
  * (pas de clé requise). Sert de fallback automatique quand aucune image

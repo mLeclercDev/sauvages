@@ -6,9 +6,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { getStrapiMedia } from "@/utils/strapi";
-import { parseVimeoField } from "@/utils/vimeo";
+import { parseVimeoField, parseVimeoFileLink } from "@/utils/vimeo";
 import { renderStrapiBlocks } from "@/utils/strapiRichText";
 import VimeoEmbed from "@/components/ui/VimeoEmbed/VimeoEmbed";
+import VimeoFileVideo from "@/components/ui/VimeoFileVideo/VimeoFileVideo";
 import styles from "./ProjectDetail.module.scss";
 
 interface MediaItem {
@@ -230,13 +231,22 @@ const ProjectDetail: React.FC<ProjectDetailProps> = ({ project }) => {
   const renderMediaItem = (item: MediaItem, key: number, alt: string, itemClass: string) => {
     const url = getStrapiMedia(item.media);
     // vimeoUrl est prioritaire ; `media` sert de poster pendant le chargement de l'embed.
-    const vimeo = parseVimeoField(item.vimeoUrl);
-    if (!vimeo && !url) return null;
+    const vimeoFile = parseVimeoFileLink(item.vimeoUrl);
+    const vimeo = vimeoFile ? null : parseVimeoField(item.vimeoUrl);
+    if (!vimeoFile && !vimeo && !url) return null;
     const mime: string = item.media?.mime || item.media?.attributes?.mime || "";
     const isVideo = mime.startsWith("video/") || /\.(mp4|webm|ogg|mov)$/i.test(url || "");
     return (
       <div key={key} className={`${styles.galleryItem} ${itemClass}`}>
-        {vimeo ? (
+        {vimeoFile ? (
+          <VimeoFileVideo
+            src={vimeoFile.src}
+            vimeoId={vimeoFile.id}
+            posterUrl={url && !isVideo ? url : undefined}
+            className={styles.image}
+            onReady={() => ScrollTrigger.refresh()}
+          />
+        ) : vimeo ? (
           <VimeoEmbed
             vimeoId={vimeo.id}
             vimeoHash={vimeo.hash}
