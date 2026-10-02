@@ -45,7 +45,12 @@ export async function getVimeoThumbnail(
     );
     if (!res.ok) return null;
     const data = await res.json();
-    return data?.thumbnail_url || null;
+    const url: string | undefined = data?.thumbnail_url;
+    if (!url) return null;
+    // oEmbed renvoie du 295x166 par défaut. "-d_1920" (largeur seule) donne
+    // la meilleure qualité en gardant le ratio d'origine (verticales incluses),
+    // next/image se charge ensuite de redimensionner à la taille affichée.
+    return url.replace(/-d_\d+(x\d+)?/, "-d_1920");
   } catch {
     return null;
   }
