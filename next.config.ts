@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
   images: {
+    // Tailles par défaut de Next.js, avec 3840 remplacé par 2560 : suffisant
+    // pour un MacBook Retina, nettement plus léger sur desktop.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 2560],
     remotePatterns: [
       {
         protocol: "https",
