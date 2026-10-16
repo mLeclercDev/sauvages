@@ -29,8 +29,10 @@
     gap: 20px;
   }
 
+  // Colonne de droite en auto : en 1fr, les noms longs + le secteur
+  // débordaient du conteneur (secteur coupé vers 1440px).
   @include mq-max("2xl") {
-    grid-template-columns: 1fr 160px 1fr;
+    grid-template-columns: 1fr 160px auto;
     gap: 48px;
   }
 
