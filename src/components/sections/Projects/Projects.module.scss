@@ -66,6 +66,9 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
+    // Sans ça, une petite carte s'étire à la hauteur de la grande : sa zone
+    // cliquable (et le curseur "Voir projet") déborde sur le vide en dessous.
+    align-items: start;
   }
 }
 
