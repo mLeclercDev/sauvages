@@ -38,7 +38,7 @@ async function findExpertiseEntry(slug: string) {
             "homepage.intro": { populate: { Image: true, Bouton: true } },
             "global.titre-texte": { populate: { Titre: true, Image: true } },
             "global.texte-image": { populate: { Titre: true, Image: true, Options: true } },
-            "global.text-reveal": { fields: ["Texte", "Label"] },
+            "global.text-reveal": { fields: ["Texte", "Label", "StyleLabel"] },
             "global.full-width-image": { populate: { Image: true } },
             "global.projets-listing": { populate: { Titre: true, Bouton: { populate: "*" } } },
           },
