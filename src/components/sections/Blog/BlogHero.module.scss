@@ -55,4 +55,12 @@
       margin-bottom: $space-8;
     }
   }
+
+  // Mobile : titre et description ferrés à gauche
+  @include mq-max("md") {
+    .title,
+    .description {
+      text-align: left;
+    }
+  }
 }

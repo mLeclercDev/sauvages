@@ -23,6 +23,12 @@ const SLUG_TO_SECTION: Record<string, Section> = {
   archives: "archives",
 };
 
+/** Fil d'Ariane des sous-sections de /work, selon le Statut Strapi du projet. */
+const STATUT_TO_CRUMB: Record<string, { label: string; href: string }> = {
+  vus_pas_pris: { label: "Vus pas pris", href: "/work/vus-pas-pris" },
+  archive: { label: "Archives", href: "/work/archives" },
+};
+
 /** Le champ description Strapi est soit une chaîne markdown, soit des blocs richtext. */
 const descriptionToPlainText = (content: unknown): string => {
   if (typeof content === "string") {
@@ -77,6 +83,13 @@ export default async function ProjetDetailPage({ params }: PageProps) {
     const { projects, titreTexteData, texteImageData, pageTitle } = await getProjectsPageData();
     return (
       <main>
+        <Breadcrumb
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Work", href: "/work" },
+            { label: filterSection === "archives" ? "Archives" : "Vus pas pris" },
+          ]}
+        />
         <TitreTexte data={titreTexteData} />
         <TexteImage data={texteImageData} />
         <ProjetsPageContent projects={projects} title={pageTitle} initialSection={filterSection} />
@@ -133,6 +146,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
   const projectAttrs = project.attributes || project;
   const rawSelected = projectAttrs.autreProjet?.data || projectAttrs.autreProjet || [];
   const selectedProjects = Array.isArray(rawSelected) ? rawSelected : [rawSelected];
+  const sectionCrumb = STATUT_TO_CRUMB[(projectAttrs.Statut || "").toLowerCase()];
 
   return (
     <main className={styles.page}>
@@ -140,6 +154,7 @@ export default async function ProjetDetailPage({ params }: PageProps) {
         items={[
           { label: "Home", href: "/" },
           { label: "Work", href: "/work" },
+          ...(sectionCrumb ? [sectionCrumb] : []),
           { label: projectAttrs.title },
         ]}
       />

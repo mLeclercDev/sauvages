@@ -18,12 +18,28 @@
     min-height: auto;
     gap: $space-4;
   }
+
+  // Mobile : padding bas de pb-xxl (80px) au lieu de pb-xl. Classe doublée
+  // pour passer devant l'utilitaire global .pb-xl.
+  &.agenceCta {
+    @include mq-max("md") {
+      padding-bottom: 80px;
+    }
+  }
 }
 
 .arrowIcon {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  // Mobile : même taille que les icônes du texte manifeste
+  @include mq-max("md") {
+    svg {
+      width: 21px;
+      height: auto;
+    }
+  }
 }
 
 .heading {

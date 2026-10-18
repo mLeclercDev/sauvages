@@ -148,6 +148,10 @@
   column-gap: 40px;
   width: 100%;
 
+  @include mq("lg") {
+    align-items: center;
+  }
+
   // Colonne 5 plus étroite que l'ancienne mise en page : on récupère
   // la marge sur l'écart nom / secteur.
   @include mq("2xl") {
@@ -177,6 +181,12 @@
 
   .active & {
     color: $color-noir-svgs;
+  }
+
+  // En 5 colonnes, la colonne des noms est plus étroite : à 1.8vw, les noms
+  // longs poussaient le secteur hors de l'écran (vers 1536-1700px).
+  @include mq("2xl") {
+    font-size: clamp(20px, 1.5vw, 30px);
   }
 
   @include mq-max("lg") {

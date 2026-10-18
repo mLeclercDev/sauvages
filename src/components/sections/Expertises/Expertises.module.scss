@@ -10,6 +10,7 @@
   .isAnimatedBlock {
     .itemTitle {
       font-size: clamp(20px,3vw,26px);
+          transform: translateY(2px);
     }
   }
 }
@@ -172,6 +173,16 @@
   line-height: 1;
   margin: 0;
   font-weight: 400;
+  transform: translateY(-4px);
+  @include mq-max("2xl") {
+
+    }
+  @include mq-max("lg") {
+    transform: translateY(4px);
+  }
+  @include mq-max("md") {
+    transform: none;
+  }
 }
 
 .itemToggle {

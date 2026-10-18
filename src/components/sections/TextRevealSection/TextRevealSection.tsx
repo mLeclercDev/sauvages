@@ -30,6 +30,8 @@ const TextRevealSection: React.FC<TextRevealSectionProps> = ({
         .join(" ")
     : rawTexte || "";
   const label = data ? data.Label : labelProp;
+  // Choix Strapi "StyleLabel" : le label peut prendre le style d'un h2
+  const labelClassName = `${styles.label}${data?.StyleLabel === "h2" ? " h2" : ""}`;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -88,7 +90,7 @@ const TextRevealSection: React.FC<TextRevealSectionProps> = ({
   return (
     <section className={`${styles.textReveal} pt-${pt} pb-${pb}`} ref={containerRef}>
       <div className="container">
-        {label && showLabel && <span className={styles.label}>{label}</span>}
+        {label && showLabel && <span className={labelClassName}>{label}</span>}
         <h2 className={styles.title} ref={titleRef}>
           {renderWords(text)}
         </h2>
