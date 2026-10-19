@@ -123,7 +123,13 @@ const AgenceTeam: React.FC<AgenceTeamProps> = ({ pt = "lg", pb = "lg", data }) =
             const offset = listRect.top - sectionRect.top;
             const headerH =
               document.querySelector("header")?.getBoundingClientRect().height ?? 60;
-            return `top+=${offset} top+=${headerH}`;
+            // La liste se fixe assez bas pour que le titre au-dessus soit
+            // entièrement sorti de l'écran : aucune ligne coupée en haut.
+            const titleBottom =
+              listRef.current!.previousElementSibling?.getBoundingClientRect().bottom ??
+              listRect.top;
+            const gapAbove = listRect.top - titleBottom;
+            return `top+=${offset} top+=${Math.max(headerH, gapAbove)}`;
           },
           end: () => `+=${window.innerHeight * (bodies.length - 1)}`,
           pin: true,
