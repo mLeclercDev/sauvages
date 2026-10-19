@@ -31,7 +31,7 @@ const TextRevealSection: React.FC<TextRevealSectionProps> = ({
     : rawTexte || "";
   const label = data ? data.Label : labelProp;
   // Choix Strapi "StyleLabel" : le label peut prendre le style d'un h2
-  const labelClassName = `${styles.label}${data?.StyleLabel === "h2" ? " h2" : ""}`;
+  const labelClassName = data?.StyleLabel === "h2" ? `h2 ${styles.labelH2}` : undefined;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);

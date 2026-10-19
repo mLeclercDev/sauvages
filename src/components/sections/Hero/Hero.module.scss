@@ -157,6 +157,8 @@
         justify-content: flex-end;
       }
       .title {
+        // Les retours à la ligne saisis dans Strapi (Entrée) sont conservés
+        white-space: pre-line;
         position: absolute;
         bottom: calc(100% + 2em - var(--logo-pt));
         color: var(--color-text);
@@ -179,6 +181,12 @@
 
         @include mq-max("md") {
           font-size: 16px;
+        }
+
+        // Tablette uniquement : passe sous la ligne "Sauvages Reel / durée"
+        // de la vidéo, qui le chevauchait.
+        @media (min-width: 768px) and (max-width: 1023.98px) {
+          margin-top: 48px;
         }
       }
 

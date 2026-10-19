@@ -19,11 +19,11 @@
     gap: $space-4;
   }
 
-  // Mobile : padding bas de pb-xxl (80px) au lieu de pb-xl. Classe doublée
+  // Mobile : padding bas de 100px au lieu de pb-xl. Classe doublée
   // pour passer devant l'utilitaire global .pb-xl.
   &.agenceCta {
     @include mq-max("md") {
-      padding-bottom: 80px;
+      padding-bottom: 100px;
     }
   }
 }
