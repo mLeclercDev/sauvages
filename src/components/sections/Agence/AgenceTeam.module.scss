@@ -158,6 +158,7 @@
   height: 18.737px;
   border: 1.615px solid #000;
   margin-top: 3px;
+  transform: translateY(-3px);
   @include mq-max("lg") {
     margin-top: 0;    
   }
